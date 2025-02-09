@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory name="">
+  <!-- Conexión a la base de datos -->
+  <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+  <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/smartstockdb</property>
+  <property name="hibernate.connection.username">Daniel</property>
+  <property name="hibernate.connection.password">Daniel1234</property>
+  <!-- Configuración de Hibernate -->
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+  <property name="hibernate.show_sql">true</property>
+  <property name="hibernate.format_sql">true</property>
+  <property name="hibernate.hbm2ddl.auto">update</property>
+  <!-- Esto asegura que Hibernate actualizará el esquema automáticamente 
+ Mapeo de clases -->
+  <mapping class="model.Usuario"/>
+  <mapping class="model.Categoria"/>
+  <mapping class="model.Producto"/>
+  <mapping class="model.HistorialInventario"/>
+  <mapping class="model.CopiaSeguridad"/>
+ </session-factory>
+</hibernate-configuration>
