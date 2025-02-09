@@ -2,17 +2,10 @@ package com.danielfedesa.smartstockv2.SmartStockv2;
 
 import javax.swing.SwingUtilities;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-
-import model.Usuario;
-import view.BackupAutomatico;
-import view.Login;
+//import view.BackupAutomatico;
+import controller.Login;
 import view.ScreenLogin;
-import view.SupervisorStock;
+//import view.SupervisorStock;
 
 public class App {
 	public static void main(String[] args) {
@@ -29,6 +22,7 @@ public class App {
 			}
 		});
 
+		/*
 		// Crear y ejecutar el hilo de copias automáticas
 		Thread backupThread = new Thread(new BackupAutomatico());
 		backupThread.start();
@@ -40,8 +34,10 @@ public class App {
 		superThread.start();
 
 		System.out.println("Hilo de supervisión de stock bajo INICIADO");
+		*/
 	}
 }
+
 
 /*
  * StandardServiceRegistry sr = new
