@@ -138,25 +138,20 @@ public class Categoria {
 
 	/**
 	 * Metodo para crear una nueva categoria en la base de datos.
-	 * 
-	 * @throws SQLException Si ocurre un error en la base de datos.
 	 */
 	public void crearCategoria() throws SQLException {
-		DaoCategoria cat = new DaoCategoria();
-		cat.crearCategoria(this);
+		DaoCategoria daoCategoria = new DaoCategoria();
+		daoCategoria.insertar(this);
 	}
 
 	/**
 	 * Metodo para listar todas las categorias de la base de datos mediante un
 	 * objeto del dao.
 	 * 
-	 * @return Lista de objetos Categoria que representa todas las categorias
-	 *         almacenadas en la base de datos.
-	 * @throws SQLException
+	 * @return Lista de categorias.
 	 */
-	public List<Categoria> listarCategorias() throws SQLException {
+	public List<Categoria> listarCategorias() {
 		DaoCategoria daoCategoria = new DaoCategoria();
-
 		return daoCategoria.listar();
 	}
 
@@ -165,13 +160,10 @@ public class Categoria {
 	 * 
 	 * @param idCategoria Identificador unico de la categoria a recuperar.
 	 * @return Objeto Categoria recuperado de la base de datos.
-	 * @throws SQLException Si ocurre un error en la base de datos
 	 */
 	public Categoria recuperarCat(int idCategoria) throws SQLException {
-		DaoCategoria dao = new DaoCategoria();
-		Categoria c = dao.leerCategoria(idCategoria);
-
-		return c;
+		DaoCategoria daoCategoria = new DaoCategoria();
+		return daoCategoria.leerCategoria(idCategoria);
 	}
 
 	/**
@@ -180,23 +172,20 @@ public class Categoria {
 	 * 
 	 * @return boolean true si la actualizacion fue correcta, false en caso
 	 *         contrario.
-	 * @throws SQLException Si ocurre un error al interactuar con la base de datos.
 	 */
 	public boolean actualizarCategoria() throws SQLException {
-		DaoCategoria daoCat = new DaoCategoria();
-
-		return daoCat.actualizarCategoria(this);
+		DaoCategoria daoCategoria = new DaoCategoria();
+		return daoCategoria.actualizar(this);
 	}
 
 	/**
 	 * Metodo para eliminar una categoria de la base de datos.
 	 * 
-	 * @throws SQLException Si hay un error al interactuar con la base de datos.
+	 * @param idCategoria El ID del usuario a eliminar.
 	 */
-	@SuppressWarnings("static-access")
-	public void eliminarCategoria(int idCategoria) throws SQLException {
-		DaoCategoria elim = new DaoCategoria();
-		elim.borrarCategoria(idCategoria);
+	public void eliminarCategoria(int idCategoria) {
+		DaoCategoria daoCategoria = new DaoCategoria();
+		daoCategoria.eliminar(idCategoria);
 	}
 
 } // Class

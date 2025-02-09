@@ -222,16 +222,10 @@ public class HistorialInventario {
 	/**
 	 * Metodo para insertar un nuevo movimiento de stock en la base de datos.
 	 * 
-	 * @throws SQLException Si ocurre un error en la base de datos.
 	 */
-	public void insertarMovimiento() throws SQLException {
-		DaoHistorialInventario dao = new DaoHistorialInventario();
-		try {
-			dao.registrarMovimiento(this);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void crearMovimiento() throws SQLException {
+		DaoHistorialInventario daoHistorialInventario = new DaoHistorialInventario();
+		daoHistorialInventario.insertar(this);
 	}
 
 	/**
@@ -240,11 +234,10 @@ public class HistorialInventario {
 	 * 
 	 * @return Lista de objetos HistorialInventario que representa todos los
 	 *         movimientos almacenados en la base de datos.
-	 * @throws SQLException
 	 */
-	public List<HistorialInventario> listarMovimientos() throws SQLException {
-		DaoHistorialInventario daoInventario = new DaoHistorialInventario();
-		return daoInventario.listarMov();
+	public List<HistorialInventario> listarMovimientos() {
+		DaoHistorialInventario daoHistorialInventario = new DaoHistorialInventario();
+		return daoHistorialInventario.listar();
 	}
 
 } // Class

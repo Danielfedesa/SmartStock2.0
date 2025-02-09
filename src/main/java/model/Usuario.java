@@ -288,7 +288,8 @@ public class Usuario {
 	}
 
 	/**
-	 * Metodo para listar todos los usuarios de la base de datos.
+	 * Metodo para listar todos los usuarios de la base de datos
+	 * mediante un objeto del dao.
 	 * 
 	 * @return Lista de usuarios.
 	 */
@@ -300,8 +301,8 @@ public class Usuario {
 	/**
 	 * Metodo para recuperar un usuario por su ID y cargar sus datos.
 	 * 
-	 * @param idUsuario El ID del usuario.
-	 * @return El usuario recuperado.
+	 * @param idUsuario El ID del usuario a recuperar.
+	 * @return Objeto usuario recuperado de la base de datos.
 	 */
 	public Usuario recuperarUsu(int idUsuario) {
 		DaoUsuario daoUsuario = new DaoUsuario();
@@ -309,9 +310,10 @@ public class Usuario {
 	}
 
 	/**
-	 * Metodo para actualizar un usuario.
+	 * Metodo para insertar la actualizacion de los datos de una
+	 * categoria en la base de datos.
 	 * 
-	 * @return true si la actualizacion fue exitosa, false en caso contrario.
+	 * @return true si la actualizacion fue correcta, false en caso contrario.
 	 */
 	public boolean actualizarUsuario() {
 		DaoUsuario daoUsuario = new DaoUsuario();

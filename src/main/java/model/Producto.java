@@ -201,7 +201,7 @@ public class Producto {
 	 * 
 	 * @param idCategoria Identificador de categoria del producto.
 	 */
-	public void setIdCategoria(Categoria categoria) {
+	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 
@@ -220,25 +220,20 @@ public class Producto {
 
 	/**
 	 * Metodo para insertar un nuevo producto en la base de datos.
-	 * 
-	 * @throws SQLException Si ocurre un error en la base de datos.
 	 */
-	public void crearProducto() throws SQLException {
-		DaoProducto prod = new DaoProducto();
-		prod.insertar(this);
+	public void crearProducto() {
+		DaoProducto daoProducto = new DaoProducto();
+		daoProducto.insertar(this);
 	}
 
 	/**
 	 * Metodo para listar todos los productos de la base de datos mediante un objeto
 	 * del dao.
 	 * 
-	 * @return Lista de objetos Producto que representa todos los productos
-	 *         almacenadas en la base de datos.
-	 * @throws SQLException
+	 * @return Lista de objetos Producto.
 	 */
-	public List<Producto> listarProductos() throws SQLException {
+	public List<Producto> listarProductos() {
 		DaoProducto daoProducto = new DaoProducto();
-
 		return daoProducto.listar();
 	}
 
@@ -248,11 +243,9 @@ public class Producto {
 	 * 
 	 * @return Lista de objetos Producto que representa todos los productos con
 	 *         stock bajo almacenadas en la base de datos.
-	 * @throws SQLException
 	 */
-	public List<Producto> listarProductosStockBajo() throws SQLException {
+	public List<Producto> listarProductosStockBajo() {
 		DaoProducto daoProducto = new DaoProducto();
-
 		return daoProducto.listarStockBajo();
 	}
 
@@ -261,37 +254,31 @@ public class Producto {
 	 * 
 	 * @param idProducto Identificador unico del producto a recuperar.
 	 * @return Objeto Producto recuperado de la base de datos.
-	 * @throws SQLException Si ocurre un error en la base de datos
 	 */
-	public Producto recuperarPro(int idProducto) throws SQLException {
-		DaoProducto dao = new DaoProducto();
-		Producto p = dao.leerProducto(idProducto);
-		return p;
+	public Producto recuperarPro(int idProducto) {
+		DaoProducto daoProducto = new DaoProducto();
+		return daoProducto.leerProducto(idProducto);
 	}
 
 	/**
 	 * Metodo para insertar la actualizacion de los datos de un producto en la base
 	 * de datos.
 	 * 
-	 * @return boolean true si la actualizacion fue correcta, false en caso
+	 * @return true si la actualizacion fue correcta, false en caso
 	 *         contrario.
-	 * @throws SQLException Si ocurre un error al interactuar con la base de datos.
 	 */
-	public boolean actualizarProducto() throws SQLException {
-		DaoProducto daoProd = new DaoProducto();
-
-		return daoProd.actualizarProducto(this);
+	public boolean actualizarProducto() {
+		DaoProducto daoProducto = new DaoProducto();
+		return daoProducto.actualizar(this);
 	}
 
 	/**
 	 * Metodo para eliminar un producto de la base de datos.
-	 * 
-	 * @throws SQLException Si hay un error al interactuar con la base de datos.
+	 * @param idUsuario El ID del producto a eliminar.
 	 */
-	@SuppressWarnings("static-access")
-	public void eliminarProducto(int idProducto) throws SQLException {
-		DaoProducto elim = new DaoProducto();
-		elim.borrarProducto(idProducto);
+	public void eliminarProducto(int idProducto) {
+		DaoProducto daoProducto = new DaoProducto();
+		daoProducto.eliminar(idProducto);
 	}
 
 	/**
