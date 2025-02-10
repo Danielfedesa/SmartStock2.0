@@ -803,7 +803,7 @@ public class ScreenFormularios {
 				}
 
 				// Crear el objeto TipoMovimiento correspondiente
-				TipoMovimiento tipoMovimiento = TipoMovimiento.valueOf(tipoMovimientoStr.toUpperCase());
+				TipoMovimiento tipoMovimiento = TipoMovimiento.valueOf(tipoMovimientoStr.toLowerCase());
 
 				// Validar si la cantidad es un número válido.
 				int cantidad = Integer.parseInt(cantidadField.getText());

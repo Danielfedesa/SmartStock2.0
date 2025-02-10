@@ -97,43 +97,47 @@ public class ScreenLogin extends JFrame {
 
 		// Acción del botón "Iniciar sesión"
 		enviar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String email = usuarioField.getText();
-				String pass = new String(contrasenaField.getPassword());
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        String email = usuarioField.getText();
+		        String pass = new String(contrasenaField.getPassword());
 
-				if (email.isEmpty() || pass.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-				}
+		        if (email.isEmpty() || pass.isEmpty()) {
+		            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error",
+		                    JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
 
-				try {
-					// Intenta iniciar sesión y recupera el usuario.
-					Usuario usuarioLogueado = loginControlador.iniciarSesion(email, pass);
+		        try {
+		            // Verificar si el usuario existe y la contraseña es correcta
+		            System.out.println("Intentando iniciar sesión con email: " + email);
+		            Usuario usuarioLogueado = loginControlador.iniciarSesion(email, pass);
 
-					if (usuarioLogueado != null) {
-						UsuarioSesion.setUsuarioActual(usuarioLogueado); // Guardar el usuario en sesión.
-						JOptionPane.showMessageDialog(null, "Inicio de sesión correcto.\nBienvenido.");
-						dispose(); // Cierra la ventana de inicio de sesión.
+		            if (usuarioLogueado != null) {
+		                System.out.println("Inicio de sesión exitoso.");
+		                UsuarioSesion.setUsuarioActual(usuarioLogueado); // Guardar el usuario en sesión.
+		                JOptionPane.showMessageDialog(null, "Inicio de sesión correcto.\nBienvenido.");
+		                dispose(); // Cierra la ventana de inicio de sesión.
 
-						// Redirige según el rol del usuario.
-						if ("admin".equals(usuarioLogueado.getRol())) {
-							new ScreenDashboardAdmin().setVisible(true);
-						} else if ("empleado".equals(usuarioLogueado.getRol())) {
-							new ScreenDashboard().setVisible(true);
-						}
-					} else {
-						JOptionPane.showMessageDialog(null, "Correo o contraseña incorrectos.", "Error",
-								JOptionPane.ERROR_MESSAGE);
-					}
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Error al intentar iniciar sesión: " + ex.getMessage(), "Error",
-							JOptionPane.ERROR_MESSAGE);
-					ex.printStackTrace();
-				}
-			}
+		                // Redirige según el rol del usuario.
+		                if ("admin".equals(usuarioLogueado.getRol())) {
+		                    new ScreenDashboardAdmin().setVisible(true);
+		                } else if ("empleado".equals(usuarioLogueado.getRol())) {
+		                    new ScreenDashboard().setVisible(true);
+		                }
+		            } else {
+		                System.out.println("Error: Credenciales incorrectas");
+		                JOptionPane.showMessageDialog(null, "Correo o contraseña incorrectos.", "Error",
+		                        JOptionPane.ERROR_MESSAGE);
+		            }
+		        } catch (Exception ex) {
+		            JOptionPane.showMessageDialog(null, "Error al intentar iniciar sesión: " + ex.getMessage(), "Error",
+		                    JOptionPane.ERROR_MESSAGE);
+		            ex.printStackTrace();
+		        }
+		    }
 		});
+
 
 		// Añadir componentes al panel del formulario
 		GridBagConstraints gbc = new GridBagConstraints();

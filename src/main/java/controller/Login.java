@@ -1,5 +1,7 @@
 package controller;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import DAO.DaoUsuario;
 import model.Usuario;
 
@@ -20,7 +22,7 @@ public class Login {
 	/**
      * Constructor de la clase Login.
      * Se requiere un DAO de Usuario para inicializar
-     * la clase y gestionar la validación.
+     * la clase y gestionar la validacion.
      * @param usuarioDao Objeto de tipo DaoUsuario
      * que permite interactuar con la tabla de usuarios.
      */
@@ -36,24 +38,30 @@ public class Login {
             this.usuarioDao = new DaoUsuario();
         }
 	
-	/**
-	 * Metodo para iniciar sesión en el sistema.
-     * Valida las credenciales proporcionadas (correo electronico y contrasena)
-     * y devuelve el objeto Usuario con el Rol si son correctas.
-     * En caso contrario, devuelve {@code null}.
-     * 
-	 * @param email El correo electronico del usuario que intenta iniciar sesion.
-	 * @param contrasena La contrasena del usuario que intenta iniciar sesion.
-	 * @return Un objeto {@link Usuario} si las credenciales son validas, o {@code null} si no lo son.
-	 */
-	public Usuario iniciarSesion(String email, String contrasena) {
+    public Usuario iniciarSesion(String email, String contrasena) {
         try {
-        	// Validar las credenciales con el DAO
-            return usuarioDao.validarCredenciales(email, contrasena);
+            // Buscar el usuario por su email
+            Usuario usuario = usuarioDao.leerUsuarioPorEmail(email);
+
+            if (usuario != null) {
+                // Mostrar por consola la contraseña introducida y la almacenada
+                System.out.println("Contraseña introducida: " + contrasena);
+                System.out.println("Contraseña almacenada: " + usuario.getContrasena());
+
+                // Verificar la contraseña utilizando BCrypt
+                boolean contrasenaValida = BCrypt.checkpw(contrasena, usuario.getContrasena());
+                if (contrasenaValida) {
+                    return usuario;  // Si las contraseñas coinciden, devuelve el usuario
+                } else {
+                    System.out.println("Contraseñas no coinciden");
+                }
+            } else {
+                System.out.println("Usuario no encontrado");
+            }
         } catch (Exception e) {
             System.err.println("Error al validar las credenciales: " + e.getMessage());
-            return null;
         }
+        return null;  // Si las credenciales no son válidas, devolver null
     }
 	
 } // Class

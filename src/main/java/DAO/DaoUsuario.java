@@ -102,22 +102,18 @@ public class DaoUsuario {
 		}
 	}
 
-	// Validar las credenciales de un usuario
-	public Usuario validarCredenciales(String email, String contrasena) {
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+	public Usuario leerUsuarioPorEmail(String email) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Crear la consulta
+            String hql = "FROM Usuario WHERE email = :email";
+            Query<Usuario> query = session.createQuery(hql, Usuario.class);
+            query.setParameter("email", email);
 
-			// Crear la consulta
-			String hql = "FROM Usuario WHERE email = :email AND contrasena = :contrasena";
-			Query<Usuario> query = session.createQuery(hql, Usuario.class);
-			query.setParameter("email", email);
-			query.setParameter("contrasena", contrasena);
-
-			// Ejecutar la consulta y obtener el usuario
-			return query.uniqueResult();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
+            // Ejecutar la consulta y obtener el usuario
+            return query.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;  // Si no se encuentra el usuario, devolver null
+    }
 }

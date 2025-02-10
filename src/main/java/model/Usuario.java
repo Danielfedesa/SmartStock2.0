@@ -1,6 +1,9 @@
 package model;
 
 import java.util.List;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 import DAO.DaoUsuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -246,7 +249,8 @@ public class Usuario {
 	 * @param contrasena Contrasena del usuario.
 	 */
 	public void setContrasena(String contrasena) {
-		this.contrasena = contrasena;
+		// Encripta la contraseña
+		this.contrasena = encriptarContrasena(contrasena);
 	}
 
 	/**
@@ -279,6 +283,27 @@ public class Usuario {
 				+ contrasena + ", Rol=" + Rol + "]";
 	}
 
+	/**
+	 * Metodo para encriptar la contraseña usando BCrypt.
+	 * 
+	 * @param contrasena La contrasenaa que se va a encriptar.
+	 * @return La contrasena encriptada.
+	 */
+	public static String encriptarContrasena(String contrasena) {
+		return BCrypt.hashpw(contrasena, BCrypt.gensalt());
+	}
+
+	/**
+	 * Metodo para verificar si la contrasena introducida coincide con la encriptada
+	 * 
+	 * @param contrasena
+	 * @param contrasenaHash
+	 * @return
+	 */
+	public static boolean verificarContrasena(String contrasena, String contrasenaHash) {
+	    return BCrypt.checkpw(contrasena, contrasenaHash); // Compara las contraseñas
+	}
+
 	/*
 	 * Metodo para crear un nuevo usuario en la base de datos.
 	 */
@@ -288,8 +313,8 @@ public class Usuario {
 	}
 
 	/**
-	 * Metodo para listar todos los usuarios de la base de datos
-	 * mediante un objeto del dao.
+	 * Metodo para listar todos los usuarios de la base de datos mediante un objeto
+	 * del dao.
 	 * 
 	 * @return Lista de usuarios.
 	 */
@@ -310,8 +335,8 @@ public class Usuario {
 	}
 
 	/**
-	 * Metodo para insertar la actualizacion de los datos de una
-	 * categoria en la base de datos.
+	 * Metodo para insertar la actualizacion de los datos de una categoria en la
+	 * base de datos.
 	 * 
 	 * @return true si la actualizacion fue correcta, false en caso contrario.
 	 */

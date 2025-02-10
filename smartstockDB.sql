@@ -9,7 +9,7 @@ CREATE TABLE Usuarios (
 	apellido2 VARCHAR(50),
     telefono INT NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
-    contrasena VARCHAR(50) NOT NULL,
+    contrasena VARCHAR(250) NOT NULL,
     rol ENUM('admin', 'empleado') NOT NULL
 );
 
