@@ -809,16 +809,16 @@ public class ScreenFormularios {
 				int cantidad = Integer.parseInt(cantidadField.getText());
 
 				// Ajustar el stock del producto según el movimiento.
-				if (tipoMovimiento.equals(TipoMovimiento.SALIDA) && cantidad > productoEditar.getStock()) {
+				if (tipoMovimiento.equals(TipoMovimiento.salida) && cantidad > productoEditar.getStock()) {
 					JOptionPane.showMessageDialog(formularioEdicion, "No hay suficiente stock para esta salida.",
 							"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
 				// Ajustar el stock del producto según el tipo de movimiento.
-				if (tipoMovimiento.equals(TipoMovimiento.ENTRADA)) {
+				if (tipoMovimiento.equals(TipoMovimiento.entrada)) {
 					productoEditar.setStock(productoEditar.getStock() + cantidad);
-				} else if (tipoMovimiento.equals(TipoMovimiento.SALIDA)) {
+				} else if (tipoMovimiento.equals(TipoMovimiento.salida)) {
 					productoEditar.setStock(productoEditar.getStock() - cantidad);
 				}
 

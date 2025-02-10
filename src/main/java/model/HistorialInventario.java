@@ -3,7 +3,6 @@ package model;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 
 import DAO.DaoHistorialInventario;
 import jakarta.persistence.Column;
@@ -34,13 +33,13 @@ public class HistorialInventario {
 	@Column(name = "id_Historial")
 	private int idHistorial;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER) // Relación EAGER con Producto
 	@JoinColumn(name = "id_Producto", nullable = false)
-	private Producto producto; // Clave foránea
+	private Producto producto; // Relación con la entidad Producto
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER) // Relación EAGER con Usuario
 	@JoinColumn(name = "id_Usuario", nullable = false)
-	private Usuario usuario; // Clave foránea
+	private Usuario usuario; // Relación con la entidad Usuario
 
 	@Column(name = "cantidad", nullable = false)
 	private int cantidad;
@@ -204,7 +203,7 @@ public class HistorialInventario {
 
 	// Enum para el tipo de movimiento
 	public enum TipoMovimiento {
-		ENTRADA, SALIDA
+		entrada, salida
 	}
 
 	/**

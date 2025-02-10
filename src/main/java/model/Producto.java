@@ -2,7 +2,6 @@ package model;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 
 import DAO.DaoProducto;
 import jakarta.persistence.Column;
@@ -46,7 +45,7 @@ public class Producto {
 	@Column(name = "stock_Minimo", nullable = false)
 	private int stockMinimo;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_Categoria", nullable = false)
 	private Categoria categoria; // Clave foránea de Categoria
 
@@ -246,7 +245,7 @@ public class Producto {
 	 */
 	public List<Producto> listarProductosStockBajo() {
 		DaoProducto daoProducto = new DaoProducto();
-		return daoProducto.listarStockBajo();
+		return daoProducto.listarMinimo();
 	}
 
 	/**
@@ -264,8 +263,7 @@ public class Producto {
 	 * Metodo para insertar la actualizacion de los datos de un producto en la base
 	 * de datos.
 	 * 
-	 * @return true si la actualizacion fue correcta, false en caso
-	 *         contrario.
+	 * @return true si la actualizacion fue correcta, false en caso contrario.
 	 */
 	public boolean actualizarProducto() {
 		DaoProducto daoProducto = new DaoProducto();
@@ -274,6 +272,7 @@ public class Producto {
 
 	/**
 	 * Metodo para eliminar un producto de la base de datos.
+	 * 
 	 * @param idUsuario El ID del producto a eliminar.
 	 */
 	public void eliminarProducto(int idProducto) {

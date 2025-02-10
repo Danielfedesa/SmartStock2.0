@@ -6,23 +6,24 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import model.HistorialInventario;
+import model.CopiaSeguridad;
 
 /**
- * Clase para realizar operaciones relacionadas con la tabla
- * 'historialinventario' en la base de datos.
+ * Clase para realizar operaciones relacionadas con la tabla 'copiasseguridad'
+ * en la base de datos.
  * 
  * @author Daniel Fernandez Sanchez
  * @version 2.0 02/2025
  */
-public class DaoHistorialInventario {
+public class DaoCopiaSeguridad {
 
-	// insertar un nuevo movimiento en la base de datos
-	public void insertar(HistorialInventario h) {
+	// Insertar registro en de la copia de seguridad en la base de datos.
+	public void insertar(CopiaSeguridad cs) {
+
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Transaction transaction = session.beginTransaction();
 
-			session.persist(h);
+			session.persist(cs);
 
 			transaction.commit();
 		} catch (Exception e) {
@@ -30,11 +31,12 @@ public class DaoHistorialInventario {
 		}
 	}
 
-	// listar todos los movimientos de la base de datos
-	public List<HistorialInventario> listar() {
+	// Listar todos los registros de copias de seguridad
+	public List<CopiaSeguridad> listar() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			String hql = "FROM HistorialInventario";
-			Query<HistorialInventario> query = session.createQuery(hql, HistorialInventario.class);
+
+			String hql = "FROM CopiaSeguridad";
+			Query<CopiaSeguridad> query = session.createQuery(hql, CopiaSeguridad.class);
 
 			return query.getResultList();
 

@@ -1,14 +1,10 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import DAO.DaoCopiaSeguridad;
 import jakarta.persistence.Column;
@@ -131,50 +127,49 @@ public class CopiaSeguridad {
 	 * especifica, cuyo nombre incluye la fecha y la hora actual.
 	 * 
 	 * Si el proceso se ejecuta correctamente, también se registra la ruta del
-	 * archivo de copia de seguridad en la base de datos.
+	 * archivo de copia de seguridad en la base de datos utilizando Hibernate.
 	 * 
-	 * @throws SQLException Si ocurre un error al ejecutar el comando para crear la
-	 *                      copia de seguridad o al registrar la ruta en la base de
-	 *                      datos.
+	 * @throws SQLException
+	 * 
 	 */
 	public void realizarBackup() throws SQLException {
-
 		// Formatear la fecha y hora actual para incluirla en el nombre del archivo
 		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy_HH.mm");
 		String fechaHora = formatter.format(new Date());
 
-		// Ruta y nombre
-		String rutaBackup = "C:\\Users\\Daniel\\Desktop\\SmartStock\\SmartStock_Backups\\SmartStock_" + fechaHora
+		// Ruta y nombre del archivo de respaldo
+		String rutaBackup = "C:\\Users\\Daniel\\Desktop\\SmartStock 2.0\\SmartStock2.0_Backups\\SmartStock_" + fechaHora
 				+ ".sql";
-		String comando = "cmd /c \"C:\\xampp\\mysql\\bin\\mysqldump.exe -u Daniel -pDaniel1234 smartstockdb > "
-				+ rutaBackup + "\"";
+
+		// Comando para realizar la copia de seguridad
+		String comando = "C:\\xampp\\mysql\\bin\\mysqldump.exe";
+		String usuario = "Daniel";
+		String contrasena = "Daniel1234";
+		String baseDeDatos = "smartstockdb";
+
+		// Ejecutar el comando
+		ProcessBuilder processBuilder = new ProcessBuilder(comando, "-u", usuario, "-p" + contrasena, baseDeDatos,
+				"--result-file=" + rutaBackup);
+
+		processBuilder.redirectErrorStream(true); // Unir la salida de error con la salida estándar
 
 		try {
-			// Ejecuta el comando para realizar la copia
-			Process proceso = Runtime.getRuntime().exec(new String[] { "cmd", "/c", comando });
-
-			// Capturar errores del comando
-			InputStream errorStream = proceso.getErrorStream();
-			InputStreamReader isr = new InputStreamReader(errorStream);
-			BufferedReader br = new BufferedReader(isr);
-			String linea;
-			while ((linea = br.readLine()) != null) {
-				System.err.println("Error mysqldump: " + linea);
-			}
-
-			int resultado = proceso.waitFor(); // Espera a que termine el proceso
+			Process proceso = processBuilder.start();
+			int resultado = proceso.waitFor(); // Esperar a que termine el proceso
 
 			if (resultado == 0) {
 				System.out.println("Copia de seguridad creada correctamente en la ruta: " + rutaBackup);
+				// Registrar la copia de seguridad en la base de datos utilizando Hibernate
+				this.rutaArchivo = rutaBackup; // Establecemos la ruta en el objeto CopiaSeguridad
+				this.fechaBackup = new Timestamp(System.currentTimeMillis()); // Actualizamos la fecha
 
-				// Registra la copia de seguridad en la base de datos
-				DaoCopiaSeguridad daoCopia = new DaoCopiaSeguridad();
-				daoCopia.registrarBackup(rutaBackup);
+				DaoCopiaSeguridad daoCopiaSeguridad = new DaoCopiaSeguridad();
+				daoCopiaSeguridad.insertar(this); // Guardamos en la base de datos
 			} else {
 				System.err.println("Error al ejecutar el comando mysqldump. Código de salida: " + resultado);
 			}
 		} catch (Exception e) {
-			throw new SQLException("Error al realizar la copia de seguridad: " + e.getMessage());
+			System.err.println("Error al realizar la copia de seguridad: " + e.getMessage());
 		}
 	}
 
@@ -184,12 +179,10 @@ public class CopiaSeguridad {
 	 * 
 	 * @return Lista de objetos CopiaSeguridad que representa todos los registros
 	 *         almacenados en la base de datos.
-	 * @throws SQLException
 	 */
-	public List<CopiaSeguridad> listarCopias() throws SQLException {
+	public List<CopiaSeguridad> listarCopias() {
 		DaoCopiaSeguridad daoCopia = new DaoCopiaSeguridad();
-
-		return daoCopia.listar();
+		return daoCopia.listar(); // Listamos las copias de seguridad
 	}
 
 } // Class

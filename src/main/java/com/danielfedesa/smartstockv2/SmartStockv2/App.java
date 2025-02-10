@@ -2,13 +2,14 @@ package com.danielfedesa.smartstockv2.SmartStockv2;
 
 import javax.swing.SwingUtilities;
 
-//import view.BackupAutomatico;
+import process.BackupAutomatico;
 import controller.Login;
 import view.ScreenLogin;
-//import view.SupervisorStock;
+import process.SupervisorStock;
 
 public class App {
 	public static void main(String[] args) {
+		// Ejecuta la creación de la UI en el hilo de eventos de Swing
 		SwingUtilities.invokeLater(() -> {
 			try {
 				// Crea el modelo Login (el DAO se inicializa dentro de Login)
@@ -22,16 +23,25 @@ public class App {
 			}
 		});
 
+		// Crear y ejecutar el hilo de copias automáticas
+		Thread backupThread = new Thread(new BackupAutomatico());
+		backupThread.start();
+		System.out.println("Hilo de copia de seguridad INICIADO.");
+
+		// Crear y ejecutar el hilo de supervisión de stock
+		Thread superThread = new Thread(new SupervisorStock());
+		superThread.start();
+		System.out.println("Hilo de supervisión de stock bajo INICIADO");
+
 		/*
-		 * // Crear y ejecutar el hilo de copias automáticas Thread backupThread = new
-		 * Thread(new BackupAutomatico()); backupThread.start();
-		 * 
-		 * System.out.println("Hilo de copia de seguridad INICIADO.");
-		 * 
-		 * // Crear y ejecutar el hilo de supervisión de stock. Thread superThread = new
-		 * Thread(new SupervisorStock()); superThread.start();
-		 * 
-		 * System.out.println("Hilo de supervisión de stock bajo INICIADO");
-		 */
+		// Esperar que los hilos terminen antes de cerrar la aplicación
+		try {
+			// Espera a que los hilos de copia de seguridad y supervisión de stock finalicen
+			backupThread.join();
+			superThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		*/
 	}
 }
