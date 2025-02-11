@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import model.Producto;
-import view.ScreenGInventario;
 
 /**
  * Clase que implementa un proceso para supervisar el stock de productos y lanza
@@ -25,10 +24,8 @@ import view.ScreenGInventario;
  * vuelve a caer por debajo del mínimo, se vuelve a generar una alerta para ese
  * producto.
  * 
- * La alerta se muestra como una ventana emergente con dos opciones: -
- * "Revisar": Abre la pantalla de gestión de inventario para permitir al usuario
- * revisar los productos con stock bajo. - "Ver más tarde": Cierra la ventana
- * sin realizar ninguna acción adicional.
+ * La alerta se muestra como una ventana emergente con un botón "Aceptar" para
+ * cerrar la ventana.
  * 
  * @see Producto
  * @author Daniel Fernandez Sanchez.
@@ -36,19 +33,19 @@ import view.ScreenGInventario;
  */
 public class SupervisorStock implements Runnable {
 
+	// El conjunto productosAlertados almacena los IDs de los productos que ya han
+	// mostrado alerta.
+	// Este conjunto ahora persiste a lo largo de la ejecución del hilo, evitando
+	// que las alertas se repitan.
+	private Set<Integer> productosAlertados = new HashSet<>();
+
 	/**
-	 * Metodo ejecutado por el hilo. Realiza la verificación
-	 * periodica del stock de los productos.
+	 * Metodo ejecutado por el hilo. Realiza la verificación periódica del stock de
+	 * los productos.
 	 */
 	@Override
 	public void run() {
-		// El conjunto productosAlertados almacena los IDs de los productos que ya han
-		// mostrado alerta.
-		// Se reinicia al principio de cada ciclo de verificación.
 		while (true) {
-			Set<Integer> productosAlertados = new HashSet<>(); // Reiniciar el conjunto al inicio de cada ciclo de
-																// verificación
-
 			try {
 				Producto producto = new Producto(); // Creamos una instancia de Producto para verificar el stock.
 				String alerta = producto.verificarStockMinimo(); // Verificamos el stock mínimo de los productos.
@@ -66,25 +63,16 @@ public class SupervisorStock implements Runnable {
 					if (!productosAlertados.contains(productoId)) {
 						productosAlertados.add(productoId); // Marcamos este producto como alertado
 
-						// Mostramos una ventana emergente con las opciones "Revisar" y "Ver más tarde"
+						// Mostramos una ventana emergente con el botón "Aceptar"
 						SwingUtilities.invokeLater(() -> {
-							// Configuración del diálogo con las opciones
-							int respuesta = JOptionPane.showOptionDialog(null, "¡Alerta de stock bajo!\n" + alerta, // Mensaje
-																													// de
-																													// la
-																													// alerta
+							JOptionPane.showOptionDialog(null, "¡Alerta de stock bajo!\n" + alerta, // Mensaje
 									"Stock Bajo", // Título de la ventana
 									JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,
-									new Object[] { "Revisar", "Ver más tarde" }, // Botones de opciones
-									"Ver más tarde" // Opción por defecto
-							);
+									new Object[] { "Aceptar" }, "Aceptar");
 
-							// Si el usuario selecciona "Revisar", abrimos la pantalla de gestión de
-							// inventario.
-							if (respuesta == 0) {
-								SwingUtilities
-										.invokeLater(() -> new ScreenGInventario(new Producto()).setVisible(true));
-							}
+							// Aquí se podría abrir la pantalla de gestión de inventario si es necesario
+							// SwingUtilities.invokeLater(() -> new ScreenGInventario(new
+							// Producto()).setVisible(true));
 						});
 					}
 				} else {
@@ -92,7 +80,8 @@ public class SupervisorStock implements Runnable {
 					System.out.println(alerta);
 				}
 
-				// El hilo espera 20 segundos (20000 milisegundos) antes de realizar la siguiente
+				// El hilo espera 20 segundos (20000 milisegundos) antes de realizar la
+				// siguiente
 				// verificación.
 				Thread.sleep(20000); // 20 segundos
 			} catch (Exception e) {
