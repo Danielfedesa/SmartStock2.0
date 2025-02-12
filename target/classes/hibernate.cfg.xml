@@ -2,39 +2,33 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
                                          "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <!-- Parámetros de conexión a la base de datos -->
-        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/smartstockdb</property>
-        <property name="hibernate.connection.username">Daniel</property>
-        <property name="hibernate.connection.password">Daniel1234</property>
-
-        <!-- Dialecto para MySQL -->
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-
-        <!-- Mostrar las consultas SQL -->
-        <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.format_sql">true</property>
-
-        <!-- Configuración de Hibernate para autoactualización del esquema de base de datos -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
-
-        <!-- Deshabilitar JNDI -->
-        <property name="hibernate.jndi.url"></property>
-
-        <!-- Configuraciones adicionales para conexiones y transacciones -->
-        <property name="hibernate.c3p0.min_size">5</property>
-        <property name="hibernate.c3p0.max_size">20</property>
-        <property name="hibernate.c3p0.timeout">300</property>
-
-        <!-- Deshabilitar caché de segundo nivel -->
-        <property name="hibernate.cache.use_second_level_cache">false</property>
-
-        <!-- Mapeo de clases de modelo -->
-        <mapping class="model.Usuario"/>
-        <mapping class="model.Categoria"/>
-        <mapping class="model.Producto"/>
-        <mapping class="model.HistorialInventario"/>
-        <mapping class="model.CopiaSeguridad"/>
-    </session-factory>
+ <session-factory name="">
+  <!-- Parámetros de conexión a la base de datos -->
+  <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+  <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/smartstockdb</property>
+  <property name="hibernate.connection.username">Daniel</property>
+  <property name="hibernate.connection.password">Daniel1234</property>
+  <!-- Dialecto para MySQL -->
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+  <!-- Mostrar las consultas SQL -->
+  <property name="hibernate.show_sql">true</property>
+  <property name="hibernate.format_sql">true</property>
+  <!-- Configuración de Hibernate para autoactualización del esquema de base de datos -->
+  <property name="hibernate.hbm2ddl.auto">update</property>
+  <!-- Deshabilitar JNDI -->
+  <property name="hibernate.jndi.url"/>
+  <!-- Configuraciones adicionales para conexiones y transacciones -->
+  <property name="hibernate.c3p0.min_size">5</property>
+  <property name="hibernate.c3p0.max_size">20</property>
+  <property name="hibernate.c3p0.timeout">300</property>
+  <!-- Deshabilitar caché de segundo nivel -->
+  <property name="hibernate.cache.use_second_level_cache">false</property>
+  <!-- Mapeo de clases de modelo -->
+  <mapping class="model.Usuario"/>
+  <mapping class="model.Categoria"/>
+  <mapping class="model.Producto"/>
+  <mapping class="model.HistorialInventario"/>
+  <mapping class="model.CopiaSeguridad"/>
+  <mapping class="model.Chat"/>
+ </session-factory>
 </hibernate-configuration>

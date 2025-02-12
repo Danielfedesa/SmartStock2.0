@@ -15,13 +15,13 @@ public class Server {
 	public void startServer() {
 		try {
 			while (!serverSocket.isClosed()) {
-                // Accept a client connection
-                // Create a new thread to handle the client
+                // Aceptar conexiones de clientes
+				// El método accept() bloquea la ejecución hasta que se conecta un cliente
 				Socket socket = serverSocket.accept();
 				System.out.println("Nuevo cliente conectado " + socket.getInetAddress());
 				ClientHandler clientHandler = new ClientHandler(socket);
 				
-				// Start a new thread to handle the client
+				// Inicia un hilo para manejar la conexión con el cliente
 				Thread thread = new Thread(clientHandler);
 				thread.start();
             }

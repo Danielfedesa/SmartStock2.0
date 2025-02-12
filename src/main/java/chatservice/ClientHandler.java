@@ -9,10 +9,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import DAO.DaoChat;
+import model.Chat;
+
 public class ClientHandler implements Runnable {
 
 
-	public static List<ClientHandler> clientHandlers = new ArrayList<>();
+	public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
 
 	private Socket socket;
 
@@ -29,19 +32,26 @@ public class ClientHandler implements Runnable {
             this.salida = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.nombreUsuarioCliente = entrada.readLine();
             clientHandlers.add(this);
+            
+         // Enviar mensaje de bienvenida
+            broadcastMessage("SERVIDOR: " + nombreUsuarioCliente + " ha entrado al chat");
+
+            // Enviar mensajes previos a este cliente
+            sendPreviousMessages();
+            
             broadcastMessage("SERVIDOR: " + nombreUsuarioCliente + "ha entrado al chat");
             } catch (IOException e) {
             	closeAll(socket, entrada, salida);
             }
 	}
-
-
+	
 	@Override
 	public void run() {
 		String mensajeCifrado;
 		while (socket.isConnected()) {
             try {
             	mensajeCifrado = entrada.readLine();
+            	saveMessage(mensajeCifrado);
                 broadcastMessage(mensajeCifrado);
             } catch (IOException e) {
                 closeAll(socket, entrada, salida);
@@ -51,26 +61,47 @@ public class ClientHandler implements Runnable {
 
 	}
 	
+	private void sendPreviousMessages() {
+	    DaoChat daoMensaje = new DaoChat();
+	    List<Chat> mensajes = daoMensaje.listar();
+	    for (Chat mensaje : mensajes) {
+	        try {
+	            String mensajeFormateado = mensaje.getUsuario() + ": " + mensaje.getContenido();  // Corregido
+	            salida.write(mensajeFormateado);
+	            salida.newLine();
+	            salida.flush();
+	        } catch (IOException e) {
+	            closeAll(socket, entrada, salida);
+	        }
+	    }
+	}
+	
 	public void broadcastMessage(String mensajeParaEnviar) {
-		for (ClientHandler clientHandler : clientHandlers) {
-			try {
-				if (!clientHandler.nombreUsuarioCliente.equals(nombreUsuarioCliente)) {
-                    String mensajeDescifrado = AESUtil.decrypt(mensajeParaEnviar); // Descifrado del mensaje antes de enviarlo
-                    String mensajeCifrado = AESUtil.encrypt(mensajeDescifrado); // Cifrado del mensaje antes de enviarlo
-                    clientHandler.salida.write(mensajeCifrado);
-                    clientHandler.salida.newLine();
-                    clientHandler.salida.flush();
-                }
-            } catch (Exception e) {
-                closeAll(clientHandler.socket, clientHandler.entrada, clientHandler.salida);
-            }
-        }
-    }
+	    for (ClientHandler clientHandler : clientHandlers) {
+	        try {
+	            if (!clientHandler.nombreUsuarioCliente.equals(nombreUsuarioCliente)) {
+	                // Aquí no es necesario cifrar de nuevo el mensaje si ya lo has cifrado previamente
+	                clientHandler.salida.write(mensajeParaEnviar); // Enviar el mensaje tal cual
+	                clientHandler.salida.newLine();
+	                clientHandler.salida.flush();
+	            }
+	        } catch (Exception e) {
+	            closeAll(clientHandler.socket, clientHandler.entrada, clientHandler.salida);
+	        }
+	    }
+	}
 	
 	public void removeClientHandler() {
 		clientHandlers.remove(this);
 		broadcastMessage("SERVIDOR: " + nombreUsuarioCliente + " ha salido del chat");
 	}
+	
+	// Método para guardar los mensajes en la base de datos
+    private void saveMessage(String mensaje) {
+        DaoChat daoMensaje = new DaoChat();
+        Chat nuevoMensaje = new Chat(mensaje, nombreUsuarioCliente, java.time.LocalDateTime.now());
+        daoMensaje.insertar(nuevoMensaje);
+    }
 	
 	public void closeAll(Socket socket, BufferedReader entrada, BufferedWriter salida) {
 		removeClientHandler();
