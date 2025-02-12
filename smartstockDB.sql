@@ -4,24 +4,24 @@ USE smartstockdb;
 
 CREATE TABLE Usuarios (
     id_Usuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	nombre_Usuario VARCHAR(50) NOT NULL,
-    apellido1 VARCHAR(50) NOT NULL,
-	apellido2 VARCHAR(50),
+	nombre_Usuario VARCHAR(255) NOT NULL,
+    apellido1 VARCHAR(255) NOT NULL,
+	apellido2 VARCHAR(255),
     telefono INT NOT NULL,
-    email VARCHAR(50) NOT NULL UNIQUE,
-    contrasena VARCHAR(250) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
     rol ENUM('admin', 'empleado') NOT NULL
 );
 
 CREATE TABLE Categorias (
 	id_Categoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nombre_Categoria VARCHAR(100) NOT NULL,
+    nombre_Categoria VARCHAR(255) NOT NULL,
     descripcion TEXT
 );
 
 CREATE TABLE Productos (
     id_Producto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nombre_Producto VARCHAR(100) NOT NULL,
+    nombre_Producto VARCHAR(255) NOT NULL,
     descripcion TEXT,
     precio DECIMAL(10,2) NOT NULL,
     stock INT NOT NULL,
@@ -45,6 +45,13 @@ CREATE TABLE CopiasSeguridad (
 	id_Backup INT AUTO_INCREMENT PRIMARY KEY,
     fecha_Backup TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ruta_Archivo VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Mensajes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    contenido TEXT NOT NULL,
+    usuario VARCHAR(255),
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Datos de prueba
@@ -111,4 +118,18 @@ VALUES
 ('/backups/smartstock_backup_2025-01-06.sql'),
 ('/backups/smartstock_backup_2025-01-05.sql'),
 ('/backups/smartstock_backup_2025-01-04.sql')
+;
+
+INSERT INTO Mensajes (id, contenido, usuario, fecha)
+VALUES
+(1, 'Buenas tardes', 'brandonsan', '2025-02-12 13:52:39'),
+(2, 'Tengo un problema con el stock del artículo 5', 'brandonsan', '2025-02-12 13:52:45'),
+(3, 'Buenas tardes Brandon', 'arturoperez', '2025-02-12 13:53:25'),
+(4, '¿Qué problema tienes?', 'arturoperez', '2025-02-12 13:53:39'),
+(5, 'El stock del artículo no coincide con el real', 'brandonsan', '2025-02-12 13:54:19'),
+(6, 'Ok, lo reviso ahora mismo', 'arturoperez', '2025-02-12 13:54:43'),
+(7, 'Buenas tardes', 'terrypratch', '2025-02-12 13:56:39'),
+(8, 'Me acerco a tu zona y te ayudo Arturo', 'terrypratch', '2025-02-12 13:56:59'),
+(9, 'Ya lo tienes solucionado, había un problema con el código del artículo', 'arturoperez', '2025-02-12 14:08:39'),
+(10, 'Muchas gracias!! Continuo con el inventario', 'brandonsan', '2025-02-12 14:10:15')
 ;

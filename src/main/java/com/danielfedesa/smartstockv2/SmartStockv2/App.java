@@ -2,6 +2,7 @@ package com.danielfedesa.smartstockv2.SmartStockv2;
 
 import javax.swing.SwingUtilities;
 
+import chatservice.Server;
 import process.BackupAutomatico;
 import controller.Login;
 import view.ScreenLogin;
@@ -33,6 +34,18 @@ public class App {
 		superThread.start();
 		System.out.println("Hilo de supervisión de stock bajo INICIADO");
 
+		// Crear y ejecutar el servidor de chat en un hilo independiente
+		Thread chatServerThread = new Thread(() -> {
+            try {
+                Server.main(new String[]{});  // Llamamos al método main de Server para iniciar el servidor
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        chatServerThread.start(); // Iniciar el servidor en un hilo independiente
+        System.out.println("Hilo de servidor de chat INICIADO.");
+        
+        
 		/*
 		// Esperar que los hilos terminen antes de cerrar la aplicación
 		try {

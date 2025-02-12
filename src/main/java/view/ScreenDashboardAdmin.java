@@ -215,8 +215,7 @@ public class ScreenDashboardAdmin extends JFrame {
 	}
 
 	private void abrirChat() {
-		new ScreenAlertasStock(new Producto()).setVisible(true);
-		this.dispose();
+		new ScreenChat().setVisible(true);
 	}
 
 	public static void main(String[] args) {

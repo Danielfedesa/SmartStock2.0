@@ -9,13 +9,13 @@ public class CrearUsuariosBackend {
     public static void main(String[] args) {
         // Datos de los usuarios que se desean agregar
         String[][] usuariosData = {
-            {"Empleado1", "Apellido1", "Apellido2", "empleado1@smartstock.com", "1234", "empleado"},
-            {"Empleado2", "Apellido1", "Apellido2", "empleado2@smartstock.com", "1234", "empleado"},
-            {"Empleado3", "Apellido1", "Apellido2", "empleado3@smartstock.com", "1234", "empleado"},
-            {"Empleado4", "Apellido1", "Apellido2", "empleado4@smartstock.com", "1234", "empleado"},
-            {"Empleado5", "Apellido1", "Apellido2", "empleado5@smartstock.com", "1234", "empleado"},
-            {"Empleado6", "Apellido1", "Apellido2", "empleado6@smartstock.com", "1234", "empleado"},
-            {"Admin", "Administrador", "", "admin@smartstock.com", "1234", "admin"}
+            {"Brandon", "Sanderson", "", "brandonsan@smartstock.com", "1234", "empleado"},
+            {"Victoria", "Schwab", "", "victoriaschwab@smartstock.com", "1234", "empleado"},
+            {"Terry", "Pratchett", "", "terrypratch@smartstock.com", "1234", "empleado"},
+            {"Philip", "Pullman", "", "philippul@smartstock.com", "1234", "empleado"},
+            {"Arturo", "Pérez", "Reberte", "arturoperez@smartstock.com", "1234", "empleado"},
+            {"Cristina", "Martín", "Jimenez", "cristinamartin@smartstock.com", "1234", "empleado"},
+            {"Administrador", "Administrador", "", "admin@smartstock.com", "1234", "admin"}
         };
 
         // Crear la instancia del DAO

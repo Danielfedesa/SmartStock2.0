@@ -47,19 +47,30 @@ public class ClientHandler implements Runnable {
 	
 	@Override
 	public void run() {
-		String mensajeCifrado;
-		while (socket.isConnected()) {
-            try {
-            	mensajeCifrado = entrada.readLine();
-            	saveMessage(mensajeCifrado);
-                broadcastMessage(mensajeCifrado);
-            } catch (IOException e) {
-                closeAll(socket, entrada, salida);
-                break;
-            }
-		}
+	    String mensajeCifrado;
+	    while (socket.isConnected()) {
+	        try {
+	            mensajeCifrado = entrada.readLine();
 
+	            if (mensajeCifrado == null) { // Si es null, el cliente se ha desconectado
+	                removeClientHandler();
+	                break;
+	            }
+
+	            if (!mensajeCifrado.startsWith("SERVIDOR:")) {
+	                saveMessage(mensajeCifrado);
+	            }
+
+	            broadcastMessage(mensajeCifrado);
+
+	        } catch (IOException e) {
+	            closeAll(socket, entrada, salida);
+	            break;
+	        }
+	    }
 	}
+
+
 	
 	private void sendPreviousMessages() {
 	    DaoChat daoMensaje = new DaoChat();
@@ -92,33 +103,48 @@ public class ClientHandler implements Runnable {
 	}
 	
 	public void removeClientHandler() {
-		clientHandlers.remove(this);
-		broadcastMessage("SERVIDOR: " + nombreUsuarioCliente + " ha salido del chat");
+	    clientHandlers.remove(this);
+	    if (nombreUsuarioCliente != null && !nombreUsuarioCliente.trim().isEmpty()) {
+	        broadcastMessage("SERVIDOR: " + nombreUsuarioCliente + " ha salido del chat");
+	    }
 	}
+
 	
 	// Método para guardar los mensajes en la base de datos
-    private void saveMessage(String mensaje) {
-        DaoChat daoMensaje = new DaoChat();
-        Chat nuevoMensaje = new Chat(mensaje, nombreUsuarioCliente, java.time.LocalDateTime.now());
-        daoMensaje.insertar(nuevoMensaje);
-    }
+	private void saveMessage(String mensaje) {
+	    if (mensaje == null || mensaje.trim().isEmpty()) {
+	        System.out.println("No se guardó un mensaje vacío o nulo en la base de datos.");
+	        return; // No guardar mensajes vacíos
+	    }
+
+	    if (!mensaje.startsWith("SERVIDOR:")) { // No guardar mensajes de sistema
+	        DaoChat daoMensaje = new DaoChat();
+	        Chat nuevoMensaje = new Chat(mensaje, nombreUsuarioCliente, java.time.LocalDateTime.now());
+	        daoMensaje.insertar(nuevoMensaje);
+	    }
+	}
+
+
 	
 	public void closeAll(Socket socket, BufferedReader entrada, BufferedWriter salida) {
-		removeClientHandler();
-		try {
-			if (entrada != null) {
-				entrada.close();
-			}
-			if (salida != null) {
-				salida.close();
-			}
-			if (socket != null) {
-				socket.close();
-			}
-		} catch (IOException e) {
-			System.err.println("Error al cerrar el socket del cliente: " + e.getMessage());
-		}
+	    if (clientHandlers.contains(this)) {
+	        removeClientHandler();
+	    }
+	    try {
+	        if (entrada != null) {
+	            entrada.close();
+	        }
+	        if (salida != null) {
+	            salida.close();
+	        }
+	        if (socket != null && !socket.isClosed()) {
+	            socket.close();
+	        }
+	    } catch (IOException e) {
+	        System.err.println("Error al cerrar el socket del cliente: " + e.getMessage());
+	    }
 	}
+
 	
 
 } // Class

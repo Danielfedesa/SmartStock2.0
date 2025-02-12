@@ -4,6 +4,7 @@ import model.Chat;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DaoChat {
@@ -26,13 +27,13 @@ public class DaoChat {
     public List<Chat> listar() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
         	
-            String hql = "FROM Mensaje ORDER BY fecha DESC";
+            String hql = "FROM Chat ORDER BY fecha ASC";
             
             return session.createQuery(hql, Chat.class).getResultList();
             
         } catch (Exception e) {
             e.printStackTrace();
+            return new ArrayList<>(); // Devuelve una lista vacía en caso de error
         }
-        return null;
     }
 }
