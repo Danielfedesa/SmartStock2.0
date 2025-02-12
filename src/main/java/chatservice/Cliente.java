@@ -17,14 +17,14 @@ public class Cliente {
 	private String nombreUsuario;
 
 	public Cliente(Socket socket, String nombreUsuario) {
-		try {
-			this.socket = socket;
-			this.nombreUsuario = nombreUsuario;
-			this.entrada = entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			this.salida = salida = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		} catch (Exception e) {
-			closeAll(socket, entrada, salida);
-		}
+	    try {
+	        this.socket = socket;
+	        this.nombreUsuario = nombreUsuario;
+	        this.entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	        this.salida = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+	    } catch (Exception e) {
+	        closeAll(socket, entrada, salida);
+	    }
 	}
 
 	public void sendMessage() throws Exception {
@@ -33,12 +33,13 @@ public class Cliente {
 			salida.newLine();
 			salida.flush();
 
-			Scanner scanner = new Scanner(System.in);
-			while (socket.isConnected()) {
-				String mensajeEnviar = scanner.nextLine();
-				String mensajeCifrado = AESUtil.encrypt(mensajeEnviar); // Cifrado del mensaje
-                salida.write(nombreUsuario + ": " + mensajeCifrado);
-				salida.flush();
+			try (Scanner scanner = new Scanner(System.in)) {
+				while (socket.isConnected()) {
+					String mensajeEnviar = scanner.nextLine();
+					String mensajeCifrado = AESUtil.encrypt(mensajeEnviar); // Cifrado del mensaje
+				    salida.write(nombreUsuario + ": " + mensajeCifrado);
+					salida.flush();
+				}
 			}
 		} catch (IOException e) {
 			closeAll(socket, entrada, salida);
@@ -83,14 +84,15 @@ public class Cliente {
 	
 	// Método main para probar el cliente
 	public static void main(String[] args) throws Exception {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingrese su nombre de usuario: ");
-        String nombreUsuario = scanner.nextLine();
-        
-        Socket socket = new Socket("127.0.0.1", 5000);
-        Cliente cliente = new Cliente(socket, nombreUsuario);
-        cliente.listenForMessages();
-        cliente.sendMessage();
+        try (Scanner scanner = new Scanner(System.in)) {
+			System.out.println("Ingrese su nombre de usuario: ");
+			String nombreUsuario = scanner.nextLine();
+			
+			Socket socket = new Socket("127.0.0.1", 5000);
+			Cliente cliente = new Cliente(socket, nombreUsuario);
+			cliente.listenForMessages();
+			cliente.sendMessage();
+		}
 	}
 	
 	

@@ -27,7 +27,7 @@ public class App {
 		// Crear y ejecutar el hilo de copias automáticas
 		Thread backupThread = new Thread(new BackupAutomatico());
 		backupThread.start();
-		System.out.println("Hilo de copia de seguridad INICIADO.");
+		System.out.println("Hilo de copia de seguridad INICIADO");
 
 		// Crear y ejecutar el hilo de supervisión de stock
 		Thread superThread = new Thread(new SupervisorStock());
@@ -43,7 +43,7 @@ public class App {
             }
         });
         chatServerThread.start(); // Iniciar el servidor en un hilo independiente
-        System.out.println("Hilo de servidor de chat INICIADO.");
+        System.out.println("Hilo de servidor de chat INICIADO");
         
         
 		/*
