@@ -17,18 +17,30 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import controller.UsuarioSesion;
 import model.Producto;
 
+/**
+ * Pantalla de gestion del inventario en el sistema SmartStock.
+ * Permite listar los productos en stock, visualizar su informacion
+ * y realizar movimientos de stock.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 1.0 02/2025
+ */
 public class ScreenGInventario extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Producto producto; // Controlador que maneja la lógica relacionada con productos.
 	private JTable tablaProductos; // Tabla para mostrar la lista de productos.
 
+	/**
+	 * Constructor que inicializa la pantalla de gestion de inventario.
+	 * 
+	 * @param producto Objeto que representa el producto para gestionar el inventario.
+	 */
 	public ScreenGInventario(Producto producto) {
 		this.producto = producto;
 
@@ -104,9 +116,7 @@ public class ScreenGInventario extends JFrame {
 		// Modelo de la tabla con columnas específicas.
 		String[] columnas = { "ID", "Nombre", "Descripción", "Precio", "Stock", "Stock MIN", "ID Cat", "Movimiento" };
 		DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0) {
-			/**
-			 * 
-			 */
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -176,9 +186,7 @@ public class ScreenGInventario extends JFrame {
 
 		// Renderizador y editor para el botón "Editar".
 		tablaProductos.getColumnModel().getColumn(7).setCellEditor(new javax.swing.DefaultCellEditor(new JTextField()) {
-			/**
-			 * 
-			 */
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -229,7 +237,11 @@ public class ScreenGInventario extends JFrame {
 		add(contenedor);
 	}
 
-	// Método para cargar datos en la tabla desde la base de datos.
+	/**
+	 * Metodo para cargar datos en la tabla desde la base de datos.
+	 * 
+	 * @param modeloTabla Modelo de la tabla donde se insertaran los datos.
+	 */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
 	    try {
 	        List<Producto> productos = producto.listarProductos(); // Lista de productos desde la base de datos
@@ -254,14 +266,6 @@ public class ScreenGInventario extends JFrame {
 	    } catch (Exception e) {
 	        JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 	    }
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			Producto producto = new Producto(); // Instancia de Usuario que gestiona la lógica.
-			new ScreenGInventario(producto).setVisible(true);
-		});
-
 	}
 
 }

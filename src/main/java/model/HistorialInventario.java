@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -18,10 +17,23 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
- * Clase HistorialInventario que representa la informacion, constructores y
- * metodos referentes a los movimientos del inventario del sistema.
+ * Representa un movimiento de inventario en el sistema.
  * 
- * @author Daniel Fernandez Sanchez.
+ * <p>
+ * Esta clase está mapeada a la tabla 'HistorialInventario' en la base de datos mediante Hibernate.
+ * Utiliza las siguientes anotaciones:
+ * </p>
+ * <ul>
+ *   <li>{@literal @Entity} indica que la clase es una entidad de la base de datos.</li>
+ *   <li>{@literal @Table(name = "HistorialInventario")} define el nombre de la tabla en la base de datos.</li>
+ *   <li>{@literal @Id} especifica la clave primaria.</li>
+ *   <li>{@literal @GeneratedValue(strategy = GenerationType.IDENTITY)} define el campo como autoincremental.</li>
+ *   <li>{@literal @ManyToOne} establece relaciones con las entidades Producto y Usuario.</li>
+ *   <li>{@literal @Enumerated(EnumType.STRING)} almacena el tipo de movimiento como una cadena en la base de datos.</li>
+ *   <li>{@literal @Column} personaliza los atributos en la base de datos.</li>
+ * </ul>
+ * 
+ * @author Daniel Fernandez Sanchez
  * @version 2.0 02/2025
  */
 @Entity
@@ -96,7 +108,7 @@ public class HistorialInventario {
 	/**
 	 * Obtiene el identificador del historial.
 	 * 
-	 * @return idHistorial Identificador del historial.
+	 * @return Identificador del historial.
 	 */
 	public int getIdHistorial() {
 		return idHistorial;
@@ -105,7 +117,7 @@ public class HistorialInventario {
 	/**
 	 * Establece el identificador del historial.
 	 * 
-	 * @param idHistorial Identificador del historial.
+	 * @param Identificador del historial.
 	 */
 	public void setIdHistorial(int idHistorial) {
 		this.idHistorial = idHistorial;
@@ -114,7 +126,7 @@ public class HistorialInventario {
 	/**
 	 * Obtiene el identificador del producto.
 	 * 
-	 * @return producto Identificador del producto.
+	 * @return Identificador del producto.
 	 */
 	public Producto getProducto() {
 		return producto;
@@ -123,7 +135,7 @@ public class HistorialInventario {
 	/**
 	 * Establece el identificador del producto.
 	 * 
-	 * @param producto Identificador del producto.
+	 * @param Identificador del producto.
 	 */
 	public void setProducto(Producto producto) {
 		this.producto = producto;
@@ -132,7 +144,7 @@ public class HistorialInventario {
 	/**
 	 * Obtiene el identificador del usuario.
 	 * 
-	 * @return usuario Identificador del usuario.
+	 * @return Identificador del usuario.
 	 */
 	public Usuario getUsuario() {
 		return usuario;
@@ -141,7 +153,7 @@ public class HistorialInventario {
 	/**
 	 * Establece el identificador del usuario.
 	 * 
-	 * @param usuario Identificador del usuario.
+	 * @param Identificador del usuario.
 	 */
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
@@ -150,7 +162,7 @@ public class HistorialInventario {
 	/**
 	 * Obtiene la cantidad de productos en el movimiento.
 	 * 
-	 * @return cantidad Cantidad de productos en el movimiento.
+	 * @return Cantidad de productos en el movimiento.
 	 */
 	public int getCantidad() {
 		return cantidad;
@@ -159,7 +171,7 @@ public class HistorialInventario {
 	/**
 	 * Establece la cantidad de productos en el movimiento.
 	 * 
-	 * @param cantidad Cantidad de productos en el movimiento.
+	 * @param Cantidad de productos en el movimiento.
 	 */
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
@@ -168,7 +180,7 @@ public class HistorialInventario {
 	/**
 	 * Obtiene el tipo de movimiento (Entrada o Salida).
 	 * 
-	 * @return tipoMovimiento tipo de movimiento (Entrada o Salida).
+	 * @return tipo de movimiento (Entrada o Salida).
 	 */
 	public TipoMovimiento getTipoMovimiento() {
 		return tipoMovimiento;
@@ -177,7 +189,7 @@ public class HistorialInventario {
 	/**
 	 * Establece el tipo de movimiento (Entrada o Salida)
 	 * 
-	 * @param tipoMovimiento tipo de movimiento (Entrada o Salida).
+	 * @param tipo de movimiento (Entrada o Salida).
 	 */
 	public void setTipoMovimiento(TipoMovimiento tipoMovimiento) {
 		this.tipoMovimiento = tipoMovimiento;
@@ -186,7 +198,7 @@ public class HistorialInventario {
 	/**
 	 * Obtiene la fecha del movimiento.
 	 * 
-	 * @return fecha Fecha del movimiento.
+	 * @return Fecha del movimiento.
 	 */
 	public Timestamp getFecha() {
 		return fecha;
@@ -195,13 +207,15 @@ public class HistorialInventario {
 	/**
 	 * Establece la fecha del movimiento.
 	 * 
-	 * @param fecha Fecha del movimiento.
+	 * @param Fecha del movimiento.
 	 */
 	public void setFecha(Timestamp fecha) {
 		this.fecha = fecha;
 	}
 
-	// Enum para el tipo de movimiento
+	/**
+	 * Enum que representa el tipo de movimiento de stock.
+	 */
 	public enum TipoMovimiento {
 		entrada, salida
 	}
@@ -219,20 +233,20 @@ public class HistorialInventario {
 	}
 
 	/**
-	 * Metodo para insertar un nuevo movimiento de stock en la base de datos.
+	 * Registra un nuevo movimiento de stock en la base de datos utilizando
+	 * Hibernate.
 	 * 
 	 */
-	public void crearMovimiento() throws SQLException {
+	public void crearMovimiento() {
 		DaoHistorialInventario daoHistorialInventario = new DaoHistorialInventario();
 		daoHistorialInventario.insertar(this);
 	}
 
 	/**
-	 * Metodo para listar todos los movimientos de stock de la base de datos
-	 * mediante un objeto del dao.
+	 * Lista todos los movimientos de inventario almacenados en la base de datos
+	 * utilizando Hibernate.
 	 * 
-	 * @return Lista de objetos HistorialInventario que representa todos los
-	 *         movimientos almacenados en la base de datos.
+	 * @return Lista de movimientos registrados.
 	 */
 	public List<HistorialInventario> listarMovimientos() {
 		DaoHistorialInventario daoHistorialInventario = new DaoHistorialInventario();

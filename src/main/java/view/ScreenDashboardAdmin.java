@@ -9,10 +9,43 @@ import controller.Login;
 import controller.UsuarioSesion;
 import model.*;
 
+/**
+ * Ventana principal del dashboard para el administrador.
+ * 
+ * <p>
+ * Esta clase representa la pantalla principal del sistema para los administradores
+ * de SmartStock. Desde aqui se puede gestionar usuarios, categorias, productos, 
+ * inventario, historial de movimientos, copias de seguridad y alertas de stock.
+ * </p>
+ * 
+ * <p>
+ * La interfaz esta disenada con botones graficos que dirigen a cada seccion del sistema.
+ * Tambien incluye una opcion para cerrar sesion.
+ * </p>
+ * 
+ * @see ScreenGUsuarios
+ * @see ScreenGCategorias
+ * @see ScreenGProductos
+ * @see ScreenGInventario
+ * @see ScreenGHistorialInventario
+ * @see ScreenGCopiasSeguridad
+ * @see ScreenAlertasStock
+ * @see ScreenChat
+ * @see UsuarioSesion
+ * @author Daniel Fernandez Sanchez
+ * @version 2.0 02/2025
+ */
 public class ScreenDashboardAdmin extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+     * Constructor de la pantalla del dashboard del administrador.
+     * <p>
+     * Configura la interfaz grafica con botones de navegacion para acceder 
+     * a las diferentes funcionalidades del sistema.
+     * </p>
+     */
 	public ScreenDashboardAdmin() {
 		// Configuración de la ventana
 		setTitle("SmartStock - Dashboard ADMINISTRADOR");
@@ -40,7 +73,7 @@ public class ScreenDashboardAdmin extends JFrame {
 		gbcSuperior.anchor = GridBagConstraints.EAST;
 
 		// Imagen para "Cerrar Sesión"
-		JPanel botonCerrarSesion = createImageButton("salida.png", "Cerrar Sesión", this::cerrarSesion, 20, 20);
+		JPanel botonCerrarSesion = crearImagenBoton("salida.png", "Cerrar Sesión", this::cerrarSesion, 20, 20);
 		panelSuperior.add(botonCerrarSesion, gbcSuperior);
 
 		// Agregar el panel superior al contenedor principal
@@ -87,16 +120,16 @@ public class ScreenDashboardAdmin extends JFrame {
 		panelMenu.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		// Creación de botones con imágenes y texto con espaciado
-		JPanel gUsuarios = createImageButton("usuarios.png", "Usuarios", this::abrirGestionUsuarios, 40, 40);
-		JPanel gCategorias = createImageButton("categorias.png", "Categorías", this::abrirGestionCategorias, 40, 40);
-		JPanel gProductos = createImageButton("productos.png", "Productos", this::abrirGestionProductos, 40, 40);
-		JPanel inventario = createImageButton("inventario.png", "Inventario", this::abrirInventario, 40, 40);
-		JPanel movInventario = createImageButton("movimientos.png", "Movimientos de Inventario",
+		JPanel gUsuarios = crearImagenBoton("usuarios.png", "Usuarios", this::abrirGestionUsuarios, 40, 40);
+		JPanel gCategorias = crearImagenBoton("categorias.png", "Categorías", this::abrirGestionCategorias, 40, 40);
+		JPanel gProductos = crearImagenBoton("productos.png", "Productos", this::abrirGestionProductos, 40, 40);
+		JPanel inventario = crearImagenBoton("inventario.png", "Inventario", this::abrirInventario, 40, 40);
+		JPanel movInventario = crearImagenBoton("movimientos.png", "Movimientos de Inventario",
 				this::abrirMovInventario, 40, 40);
-		JPanel copiasSeguridad = createImageButton("copias.png", "Copias de Seguridad", this::abrirCopiasSeguridad, 40,
+		JPanel copiasSeguridad = crearImagenBoton("copias.png", "Copias de Seguridad", this::abrirCopiasSeguridad, 40,
 				40);
-		JPanel alertasStock = createImageButton("alertas.png", "Alertas de Stock", this::abrirAlertasStock, 40, 40);
-		JPanel chat = createImageButton("chat.png", "Chat", this::abrirChat, 40, 40);
+		JPanel alertasStock = crearImagenBoton("alertas.png", "Alertas de Stock", this::abrirAlertasStock, 40, 40);
+		JPanel chat = crearImagenBoton("chat.png", "Chat", this::abrirChat, 40, 40);
 
 		// Asegurar que el panel de botones está en `gbc.gridy = 2` para evitar que el
 		// título lo pise
@@ -131,7 +164,10 @@ public class ScreenDashboardAdmin extends JFrame {
 		add(contenedor);
 	}
 
-	private JPanel createImageButton(String imagePath, String texto, Runnable action, int width, int height) {
+	/**
+     * Crea un boton con una imagen e invoca una accion al hacer clic.
+     */
+	private JPanel crearImagenBoton(String imagePath, String texto, Runnable action, int width, int height) {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setOpaque(false);
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -168,6 +204,9 @@ public class ScreenDashboardAdmin extends JFrame {
 		return panel;
 	}
 
+	/**
+	 * Cierra la sesion del usuario y abre la ventana de login para iniciar sesion.
+     */
 	private void cerrarSesion() {
 		int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas cerrar sesión?",
 				"Confirmar Cierre de Sesión", JOptionPane.YES_NO_OPTION);
@@ -179,46 +218,67 @@ public class ScreenDashboardAdmin extends JFrame {
 		}
 	}
 
+	/**
+	 * Abre la ventana de gestion de usuarios.
+	 */
 	private void abrirGestionUsuarios() {
 		new ScreenGUsuarios(new Usuario()).setVisible(true);
 		this.dispose();
 	}
 
+	/**
+	 * Abre la ventana de gestion de categorias.
+	 */
 	private void abrirGestionCategorias() {
 		new ScreenGCategorias(new Categoria()).setVisible(true);
 		this.dispose();
 	}
 
+	/**
+	 * Abre la ventana de gestion de productos.
+	 */
 	private void abrirGestionProductos() {
 		new ScreenGProductos(new Producto()).setVisible(true);
 		this.dispose();
 	}
 
+	/**
+	 * Abre la ventana de inventario.
+	 */
 	private void abrirInventario() {
 		new ScreenGInventario(new Producto()).setVisible(true);
 		this.dispose();
 	}
 
+	/**
+	 * Abre la ventana de copias de seguridad.
+	 */
 	private void abrirCopiasSeguridad() {
 		new ScreenGCopiasSeguridad(new CopiaSeguridad()).setVisible(true);
 		this.dispose();
 	}
 
+	/**
+	 * Abre la ventana de movimientos de inventario.
+	 */
 	private void abrirMovInventario() {
 		new ScreenGHistorialInventario(new HistorialInventario()).setVisible(true);
 		this.dispose();
 	}
 
+	/**
+	 * Abre la ventana de alertas de stock.
+	 */
 	private void abrirAlertasStock() {
 		new ScreenAlertasStock(new Producto()).setVisible(true);
 		this.dispose();
 	}
-
+	
+	/**
+	 * Abre la ventana de chat.
+	 */
 	private void abrirChat() {
 		new ScreenChat().setVisible(true);
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new ScreenDashboardAdmin().setVisible(true));
-	}
-}
+} // Class

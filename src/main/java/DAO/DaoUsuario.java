@@ -10,14 +10,19 @@ import model.Usuario;
 
 /**
  * Clase para realizar operaciones relacionadas con la tabla 'usuarios' en la
- * base de datos.
+ * base de datos utilizando Hibernate. Permite insertar, listar, leer por ID,
+ * actualizar y eliminar
  * 
  * @author Daniel Fernandez Sanchez
  * @version 2.0 02/2025
  */
 public class DaoUsuario {
 
-	// Insertar usuario nuevo en la base de datos
+	/**
+	 * Inserta un nuevo usuario en la base de datos utilizando Hibernate.
+	 *
+	 * @param u Objeto de tipo Usuario que representa el usuario a insertar.
+	 */
 	public void insertar(Usuario u) {
 		// Abrir la sesion de Hibernate
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -34,7 +39,13 @@ public class DaoUsuario {
 		}
 	}
 
-	// Listar todos los usuarios de la base de datos
+	/**
+	 * Lista todos los usuarios almacenados en la base de datos utilizando
+	 * Hibernate.
+	 *
+	 * @return Lista de objetos Usuario si la consulta es exitosa, de lo contrario
+	 *         retorna null.
+	 */
 	public List<Usuario> listar() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			// Crear la consulta
@@ -50,7 +61,13 @@ public class DaoUsuario {
 		return null;
 	}
 
-	// Buscar un usuario por su ID para modificarlo posteriormente
+	/**
+	 * Busca un usuario en la base de datos por su ID utilizando Hibernate.
+	 *
+	 * @param idUsuario ID del usuario a buscar.
+	 * @return Objeto Usuario si se encuentra en la base de datos, de lo contrario
+	 *         retorna null.
+	 */
 	public Usuario leerUsuario(int idUsuario) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
@@ -63,7 +80,12 @@ public class DaoUsuario {
 		return null;
 	}
 
-	// Actualizar un usuario en la base de datos
+	/**
+	 * Actualiza un usuario en la base de datos utilizando Hibernate.
+	 *
+	 * @param user Objeto Usuario con los datos actualizados.
+	 * @return true si la actualizacion es exitosa, false en caso de error.
+	 */
 	public boolean actualizar(Usuario user) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
@@ -83,7 +105,11 @@ public class DaoUsuario {
 		}
 	}
 
-	// Eliminar un usuario de la base de datos
+	/**
+	 * Elimina un usuario de la base de datos segun su ID utilizando Hibernate.
+	 *
+	 * @param idUsuario ID del usuario a eliminar.
+	 */
 	public void eliminar(int idUsuario) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
@@ -102,18 +128,27 @@ public class DaoUsuario {
 		}
 	}
 
+	/**
+	 * Busca un usuario en la base de datos por su correo electronico utilizando
+	 * Hibernate. Se utiliza para validar el inicio de sesion con el correo
+	 * electronico.
+	 *
+	 * @param email Correo electronico del usuario a buscar.
+	 * @return Objeto Usuario si se encuentra en la base de datos, de lo contrario
+	 *         retorna null.
+	 */
 	public Usuario leerUsuarioPorEmail(String email) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // Crear la consulta
-            String hql = "FROM Usuario WHERE email = :email";
-            Query<Usuario> query = session.createQuery(hql, Usuario.class);
-            query.setParameter("email", email);
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			// Crear la consulta
+			String hql = "FROM Usuario WHERE email = :email";
+			Query<Usuario> query = session.createQuery(hql, Usuario.class);
+			query.setParameter("email", email);
 
-            // Ejecutar la consulta y obtener el usuario
-            return query.uniqueResult();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;  // Si no se encuentra el usuario, devolver null
-    }
+			// Ejecutar la consulta y obtener el usuario
+			return query.uniqueResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null; // Si no se encuentra el usuario, devolver null
+	}
 }

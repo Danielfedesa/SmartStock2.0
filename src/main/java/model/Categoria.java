@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import DAO.DaoCategoria;
@@ -14,10 +13,22 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 /**
- * Clase Categoria que representa la informacion, constructores y metodos
- * referentes a las categorias del sistema.
+ * Representa una categoria dentro del sistema.
  * 
- * @author Daniel Fernandez Sanchez.
+ * <p>
+ * Esta clase esta mapeada a la tabla 'Categorias' en la base de datos mediante Hibernate.
+ * Utiliza las siguientes anotaciones:
+ * </p>
+ * <ul>
+ *   <li>{@literal @Entity} indica que la clase es una entidad de la base de datos.</li>
+ *   <li>{@literal @Table(name = "Categorias")} define el nombre de la tabla en la base de datos.</li>
+ *   <li>{@literal @Id} especifica la clave primaria.</li>
+ *   <li>{@literal @GeneratedValue(strategy = GenerationType.IDENTITY)} define el campo como autoincremental.</li>
+ *   <li>{@literal @Column} personaliza los atributos en la base de datos.</li>
+ *   <li>{@literal @OneToMany} establece la relacion con la entidad Producto.</li>
+ * </ul>
+ * 
+ * @author Daniel Fernandez Sanchez
  * @version 2.0 02/2025
  */
 @Entity
@@ -73,7 +84,7 @@ public class Categoria {
 	/**
 	 * Obtiene el identificador de la categoria.
 	 * 
-	 * @return idCategoria Identificador de la categoria.
+	 * @return Identificador de la categoria.
 	 */
 	public int getIdCategoria() {
 		return idCategoria;
@@ -82,7 +93,7 @@ public class Categoria {
 	/**
 	 * Establece el identificador de la categoria.
 	 * 
-	 * @param idCategoria Identificador de la categoria.
+	 * @param Identificador de la categoria.
 	 */
 	public void setIdCategoria(int idCategoria) {
 		this.idCategoria = idCategoria;
@@ -91,7 +102,7 @@ public class Categoria {
 	/**
 	 * Obtiene el nombre de la categoria.
 	 * 
-	 * @return nombreCategoria Nombre de la categoria.
+	 * @return Nombre de la categoria.
 	 */
 	public String getNombreCategoria() {
 		return nombreCategoria;
@@ -100,7 +111,7 @@ public class Categoria {
 	/**
 	 * Establece el nombre de la categoria.
 	 * 
-	 * @param nombreCategoria Nombre de la categoria.
+	 * @param Nombre de la categoria.
 	 */
 	public void setNombreCategoria(String nombreCategoria) {
 		this.nombreCategoria = nombreCategoria;
@@ -109,7 +120,7 @@ public class Categoria {
 	/**
 	 * Obtiene la descripcion de la categoria.
 	 * 
-	 * @return descripcion Descripcion de la categoria.
+	 * @return Descripcion de la categoria.
 	 */
 	public String getDescripcion() {
 		return descripcion;
@@ -118,7 +129,7 @@ public class Categoria {
 	/**
 	 * Establece la descripcion de la categoria.
 	 * 
-	 * @param descripcion Descripcion de la categoria.
+	 * @param Descripcion de la categoria.
 	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
@@ -136,18 +147,19 @@ public class Categoria {
 	}
 
 	/**
-	 * Metodo para crear una nueva categoria en la base de datos.
+	 * Crea una nueva categoria en la base de datos utilizando Hibernate.
+	 * 
 	 */
-	public void crearCategoria() throws SQLException {
+	public void crearCategoria() {
 		DaoCategoria daoCategoria = new DaoCategoria();
 		daoCategoria.insertar(this);
 	}
 
 	/**
-	 * Metodo para listar todas las categorias de la base de datos mediante un
-	 * objeto del dao.
+	 * Lista todas las categorias almacenadas en la base de datos utilizando
+	 * Hibernate.
 	 * 
-	 * @return Lista de categorias.
+	 * @return Lista de categorias registradas.
 	 */
 	public List<Categoria> listarCategorias() {
 		DaoCategoria daoCategoria = new DaoCategoria();
@@ -155,32 +167,30 @@ public class Categoria {
 	}
 
 	/**
-	 * Metodo para recuperar una categoria por su ID y cargar sus datos.
+	 * Recupera una categoria por su ID desde la base de datos utilizando Hibernate.
 	 * 
 	 * @param idCategoria Identificador unico de la categoria a recuperar.
-	 * @return Objeto Categoria recuperado de la base de datos.
+	 * @return Objeto Categoria recuperado, o null si no existe.
 	 */
-	public Categoria recuperarCat(int idCategoria) throws SQLException {
+	public Categoria recuperarCat(int idCategoria) {
 		DaoCategoria daoCategoria = new DaoCategoria();
 		return daoCategoria.leerCategoria(idCategoria);
 	}
 
 	/**
-	 * Metodo para insertar la actualizacion de los datos de una categoria en la
-	 * base de datos.
+	 * Actualiza los datos de la categoria en la base de datos utilizando Hibernate.
 	 * 
-	 * @return boolean true si la actualizacion fue correcta, false en caso
-	 *         contrario.
+	 * @return true si la actualizacion fue correcta, false en caso contrario.
 	 */
-	public boolean actualizarCategoria() throws SQLException {
+	public boolean actualizarCategoria() {
 		DaoCategoria daoCategoria = new DaoCategoria();
 		return daoCategoria.actualizar(this);
 	}
 
 	/**
-	 * Metodo para eliminar una categoria de la base de datos.
+	 * Elimina una categoria de la base de datos utilizando Hibernate.
 	 * 
-	 * @param idCategoria El ID del usuario a eliminar.
+	 * @param idCategoria ID de la categoria a eliminar.
 	 */
 	public void eliminarCategoria(int idCategoria) {
 		DaoCategoria daoCategoria = new DaoCategoria();

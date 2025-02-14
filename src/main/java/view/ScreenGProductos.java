@@ -17,11 +17,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import model.Producto;
-
+/**
+ * Pantalla de gestion de productos en el sistema SmartStock.
+ * Permite listar, agregar, editar y eliminar productos del inventario.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 1.0 02/2025
+ */
 public class ScreenGProductos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -29,6 +34,11 @@ public class ScreenGProductos extends JFrame {
 	private JTable tablaProductos; // Tabla para mostrar la lista de productos.
 	private ScreenFormularios screenFormularios; // Declarar ScreenFormularios
 
+	/**
+	 * Constructor que inicializa la pantalla de gestion de productos.
+	 * 
+	 * @param producto Objeto que representa el producto para realizar operaciones.
+	 */
 	public ScreenGProductos(Producto producto) {
 		this.producto = producto;
 
@@ -99,9 +109,7 @@ public class ScreenGProductos extends JFrame {
 		String[] columnas = { "ID", "Nombre", "Descripción", "Precio", "Stock", "Stock MIN", "ID Cat", "Editar",
 				"Eliminar" };
 		DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0) {
-			/**
-			 * 
-			 */
+			
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -172,9 +180,7 @@ public class ScreenGProductos extends JFrame {
 
 		// Renderizador y editor para el botón "Editar".
 		tablaProductos.getColumnModel().getColumn(7).setCellEditor(new javax.swing.DefaultCellEditor(new JTextField()) {
-			/**
-			 * 
-			 */
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -312,7 +318,11 @@ public class ScreenGProductos extends JFrame {
 		add(contenedor);
 	}
 
-	// Método para cargar datos en la tabla desde la base de datos.
+	/**
+	 * Metodo para cargar datos en la tabla desde la base de datos.
+	 * 
+	 * @param Modelo de la tabla donde se insertaran los datos.
+	 */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
 		try {
 			List<Producto> productos = producto.listarProductos();
@@ -320,20 +330,12 @@ public class ScreenGProductos extends JFrame {
 			for (Producto producto : productos) {
 				modeloTabla.addRow(new Object[] { producto.getIdProducto(), producto.getNombreProducto(),
 						producto.getDescripcion(), producto.getPrecio(), producto.getStock(), producto.getStockMinimo(),
-						producto.getCategoria(), "Editar", "Eliminar" });
+						producto.getCategoria().getIdCategoria(), "Editar", "Eliminar" });
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + e.getMessage(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			Producto producto = new Producto(); // Instancia de Usuario que gestiona la lógica.
-			new ScreenGProductos(producto).setVisible(true);
-		});
-
 	}
 
 }

@@ -16,17 +16,28 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import model.CopiaSeguridad;
 
+/**
+ * Clase que representa la vista de gestion de copias de seguridad dentro del sistema.
+ * Permite visualizar las copias de seguridad almacenadas en la base de datos.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 1.0 02/2025
+ */
 public class ScreenGCopiasSeguridad extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private CopiaSeguridad copia;
 	private JTable tablaCopiasSeguridad;
 
+	/**
+     * Constructor de la vista de gestion de copias de seguridad.
+     * 
+     * @param Objeto de tipo CopiaSeguridad que maneja la informacion.
+     */
 	public ScreenGCopiasSeguridad(CopiaSeguridad copia) {
 		this.copia = copia;
 
@@ -119,7 +130,12 @@ public class ScreenGCopiasSeguridad extends JFrame {
 		add(contenedor);
 	}
 
-	// Método para cargar datos en la tabla desde la base de datos.
+	/**
+     * Metodo para cargar los datos en la tabla desde la base de datos.
+     * Recupera las copias de seguridad y las muestra en la tabla.
+     * 
+     * @param Modelo de la tabla al cual se agregaran las filas.
+     */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
 		try {
 			List<CopiaSeguridad> copias = copia.listarCopias();
@@ -133,11 +149,4 @@ public class ScreenGCopiasSeguridad extends JFrame {
 		}
 	}
 
-	// Método para probar la vista de la pantalla de copias de seguridad.
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			CopiaSeguridad copias = new CopiaSeguridad();
-			new ScreenGCopiasSeguridad(copias).setVisible(true);
-		});
-	}
 }

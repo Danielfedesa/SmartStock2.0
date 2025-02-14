@@ -11,13 +11,19 @@ import model.CopiaSeguridad;
 /**
  * Clase para realizar operaciones relacionadas con la tabla 'copiasseguridad'
  * en la base de datos.
+ * Permite insertar y listar registros de copias de seguridad utilizando Hibernate.
  * 
  * @author Daniel Fernandez Sanchez
  * @version 2.0 02/2025
  */
 public class DaoCopiaSeguridad {
 
-	// Insertar registro en de la copia de seguridad en la base de datos.
+	/**
+	 * Inserta un nuevo registro de copia de seguridad en la base de datos
+	 * utilizando Hibernate.
+	 *
+	 * @param cs Objeto de tipo CopiaSeguridad que representa la copia a insertar.
+	 */
 	public void insertar(CopiaSeguridad cs) {
 
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -31,7 +37,13 @@ public class DaoCopiaSeguridad {
 		}
 	}
 
-	// Listar todos los registros de copias de seguridad
+	/**
+	 * Lista todos los registros de copias de seguridad almacenados en la base de
+	 * datos utilizando Hibernate.
+	 *
+	 * @return Lista de objetos CopiaSeguridad si la consulta es exitosa, de lo
+	 *         contrario retorna null.
+	 */
 	public List<CopiaSeguridad> listar() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 

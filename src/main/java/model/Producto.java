@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import DAO.DaoProducto;
@@ -15,10 +14,27 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
- * Clase Producto que representa la informacion, constructores y metodos
- * referentes a los productos del sistema.
+ * Representa un producto dentro del sistema.
  * 
- * @author Daniel Fernandez Sanchez.
+ * <p>
+ * Esta clase está mapeada a la tabla 'Productos' en la base de datos mediante
+ * Hibernate. Contiene información sobre los productos, su stock y la categoría
+ * a la que pertenecen.
+ * </p>
+ * 
+ * <ul>
+ * <li>{@literal @Entity} indica que la clase es una entidad de la base de
+ * datos.</li>
+ * <li>{@literal @Table(name = "Productos")} define el nombre de la tabla en la
+ * base de datos.</li>
+ * <li>{@literal @Id} especifica la clave primaria.</li>
+ * <li>{@literal @GeneratedValue(strategy = GenerationType.IDENTITY)} define el
+ * campo como autoincremental.</li>
+ * <li>{@literal @ManyToOne} establece una relación con la entidad Categoria.</li>
+ * <li>{@literal @Column} personaliza los atributos en la base de datos.</li>
+ * </ul>
+ * 
+ * @author Daniel Fernandez Sanchez
  * @version 2.0 02/2025
  */
 @Entity
@@ -90,7 +106,7 @@ public class Producto {
 	/**
 	 * Establece el identificador del producto.
 	 * 
-	 * @param idProducto Identificador del producto.
+	 * @param Identificador del producto.
 	 */
 	public void setIdProducto(int idProducto) {
 		this.idProducto = idProducto;
@@ -108,7 +124,7 @@ public class Producto {
 	/**
 	 * Establece el nombre del producto.
 	 * 
-	 * @param nombreProducto Nombre del producto.
+	 * @param Nombre del producto.
 	 */
 	public void setNombreProducto(String nombreProducto) {
 		this.nombreProducto = nombreProducto;
@@ -126,7 +142,7 @@ public class Producto {
 	/**
 	 * Establece la descripcion del producto.
 	 * 
-	 * @param descripcion Descripcion del producto.
+	 * @param Descripcion del producto.
 	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
@@ -144,7 +160,7 @@ public class Producto {
 	/**
 	 * Establece el precio del producto
 	 * 
-	 * @param precio Precio del producto.
+	 * @param Precio del producto.
 	 */
 	public void setPrecio(double precio) {
 		this.precio = precio;
@@ -162,7 +178,7 @@ public class Producto {
 	/**
 	 * Establece la cantidad de stock del producto.
 	 * 
-	 * @param stock Stock del producto.
+	 * @param Stock del producto.
 	 */
 	public void setStock(int stock) {
 		this.stock = stock;
@@ -180,7 +196,7 @@ public class Producto {
 	/**
 	 * Establece la cantidad de stock minimo del producto.
 	 * 
-	 * @param stockMinimo Stock minimo del producto.
+	 * @param Stock minimo del producto.
 	 */
 	public void setStockMinimo(int stockMinimo) {
 		this.stockMinimo = stockMinimo;
@@ -198,7 +214,7 @@ public class Producto {
 	/**
 	 * Establece el identificador de la categoria a la que pertenece el producto.
 	 * 
-	 * @param idCategoria Identificador de categoria del producto.
+	 * @param Identificador de categoria del producto.
 	 */
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
@@ -218,7 +234,7 @@ public class Producto {
 	}
 
 	/**
-	 * Metodo para insertar un nuevo producto en la base de datos.
+	 * Registra un nuevo producto en la base de datos utilizando Hibernate.
 	 */
 	public void crearProducto() {
 		DaoProducto daoProducto = new DaoProducto();
@@ -226,10 +242,10 @@ public class Producto {
 	}
 
 	/**
-	 * Metodo para listar todos los productos de la base de datos mediante un objeto
-	 * del dao.
+	 * Obtiene todos los productos almacenados en la base de datos utilizando
+	 * Hibernate.
 	 * 
-	 * @return Lista de objetos Producto.
+	 * @return Lista de productos registrados.
 	 */
 	public List<Producto> listarProductos() {
 		DaoProducto daoProducto = new DaoProducto();
@@ -237,11 +253,9 @@ public class Producto {
 	}
 
 	/**
-	 * Metodo para listar los productos con stock por debajo del mínimo en la base
-	 * de datos mediante un objeto del dao.
+	 * Obtiene los productos cuyo stock está por debajo del mínimo definido.
 	 * 
-	 * @return Lista de objetos Producto que representa todos los productos con
-	 *         stock bajo almacenadas en la base de datos.
+	 * @return Lista de productos con stock bajo.
 	 */
 	public List<Producto> listarProductosStockBajo() {
 		DaoProducto daoProducto = new DaoProducto();
@@ -249,10 +263,10 @@ public class Producto {
 	}
 
 	/**
-	 * Metodo para recuperar un producto por su ID y cargar sus datos.
+	 * Recupera un producto por su ID desde la base de datos utilizando Hibernate.
 	 * 
-	 * @param idProducto Identificador unico del producto a recuperar.
-	 * @return Objeto Producto recuperado de la base de datos.
+	 * @param idProducto Identificador único del producto a recuperar.
+	 * @return Objeto Producto recuperado, o null si no existe.
 	 */
 	public Producto recuperarPro(int idProducto) {
 		DaoProducto daoProducto = new DaoProducto();
@@ -260,10 +274,9 @@ public class Producto {
 	}
 
 	/**
-	 * Metodo para insertar la actualizacion de los datos de un producto en la base
-	 * de datos.
+	 * Actualiza los datos de un producto en la base de datos utilizando Hibernate.
 	 * 
-	 * @return true si la actualizacion fue correcta, false en caso contrario.
+	 * @return true si la actualización fue exitosa, false en caso contrario.
 	 */
 	public boolean actualizarProducto() {
 		DaoProducto daoProducto = new DaoProducto();
@@ -271,9 +284,9 @@ public class Producto {
 	}
 
 	/**
-	 * Metodo para eliminar un producto de la base de datos.
+	 * Elimina un producto de la base de datos utilizando Hibernate.
 	 * 
-	 * @param idUsuario El ID del producto a eliminar.
+	 * @param idProducto ID del producto a eliminar.
 	 */
 	public void eliminarProducto(int idProducto) {
 		DaoProducto daoProducto = new DaoProducto();
@@ -281,13 +294,13 @@ public class Producto {
 	}
 
 	/**
-	 * Metodo para verificar si algun producto tiene stock por debajo del minimo.
+	 * Verifica si hay productos cuyo stock esta por debajo del minimo establecido.
+	 * Lo utiliza la clase SupervisorStock en su metodo run para verificar el stock.
 	 * 
-	 * @return String Detalles de los productos con stock bajo, o un mensaje vacio
-	 *         si no hay alertas.
-	 * @throws SQLException Si ocurre un error al interactuar con la base de datos.
+	 * @return Detalles de los productos con stock bajo o un mensaje indicando que
+	 *         no hay alertas.
 	 */
-	public String verificarStockMinimo() throws SQLException {
+	public String verificarStockMinimo() {
 		DaoProducto daoProd = new DaoProducto();
 		List<Producto> productos = daoProd.listarMinimo(); // Obtiene la lista de productos con stock bajo
 		StringBuilder alertas = new StringBuilder();
@@ -302,7 +315,6 @@ public class Producto {
 					.append(producto.getStock()).append(", Stock mínimo: ").append(producto.getStockMinimo())
 					.append("\n");
 		}
-
 		return alertas.toString();
 	}
 

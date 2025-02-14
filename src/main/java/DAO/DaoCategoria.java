@@ -10,14 +10,19 @@ import model.Categoria;
 
 /**
  * Clase para realizar operaciones relacionadas con la tabla 'categorias' en la
- * base de datos.
+ * base de datos utilizando Hibernate.
+ * Permite insertar, listar, leer por ID, actualizar y eliminar.
  * 
  * @author Daniel Fernandez Sanchez
  * @version 2.0 02/2025
  */
 public class DaoCategoria {
 
-	// Insertar una nueva categoria en la base de datos
+	/**
+	 * Inserta una nueva categoria en la base de datos utilizando Hibernate.
+	 *
+	 * @param c Objeto de tipo Categoria a insertar en la base de datos.
+	 */
 	public void insertar(Categoria c) {
 
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -32,7 +37,13 @@ public class DaoCategoria {
 		}
 	}
 
-	// Listar todas las categorias de la base de datos
+	/**
+	 * Lista todas las categorias almacenadas en la base de datos utilizando
+	 * Hibernate.
+	 *
+	 * @return Lista de objetos Categoria si la consulta es exitosa, de lo contrario
+	 *         retorna null.
+	 */
 	public List<Categoria> listar() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			String hql = "FROM Categoria";
@@ -46,7 +57,13 @@ public class DaoCategoria {
 		return null;
 	}
 
-	// Buscar una categoria por su ID para modificarla posteriormente
+	/**
+	 * Busca una categoria en la base de datos segun su ID utilizando Hibernate.
+	 * 
+	 * @param idCategoria ID de la categoria a buscar.
+	 * @return Objeto Categoria si se encuentra en la base de datos, de lo contrario
+	 *         retorna null.
+	 */
 	public Categoria leerCategoria(int idCategoria) {
 
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -59,7 +76,12 @@ public class DaoCategoria {
 		return null;
 	}
 
-	// Actualizar una categoria en la base de datos
+	/**
+	 * Actualiza una categoria en la base de datos utilizando Hibernate.
+	 *
+	 * @param cate Objeto Categoria con los datos actualizados.
+	 * @return true si la actualizacion es exitosa, false en caso de error.
+	 */
 	public boolean actualizar(Categoria cate) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Transaction transaction = session.beginTransaction();
@@ -74,7 +96,11 @@ public class DaoCategoria {
 		}
 	}
 
-	// Eliminar una categoria de la base de datos
+	/**
+	 * Elimina una categoria de la base de datos segun su ID utilizando Hibernate.
+	 *
+	 * @param idCategoria ID de la categoria a eliminar.
+	 */
 	public void eliminar(int idCategoria) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			Transaction transaction = session.beginTransaction();

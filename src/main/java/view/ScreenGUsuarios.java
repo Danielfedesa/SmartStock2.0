@@ -17,11 +17,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import model.Usuario;
 
+/**
+ * Pantalla de gestion de usuarios en el sistema SmartStock.
+ * Permite listar, agregar, editar y eliminar usuarios.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 1.0 02/2025
+ */
 public class ScreenGUsuarios extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -29,6 +35,11 @@ public class ScreenGUsuarios extends JFrame {
 	private JTable tablaUsuarios; // Tabla para mostrar la lista de usuarios.
 	private ScreenFormularios screenFormularios; // Declarar ScreenFormularios
 
+	/**
+	 * Constructor que inicializa la pantalla de gestion de usuarios.
+	 * 
+	 * @param usuario Objeto que representa un usuario para realizar operaciones.
+	 */
 	public ScreenGUsuarios(Usuario usuario) {
 		this.usuario = usuario;
 
@@ -99,9 +110,7 @@ public class ScreenGUsuarios extends JFrame {
 		String[] columnas = { "ID", "Nombre", "Apellido 1", "Apellido 2", "Teléfono", "Email", "Rol", "Editar",
 				"Eliminar" };
 		DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0) {
-			/**
-			 * 
-			 */
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -142,9 +151,7 @@ public class ScreenGUsuarios extends JFrame {
 
 		// Renderizador y editor para el botón "Editar".
 		tablaUsuarios.getColumnModel().getColumn(7).setCellEditor(new javax.swing.DefaultCellEditor(new JTextField()) {
-			/**
-			 * 
-			 */
+	
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -282,7 +289,11 @@ public class ScreenGUsuarios extends JFrame {
 		add(contenedor);
 	}
 
-	// Método para cargar datos en la tabla desde la base de datos.
+	/**
+	 * Metodo para cargar datos en la tabla desde la base de datos.
+	 * 
+	 * @param Modelo de la tabla donde se insertaran los datos.
+	 */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
 		try {
 			List<Usuario> usuarios = usuario.listarUsuarios(); // Obtener la lista de usuarios.
@@ -297,14 +308,6 @@ public class ScreenGUsuarios extends JFrame {
 			JOptionPane.showMessageDialog(this, "Error al cargar los usuarios: " + e.getMessage(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			Usuario usuario = new Usuario(); // Instancia de Usuario que gestiona la lógica.
-			new ScreenGUsuarios(usuario).setVisible(true);
-		});
-
 	}
 
 }

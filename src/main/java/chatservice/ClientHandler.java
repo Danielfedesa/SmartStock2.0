@@ -9,11 +9,19 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import DAO.DaoChat;
 import model.Chat;
 
+/**
+ * Clase ClientHandler que representa el hilo de un cliente conectado al chat.
+ * En este hilo se gestionará la recepción y envío de mensajes, así como la
+ * gestion de la base de datos.
+ * 
+ * @author Daniel Fernandez Sanchez.
+ * @version 1.0 02/2025
+ */
 public class ClientHandler implements Runnable {
-
+	
+    // Lista de clientes conectados al chat
     public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
 
     private Socket socket;
@@ -21,6 +29,13 @@ public class ClientHandler implements Runnable {
     private BufferedWriter salida;
     private String nombreUsuarioCliente;
 
+    /**
+     * Manejador de clientes para una conexion de socket. 
+     * Este constructor inicializa la conexión con el cliente, lee su nombre de usuario, 
+     * lo agrega a la lista de clientes y envia mensajes de bienvenida.
+     *
+     * @param socket El socket asociado a la conexion del cliente.
+     */
     public ClientHandler(Socket socket) {
         try {
             this.socket = socket;
@@ -39,6 +54,11 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Metodo que se ejecuta cuando el hilo del cliente inicia.
+     * Se encarga de recibir mensajes cifrados, almacenarlos y retransmitirlos a otros clientes.
+     * Si el cliente se desconecta, se elimina de la lista de manejadores.
+     */
     @Override
     public void run() {
         String mensajeCifrado;
@@ -59,10 +79,13 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    // Enviar los mensajes previos a este cliente
+    /**
+     * Envia al cliente los mensajes previos almacenados en la base de datos.
+     * Recupera los mensajes, los descifra y los formatea antes de enviarlos a la salida del cliente.
+     */
     private void sendPreviousMessages() {
-        DaoChat daoMensaje = new DaoChat();
-        List<Chat> mensajes = daoMensaje.listar();
+        Chat recMensajes = new Chat();
+        List<Chat> mensajes = recMensajes.listarMensajes();
         for (Chat mensaje : mensajes) {
             try {
                 // Decodificamos y desciframos el mensaje antes de enviarlo
@@ -77,7 +100,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    // Método para enviar el mensaje a todos los clientes conectados
+    /**
+     * Envia un mensaje a todos los clientes conectados, excepto al que lo envio originalmente.
+     * El mensaje no se cifra nuevamente antes de enviarlo.
+     *
+     * @param mensajeParaEnviar Mensaje que sera enviado a los clientes conectados.
+     */
     public void broadcastMessage(String mensajeParaEnviar) {
         for (ClientHandler clientHandler : clientHandlers) {
             try {
@@ -93,13 +121,22 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    // Método para eliminar un cliente
+    /**
+     * Elimina al cliente actual de la lista de clientes conectados 
+     * y notifica a los demas clientes que ha salido del chat.
+     */
     public void removeClientHandler() {
         clientHandlers.remove(this);
         broadcastMessage("SERVIDOR: " + nombreUsuarioCliente + " ha salido del chat");
     }
 
-    // Método para guardar el mensaje en la base de datos
+    /**
+     * Guarda un mensaje en la base de datos despues de cifrarlo.
+     * No guarda mensajes vacios, nulos ni mensajes del sistema (que empiezan por "SERVIDOR:")
+     * para evitar guardar mensajes de entrada y salida del chat.
+     *
+     * @param mensaje Mensaje a guardar en la base de datos.
+     */
     private void saveMessage(String mensaje) {
         if (mensaje == null || mensaje.trim().isEmpty()) {
             System.out.println("No se guardó un mensaje vacío o nulo en la base de datos.");
@@ -112,16 +149,22 @@ public class ClientHandler implements Runnable {
                 String mensajeCifrado = AESUtil.encrypt(mensaje);
 
                 // Guardamos el mensaje cifrado en la base de datos
-                DaoChat daoMensaje = new DaoChat();
                 Chat nuevoMensaje = new Chat(mensajeCifrado, nombreUsuarioCliente, java.time.LocalDateTime.now());
-                daoMensaje.insertar(nuevoMensaje);
+                nuevoMensaje.insertarMensaje(); // Llamar al método insertarMensaje
             } catch (Exception e) {
                 System.err.println("Error al cifrar el mensaje: " + e.getMessage());
             }
         }
     }
 
-    // Método para cerrar todos los flujos y el socket
+    /**
+     * Cierra todos los flujos de entrada, salida y el socket del cliente.
+     * Ademas, si el cliente aun esta en la lista de clientes conectados, lo elimina.
+     *
+     * @param socket  Socket asociado a la conexion del cliente.
+     * @param entrada BufferedReader utilizado para la entrada de datos.
+     * @param salida  BufferedWriter utilizado para la salida de datos.
+     */
     public void closeAll(Socket socket, BufferedReader entrada, BufferedWriter salida) {
         if (clientHandlers.contains(this)) {
             removeClientHandler();
@@ -140,4 +183,5 @@ public class ClientHandler implements Runnable {
             System.err.println("Error al cerrar el socket del cliente: " + e.getMessage());
         }
     }
-}
+    
+} // Class

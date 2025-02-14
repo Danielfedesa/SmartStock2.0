@@ -17,11 +17,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import model.Categoria;
 
+/**
+ * Pantalla de gestion de categorias en el sistema SmartStock. Permite listar,
+ * agregar, editar y eliminar categorias.
+ *
+ * @author Daniel Fernandez Sanchez
+ * @version 2.0 02/2025
+ */
 public class ScreenGCategorias extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -29,6 +35,12 @@ public class ScreenGCategorias extends JFrame {
 	private JTable tablaCategorias; // Tabla para mostrar la lista de usuarios.
 	private ScreenFormularios screenFormularios; // Declarar ScreenFormularios
 
+	/**
+	 * Constructor que inicializa la pantalla de gestion de categorias.
+	 * 
+	 * @param categoria Objeto que representa la categoria para realizar
+	 *                  operaciones.
+	 */
 	public ScreenGCategorias(Categoria categoria) {
 		this.categoria = categoria;
 
@@ -98,9 +110,6 @@ public class ScreenGCategorias extends JFrame {
 		// Modelo de la tabla con columnas específicas.
 		String[] columnas = { "ID", "Nombre", "Descripción", "Editar", "Eliminar" };
 		DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0) {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -152,9 +161,7 @@ public class ScreenGCategorias extends JFrame {
 
 						botonEditar.addActionListener(e -> {
 							try {
-								int idCategoria = Integer.parseInt(table.getValueAt(row, 0).toString()); // Recuperar el
-																											// ID del
-																											// usuario.
+								int idCategoria = Integer.parseInt(table.getValueAt(row, 0).toString()); // Recuperar el ID del usuario.
 
 								// Recuperar el producto antes de llamar al formulario.
 								Categoria categoriaEditar = categoria.recuperarCat(idCategoria);
@@ -283,7 +290,12 @@ public class ScreenGCategorias extends JFrame {
 		add(contenedor);
 	}
 
-	// Método para cargar datos en la tabla desde la base de datos.
+	/**
+     * Metodo para cargar los datos en la tabla desde la base de datos.
+     * Recupera las categorias y las muestra en la tabla.
+     * 
+     * @param Modelo de la tabla al cual se agregaran las filas.
+     */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
 		try {
 			List<Categoria> categorias = categoria.listarCategorias(); // Obtener la lista de categorias.
@@ -299,13 +311,4 @@ public class ScreenGCategorias extends JFrame {
 		}
 	}
 
-	// Main para probar la pantalla de gestión de categorias.
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			Categoria categoria = new Categoria(); // Instancia de Categoria que gestiona la lógica.
-			new ScreenGCategorias(categoria).setVisible(true);
-		});
-
-	}
-
-}
+} // Class

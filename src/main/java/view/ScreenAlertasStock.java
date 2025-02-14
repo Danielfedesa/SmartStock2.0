@@ -21,12 +21,34 @@ import javax.swing.table.DefaultTableModel;
 
 import model.Producto;
 
+/**
+ * Ventana que muestra los productos con stock bajo en la base de datos.
+ * 
+ * <p>
+ * Esta vista permite a los administradores visualizar los productos que han alcanzado
+ * un nivel de stock critico. Se presentan en una tabla con sus respectivas
+ * descripciones, precios y cantidades minimas requeridas.
+ * </p>
+ * 
+ * <p>
+ * La vista tambien permite regresar al dashboard del administrador.
+ * </p>
+ * 
+ * @see Producto
+ * @author Daniel Fernandez Sanchez
+ * @version 2.0 02/2025
+ */
 public class ScreenAlertasStock extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Producto producto; // Controlador que maneja la lógica relacionada con productos.
 	private JTable tablaProductos; // Tabla para mostrar la lista de productos.
 
+	/**
+     * Constructor de la ventana de alertas de stock.
+     * 
+     * @param producto Instancia de Producto para obtener la lista de productos con stock bajo.
+     */
 	public ScreenAlertasStock(Producto producto) {
 		this.producto = producto;
 
@@ -92,12 +114,7 @@ public class ScreenAlertasStock extends JFrame {
 
 		// Modelo de la tabla con columnas específicas.
 		String[] columnas = { "ID", "Nombre", "Descripción", "Precio", "Stock", "Stock MIN", "ID Cat" };
-		DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-		};
+		DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
 
 		// Inicialización de la tabla de productos.
 		tablaProductos = new JTable(modeloTabla);
@@ -130,7 +147,17 @@ public class ScreenAlertasStock extends JFrame {
 		add(contenedor);
 	}
 
-	// Método para cargar datos en la tabla desde la base de datos.
+	/**
+     * Carga la lista de productos con stock bajo en la tabla.
+     * 
+     * <p>
+     * Este metodo obtiene la lista de productos desde la base de datos y la inserta
+     * en la tabla de la interfaz. Si ocurre un error al cargar los datos, se muestra
+     * un mensaje de error en la pantalla.
+     * </p>
+     * 
+     * @param modeloTabla Modelo de la tabla donde se insertarán los datos.
+     */
 	private void cargarAlertasStock(DefaultTableModel modeloTabla) {
 		try {
 			List<Producto> productos = producto.listarProductosStockBajo();

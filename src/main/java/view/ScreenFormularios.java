@@ -24,10 +24,30 @@ import model.HistorialInventario.TipoMovimiento;
 import model.Producto;
 import model.Usuario;
 
+/**
+ * Clase que contiene diferentes formularios para la gestion de productos, 
+ * usuarios, inventario y categorias en SmartStock.
+ * 
+ * <p>
+ * Proporciona interfaces de formulario para crear y editar productos, usuarios, categorias
+ * y registrar movimientos de inventario.
+ * </p>
+ * 
+ * @see Producto
+ * @see Usuario
+ * @see Categoria
+ * @see HistorialInventario
+ * @author Daniel Fernandez Sanchez
+ * @version 2.0 02/2025
+ */
 public class ScreenFormularios {
 
-	// Formularios editar y añadir PRODUCTOS:
-
+	/**
+	 * Abre un formulario para editar un producto.
+	 * Configura el formulario con los campos necesarios para editar
+	 * @param productoEditar Producto a editar.
+	 * @param onUpdateCallback Callback que se ejecuta despues de editar el producto para actualizar la tabla con los nuevos datos.
+	 */
 	public void abrirFormularioEdicionProd(Producto productoEditar, Runnable onUpdateCallback) {
 		JFrame formularioEdicion = new JFrame("Editar Producto");
 		formularioEdicion.setSize(400, 600);
@@ -162,6 +182,12 @@ public class ScreenFormularios {
 		formularioEdicion.setVisible(true);
 	}
 
+	/**
+	 * Abre un formulario para agregar un nuevo producto. Configura el formulario
+	 * con los campos necesarios para agregar el producto.
+	 * 
+	 * @param Callback que se ejecuta despues de agregar el producto para actualizar la tabla con los nuevos datos.
+	 */
 	public void abrirFormularioAddProd(Runnable callback) {
 		JFrame formularioInsertar = new JFrame("Añadir Producto");
 		formularioInsertar.setSize(400, 600);
@@ -291,8 +317,12 @@ public class ScreenFormularios {
 		formularioInsertar.setVisible(true);
 	}
 
-	// Formularios editar y añadir USUARIOS:
-
+	/**
+	 * Abre un formulario para editar un usuario.
+	 * Configura el formulario con los campos necesarios para editar el usuario.
+	 * @param usuarioEditar Usuario a editar.
+	 * @param onUpdateCallback Callback que se ejecuta despues de editar el usuario para actualizar la tabla con los nuevos datos.
+	 */
 	public void abrirFormularioEdicionUsu(Usuario usuarioEditar, Runnable onUpdateCallback) {
 		try {
 			JFrame formularioEdicion = new JFrame("Editar Usuario");
@@ -419,6 +449,11 @@ public class ScreenFormularios {
 		}
 	}
 
+	/**
+	 * Abre un formulario para agregar un nuevo usuario.
+	 * Configura el formulario con los campos necesarios para agregar el usuario.
+	 * @param Callback que se ejecuta después de agregar la categoria para actualizar la tabla con los nuevos datos.
+	 */
 	public void abrirFormularioAddUsu(Runnable callback) {
 		JFrame formularioInsertar = new JFrame("Añadir Usuario");
 		formularioInsertar.setSize(400, 600);
@@ -549,8 +584,12 @@ public class ScreenFormularios {
 		formularioInsertar.setVisible(true);
 	}
 
-	// Formularios editar y añadir CATEGORIAS:
-
+	/**
+	 * Abre un formulario para editar las categorias.
+	 * Configura el formulario con los campos necesarios para editar la categoria.
+	 * @param categoriaEditar Categoria a editar.
+	 * @param Callback que se ejecuta después de agregar la categoria para actualizar la tabla con los nuevos datos.
+	 */
 	public void abrirFormularioEdicionCat(Categoria categoriaEditar, Runnable onUpdateCallback) {
 		try {
 			JFrame formularioEdicion = new JFrame("Editar Categoría");
@@ -632,6 +671,11 @@ public class ScreenFormularios {
 		}
 	}
 
+	/**
+	 * Abre un formulario para agregar una nueva categoria.
+	 * Configura el formulario con los campos necesarios para agregar la categoria.
+	 * @param Callback que se ejecuta después de agregar la categoria para actualizar la tabla con los nuevos datos.
+	 */
 	public void abrirFormularioAddCat(Runnable callback) {
 		JFrame formularioInsertar = new JFrame("Añadir Usuario");
 		formularioInsertar.setSize(400, 600);
@@ -700,6 +744,14 @@ public class ScreenFormularios {
 		formularioInsertar.setVisible(true);
 	}
 
+	/**
+     * Abre un formulario para realizar un movimiento de un producto (entrada o salida).
+     * Cada movimiento se registra en la tabla historialinventario.
+     * Configura el formulario con los campos necesarios para realizar el movimiento.
+     * 
+     * @param productoEditar Producto a editar (stock).
+     * @param Callback que se ejecuta despues de agregar el producto para actualizar la tabla con los nuevos datos.
+     */
 	public void abrirFormularioMovimiento(Producto productoEditar, Runnable onUpdateCallback) {
 		JFrame formularioEdicion = new JFrame("Movimiento de Producto");
 		formularioEdicion.setSize(400, 600);

@@ -23,10 +23,22 @@ import controller.Login;
 import controller.UsuarioSesion;
 import model.Usuario;
 
+/**
+ * Pantalla de inicio de sesion del sistema SmartStock.
+ * Permite a los usuarios ingresar sus credenciales para acceder al sistema.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 2.0 02/2025
+ */
 public class ScreenLogin extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Constructor que inicializa la pantalla de inicio de sesion.
+	 * 
+	 * @param Controlador encargado de gestionar la autenticacion de usuarios.
+	 */
 	public ScreenLogin(Login loginControlador) {
 		setTitle("SmartStock - Inicio de sesión");
 		setSize(600, 400);

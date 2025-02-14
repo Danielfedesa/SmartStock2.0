@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,10 +14,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 /**
- * Clase CopiaSeguridad que representa la informacion, constructores y metodos
- * referentes a las copias de seguridad del sistema.
+ * Representa una copia de seguridad del sistema.
  * 
- * @author Daniel Fernandez Sanchez.
+ * <p>
+ * Esta clase está mapeada a la tabla 'CopiasSeguridad' en la base de datos
+ * mediante Hibernate. Se encarga de almacenar información sobre las copias de
+ * seguridad, incluyendo la fecha de creación y la ruta del archivo.
+ * </p>
+ * 
+ * <ul>
+ * <li>{@literal @Entity} indica que la clase es una entidad de la base de datos.</li>
+ * <li>{@literal @Table(name = "CopiasSeguridad")} define el nombre de la tabla en la base de datos.</li>
+ * <li>{@literal @Id} especifica la clave primaria.</li>
+ * <li>{@literal @GeneratedValue(strategy = GenerationType.IDENTITY)} define el campo como autoincremental.</li>
+ * <li>{@literal @Column} personaliza los atributos en la base de datos.</li>
+ * </ul>
+ * 
+ * @author Daniel Fernandez Sanchez
  * @version 2.0 02/2025
  */
 @Entity
@@ -59,7 +71,7 @@ public class CopiaSeguridad {
 	/**
 	 * Obtiene el identificador de la copia.
 	 * 
-	 * @return idBackup Identificador de la copia.
+	 * @return Identificador de la copia.
 	 */
 	public int getIdBackup() {
 		return idBackup;
@@ -68,7 +80,7 @@ public class CopiaSeguridad {
 	/**
 	 * Establece el identificador de la copia.
 	 * 
-	 * @param idBackup Identificador de la copia.
+	 * @param Identificador de la copia.
 	 */
 	public void setIdBackup(int idBackup) {
 		this.idBackup = idBackup;
@@ -77,7 +89,7 @@ public class CopiaSeguridad {
 	/**
 	 * Obtiene la fecha y hora de la realizacion de la copia.
 	 * 
-	 * @return fechaBackup Fecha y hora de realizacion de la copia.
+	 * @return Fecha y hora de realizacion de la copia.
 	 */
 	public Timestamp getFechaBackup() {
 		return fechaBackup;
@@ -86,7 +98,7 @@ public class CopiaSeguridad {
 	/**
 	 * Establece la fecha y hora de la realizacion de la copia.
 	 * 
-	 * @param fechaBackup Fecha y hora de realizacion de la copia.
+	 * @param Fecha y hora de realizacion de la copia.
 	 */
 	public void setFechaBackup(Timestamp fechaBackup) {
 		this.fechaBackup = fechaBackup;
@@ -95,7 +107,7 @@ public class CopiaSeguridad {
 	/**
 	 * Obtiene la ruta de almacenamiento del archivo.
 	 * 
-	 * @return rutaArchivo Ruta de almacenamiento del archivo.
+	 * @return Ruta de almacenamiento del archivo.
 	 */
 	public String getRutaArchivo() {
 		return rutaArchivo;
@@ -104,7 +116,7 @@ public class CopiaSeguridad {
 	/**
 	 * Establece la ruta de almacenamiento del archivo.
 	 * 
-	 * @param rutaArchivo Ruta de almacenamiento del archivo.
+	 * @param Ruta de almacenamiento del archivo.
 	 */
 	public void setRutaArchivo(String rutaArchivo) {
 		this.rutaArchivo = rutaArchivo;
@@ -122,17 +134,16 @@ public class CopiaSeguridad {
 	}
 
 	/**
-	 * Metodo para generar un archivo de copia de seguridad de la base de datos
-	 * utilizando la herramienta 'mysqldump'. La copia se guarda en una ubicación
-	 * especifica, cuyo nombre incluye la fecha y la hora actual.
-	 * 
-	 * Si el proceso se ejecuta correctamente, también se registra la ruta del
-	 * archivo de copia de seguridad en la base de datos utilizando Hibernate.
-	 * 
-	 * @throws SQLException
+	 * Genera un archivo de copia de seguridad de la base de datos utilizando la
+	 * herramienta 'mysqldump'.
+	 * <p>
+	 * La copia se guarda en una ubicación especifica con un nombre basado en la
+	 * fecha y hora actual. Si la copia se genera correctamente, se registra en la
+	 * base de datos utilizando Hibernate.
+	 * </p>
 	 * 
 	 */
-	public void realizarBackup() throws SQLException {
+	public void realizarBackup() {
 		// Formatear la fecha y hora actual para incluirla en el nombre del archivo
 		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy_HH.mm");
 		String fechaHora = formatter.format(new Date());
@@ -175,14 +186,14 @@ public class CopiaSeguridad {
 
 	/**
 	 * Metodo para listar mediante un objeto dao todos los registros de copias de
-	 * seguridad almacenados en la base de datos.
+	 * seguridad almacenados en la base de datos utilizando Hibernate.
 	 * 
 	 * @return Lista de objetos CopiaSeguridad que representa todos los registros
 	 *         almacenados en la base de datos.
 	 */
 	public List<CopiaSeguridad> listarCopias() {
 		DaoCopiaSeguridad daoCopia = new DaoCopiaSeguridad();
-		return daoCopia.listar(); // Listamos las copias de seguridad
+		return daoCopia.listar();
 	}
 
 } // Class

@@ -9,10 +9,37 @@ import controller.Login;
 import controller.UsuarioSesion;
 import model.*;
 
+/**
+ * Ventana principal del dashboard de SmartStock.
+ * 
+ * <p>
+ * Esta clase representa la pantalla principal del sistema despues de iniciar sesion.
+ * Permite acceder a las diferentes funcionalidades de la aplicacion, como la 
+ * gestion de inventario, historial de movimientos y chat de comunicacion interna.
+ * </p>
+ * 
+ * <p>
+ * La interfaz esta diseñada con botones graficos que dirigen a cada seccion del sistema.
+ * Tambien incluye una opcion para cerrar sesion.
+ * </p>
+ * 
+ * @see ScreenGInventario
+ * @see ScreenGHistorialInventario
+ * @see ScreenChat
+ * @see UsuarioSesion
+ * @author Daniel Fernandez Sanchez
+ * @version 2.0 02/2025
+ */
 public class ScreenDashboard extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+     * Constructor de la pantalla del dashboard.
+     * <p>
+     * Configura la interfaz grafica del panel principal con botones de navegacion.
+     * </p>
+     */
 	public ScreenDashboard() {
 		// Configuración de la ventana
 		setTitle("SmartStock - Dashboard");
@@ -40,7 +67,7 @@ public class ScreenDashboard extends JFrame {
 		gbcSuperior.anchor = GridBagConstraints.EAST;
 
 		// Imagen para "Cerrar Sesión"
-		JPanel botonCerrarSesion = createImageButton("salida.png", "Cerrar Sesión", this::cerrarSesion, 20, 20);
+		JPanel botonCerrarSesion = crearBotonImagen("salida.png", "Cerrar Sesión", this::cerrarSesion, 20, 20);
 		panelSuperior.add(botonCerrarSesion, gbcSuperior);
 
 		// Agregar el panel superior al contenedor principal
@@ -88,10 +115,10 @@ public class ScreenDashboard extends JFrame {
 
 		// Creación de botones con imágenes y texto con espaciado
 
-		JPanel inventario = createImageButton("inventario.png", "Inventario", this::abrirInventario, 50, 50);
-		JPanel movInventario = createImageButton("movimientos.png", "Movimientos de Inventario",
+		JPanel inventario = crearBotonImagen("inventario.png", "Inventario", this::abrirInventario, 50, 50);
+		JPanel movInventario = crearBotonImagen("movimientos.png", "Movimientos de Inventario",
 				this::abrirMovInventario, 50, 50);
-		JPanel chat = createImageButton("chat.png", "Chat", this::abrirChat, 50, 50);
+		JPanel chat = crearBotonImagen("chat.png", "Chat", this::abrirChat, 50, 50);
 
 		// Asegurar que el panel de botones está en `gbc.gridy = 2` para evitar que el
 		// título lo pise
@@ -113,7 +140,17 @@ public class ScreenDashboard extends JFrame {
 		add(contenedor);
 	}
 
-	private JPanel createImageButton(String imagePath, String texto, Runnable action, int width, int height) {
+	/**
+     * Crea un boton con una imagen e invoca una accion al hacer clic.
+     * 
+     * @param imagePath Ruta de la imagen del boton.
+     * @param texto Texto descriptivo debajo de la imagen.
+     * @param action Accion que se ejecutara al hacer clic.
+     * @param width Ancho de la imagen.
+     * @param height Alto de la imagen.
+     * @return Panel con la imagen y el texto.
+     */
+	private JPanel crearBotonImagen(String imagePath, String texto, Runnable action, int width, int height) {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setOpaque(false);
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -150,6 +187,9 @@ public class ScreenDashboard extends JFrame {
 		return panel;
 	}
 
+	/**
+     * Cierra la sesion del usuario y vuelve a la pantalla de inicio de sesion.
+     */
 	private void cerrarSesion() {
 		int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de que deseas cerrar sesión?",
 				"Confirmar Cierre de Sesión", JOptionPane.YES_NO_OPTION);
@@ -161,21 +201,27 @@ public class ScreenDashboard extends JFrame {
 		}
 	}
 
+	/**
+     * Abre la pantalla de gestion de inventario.
+     */
 	private void abrirInventario() {
 		new ScreenGInventario(new Producto()).setVisible(true);
 		this.dispose();
 	}
 
+	/**
+     * Abre la pantalla del historial de movimientos de inventario.
+     */
 	private void abrirMovInventario() {
 		new ScreenGHistorialInventario(new HistorialInventario()).setVisible(true);
 		this.dispose();
 	}
-
+	
+	/**
+	 * Abre la ventana de chat
+	 */
 	private void abrirChat() {
 		new ScreenChat().setVisible(true);
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new ScreenDashboard().setVisible(true));
-	}
-}
+} // Class

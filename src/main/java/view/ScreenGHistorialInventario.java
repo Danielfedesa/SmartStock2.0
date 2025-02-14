@@ -17,17 +17,29 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import controller.UsuarioSesion;
 import model.HistorialInventario;
 
+/**
+ * Pantalla de gestion del historial de inventario en el sistema SmartStock.
+ * Permite visualizar los movimientos de stock realizados.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 1.0 02/2025
+ */
 public class ScreenGHistorialInventario extends JFrame {
+	
 	private static final long serialVersionUID = 1L;
 	private HistorialInventario historial; // Controlador que maneja la lógica relacionada con productos.
 	private JTable tablaProductos; // Tabla para mostrar la lista de productos.
 
+	/**
+	 * Constructor que inicializa la pantalla de gestion del historial de inventario.
+	 * 
+	 * @param historial Objeto que representa el historial de inventario.
+	 */
 	public ScreenGHistorialInventario(HistorialInventario historial) {
 		this.historial = historial;
 
@@ -103,9 +115,7 @@ public class ScreenGHistorialInventario extends JFrame {
 		// Modelo de la tabla con columnas específicas.
 		String[] columnas = { "Id Historial", "Id Producto", "Id Usuario", "Cantidad", "Movimiento", "Fecha" };
 		DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0) {
-			/**
-			 * 
-			 */
+			
 			private static final long serialVersionUID = 1L;
 		};
 
@@ -139,7 +149,11 @@ public class ScreenGHistorialInventario extends JFrame {
 		add(contenedor);
 	}
 
-	// Método para cargar datos en la tabla desde la base de datos.
+	/**
+	 * Metodo para cargar datos en la tabla desde la base de datos.
+	 * 
+	 * @param Modelo de la tabla donde se insertaran los datos.
+	 */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
 	    try {
 	        List<HistorialInventario> movimientos = historial.listarMovimientos(); // Lista de movimientos de inventario desde la base de datos
@@ -163,13 +177,6 @@ public class ScreenGHistorialInventario extends JFrame {
 	    } catch (Exception e) {
 	        JOptionPane.showMessageDialog(this, "Error al cargar los movimientos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 	    }
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			HistorialInventario histo = new HistorialInventario();
-			new ScreenGHistorialInventario(histo).setVisible(true);
-		});
 	}
 
 } // Class

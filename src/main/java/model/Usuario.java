@@ -129,7 +129,7 @@ public class Usuario {
 	/**
 	 * Obtiene el identificador del usuario.
 	 * 
-	 * @return idUsuario Identificador del usuario.
+	 * @return Identificador del usuario.
 	 */
 	public int getIdUsuario() {
 		return idUsuario;
@@ -138,7 +138,7 @@ public class Usuario {
 	/**
 	 * Establece el identificador del usuario.
 	 * 
-	 * @param idUsuario Identificador del usuario.
+	 * @param Identificador del usuario.
 	 */
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
@@ -147,7 +147,7 @@ public class Usuario {
 	/**
 	 * Obtiene el nombre del usuario.
 	 * 
-	 * @return nombreUsuario Nombre del usuario.
+	 * @return Nombre del usuario.
 	 */
 	public String getNombreUsuario() {
 		return nombreUsuario;
@@ -156,7 +156,7 @@ public class Usuario {
 	/**
 	 * Establece el nombre del usuario.
 	 * 
-	 * @param nombreUsuario Nombre del usuario.
+	 * @param Nombre del usuario.
 	 */
 	public void setNombreUsuario(String nombreUsuario) {
 		this.nombreUsuario = nombreUsuario;
@@ -165,7 +165,7 @@ public class Usuario {
 	/**
 	 * Obtiene el primer apellido del usuario.
 	 * 
-	 * @return apellido1 Primer apellido del usuario.
+	 * @return Primer apellido del usuario.
 	 */
 	public String getApellido1() {
 		return apellido1;
@@ -174,7 +174,7 @@ public class Usuario {
 	/**
 	 * Establece el primer apellido del usuario.
 	 * 
-	 * @param apellido1 Primer apellido del usuario.
+	 * @param Primer apellido del usuario.
 	 */
 	public void setApellido1(String apellido1) {
 		this.apellido1 = apellido1;
@@ -183,7 +183,7 @@ public class Usuario {
 	/**
 	 * Obtiene el segundo apellido del usuario.
 	 * 
-	 * @return apellido2 Segundo apellido del usuario.
+	 * @return Segundo apellido del usuario.
 	 */
 	public String getApellido2() {
 		return apellido2;
@@ -192,7 +192,7 @@ public class Usuario {
 	/**
 	 * Establece el segundo apellido del usuario.
 	 * 
-	 * @param apellido2 Segundo apellido del usuario.
+	 * @param Segundo apellido del usuario.
 	 */
 	public void setApellido2(String apellido2) {
 		this.apellido2 = apellido2;
@@ -201,7 +201,7 @@ public class Usuario {
 	/**
 	 * Obtiene el numero de telefono del usuario.
 	 * 
-	 * @return telefono Numero de telefono del usuario.
+	 * @return Numero de telefono del usuario.
 	 */
 	public int getTelefono() {
 		return telefono;
@@ -210,7 +210,7 @@ public class Usuario {
 	/**
 	 * Establece el numero de telefono del usuario.
 	 * 
-	 * @param telefono Numero de telefono del usuario.
+	 * @param Numero de telefono del usuario.
 	 */
 	public void setTelefono(int telefono) {
 		this.telefono = telefono;
@@ -219,7 +219,7 @@ public class Usuario {
 	/**
 	 * Obtiene el correo electronico del usuario.
 	 * 
-	 * @return email Correo electronico del usuario.
+	 * @return Correo electronico del usuario.
 	 */
 	public String getEmail() {
 		return email;
@@ -228,7 +228,7 @@ public class Usuario {
 	/**
 	 * Establece el correo electronico del usuario.
 	 * 
-	 * @param email Correo electronico del usuario.
+	 * @param Correo electronico del usuario.
 	 */
 	public void setEmail(String email) {
 		this.email = email;
@@ -237,16 +237,17 @@ public class Usuario {
 	/**
 	 * Obtiene la contrasena del usuario.
 	 * 
-	 * @return contrasena Contrasena del usuario.
+	 * @return Contrasena del usuario.
 	 */
 	public String getContrasena() {
 		return contrasena;
 	}
 
 	/**
-	 * Establece la contrasena del usuario.
+	 * Establece la contrasena del usuario encriptandola antes de guardarla en
+	 * memoria.
 	 * 
-	 * @param contrasena Contrasena del usuario.
+	 * @param Contrasena del usuario.
 	 */
 	public void setContrasena(String contrasena) {
 		// Encripta la contraseña
@@ -256,7 +257,7 @@ public class Usuario {
 	/**
 	 * Obtiene el rol del usuario.
 	 * 
-	 * @return Rol del usuario.
+	 * @return del usuario.
 	 */
 	public String getRol() {
 		return Rol;
@@ -265,7 +266,7 @@ public class Usuario {
 	/**
 	 * Establece el rol del usuario.
 	 * 
-	 * @param rol Rol del usuario.
+	 * @param Rol del usuario.
 	 */
 	public void setRol(String rol) {
 		Rol = rol;
@@ -284,72 +285,71 @@ public class Usuario {
 	}
 
 	/**
-	 * Metodo para encriptar la contraseña usando BCrypt.
-	 * 
-	 * @param contrasena La contrasenaa que se va a encriptar.
-	 * @return La contrasena encriptada.
-	 */
+     * Encripta una contrasena usando BCrypt.
+     * 
+     * @param contrasena Contraseña en texto plano.
+     * @return Contrasena encriptada.
+     */
 	public static String encriptarContrasena(String contrasena) {
 		return BCrypt.hashpw(contrasena, BCrypt.gensalt());
 	}
 
 	/**
-	 * Metodo para verificar si la contrasena introducida coincide con la encriptada
-	 * 
-	 * @param contrasena
-	 * @param contrasenaHash
-	 * @return
-	 */
+     * Verifica si una contraseña coincide con su version encriptada.
+     * 
+     * @param contrasena      Contrasena en texto plano.
+     * @param contrasenaHash  Contrasena encriptada almacenada.
+     * @return true si la contrasena coincide, false en caso contrario.
+     */
 	public static boolean verificarContrasena(String contrasena, String contrasenaHash) {
 	    return BCrypt.checkpw(contrasena, contrasenaHash); // Compara las contraseñas
 	}
 
-	/*
-	 * Metodo para crear un nuevo usuario en la base de datos.
-	 */
+	/**
+     * Registra un nuevo usuario en la base de datos utilizando Hibernate.
+     */
 	public void crearUsuario() {
 		DaoUsuario daoUsuario = new DaoUsuario();
 		daoUsuario.insertar(this);
 	}
 
 	/**
-	 * Metodo para listar todos los usuarios de la base de datos mediante un objeto
-	 * del dao.
-	 * 
-	 * @return Lista de usuarios.
-	 */
+     * Obtiene todos los usuarios almacenados en la base de datos utilizando
+     * Hibernate.
+     * 
+     * @return Lista de usuarios registrados.
+     */
 	public List<Usuario> listarUsuarios() {
 		DaoUsuario daoUsuario = new DaoUsuario();
 		return daoUsuario.listar();
 	}
 
 	/**
-	 * Metodo para recuperar un usuario por su ID y cargar sus datos.
-	 * 
-	 * @param idUsuario El ID del usuario a recuperar.
-	 * @return Objeto usuario recuperado de la base de datos.
-	 */
+     * Recupera un usuario por su ID desde la base de datos utilizando Hibernate.
+     * 
+     * @param idUsuario Identificador único del usuario a recuperar.
+     * @return Objeto Usuario recuperado, o null si no existe.
+     */
 	public Usuario recuperarUsu(int idUsuario) {
 		DaoUsuario daoUsuario = new DaoUsuario();
 		return daoUsuario.leerUsuario(idUsuario);
 	}
 
-	/**
-	 * Metodo para insertar la actualizacion de los datos de una categoria en la
-	 * base de datos.
-	 * 
-	 * @return true si la actualizacion fue correcta, false en caso contrario.
-	 */
+	 /**
+     * Actualiza los datos de un usuario en la base de datos utilizando Hibernate.
+     * 
+     * @return true si la actualizacion fue exitosa, false en caso contrario.
+     */
 	public boolean actualizarUsuario() {
 		DaoUsuario daoUsuario = new DaoUsuario();
 		return daoUsuario.actualizar(this);
 	}
 
 	/**
-	 * Metodo para eliminar un usuario de la base de datos.
-	 * 
-	 * @param idUsuario El ID del usuario a eliminar.
-	 */
+     * Elimina un usuario de la base de datos utilizando Hibernate.
+     * 
+     * @param idUsuario ID del usuario a eliminar.
+     */
 	public void eliminarUsuario(int idUsuario) {
 		DaoUsuario daoUsuario = new DaoUsuario();
 		daoUsuario.eliminar(idUsuario);

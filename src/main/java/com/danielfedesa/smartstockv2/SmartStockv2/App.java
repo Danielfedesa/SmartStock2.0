@@ -8,7 +8,21 @@ import controller.Login;
 import view.ScreenLogin;
 import process.SupervisorStock;
 
+/**
+ * Clase principal de la aplicacion SmartStock. Se encarga de inicializar la
+ * interfaz grafica, ejecutar procesos en segundo plano como la copia de
+ * seguridad automatica, la supervision del stock y el servidor de chat.
+ * 
+ * @autor Daniel Fernandez Sanchez
+ * @version 1.0 02/2025
+ */
 public class App {
+
+	/**
+	 * Metodo principal que inicia la aplicacion.
+	 *
+	 * @param args Argumentos de linea de comandos (no utilizados).
+	 */
 	public static void main(String[] args) {
 		// Ejecuta la creación de la UI en el hilo de eventos de Swing
 		SwingUtilities.invokeLater(() -> {
@@ -36,25 +50,20 @@ public class App {
 
 		// Crear y ejecutar el servidor de chat en un hilo independiente
 		Thread chatServerThread = new Thread(() -> {
-            try {
-                Server.main(new String[]{});  // Llamamos al método main de Server para iniciar el servidor
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        chatServerThread.start(); // Iniciar el servidor en un hilo independiente
-        System.out.println("Hilo de servidor de chat INICIADO");
-        
-        
+			try {
+				Server.main(new String[] {});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		chatServerThread.start(); // Iniciar el servidor en un hilo independiente
+		System.out.println("Hilo de servidor de chat INICIADO");
+
 		/*
-		// Esperar que los hilos terminen antes de cerrar la aplicación
-		try {
-			// Espera a que los hilos de copia de seguridad y supervisión de stock finalicen
-			backupThread.join();
-			superThread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		*/
+		 * // Esperar que los hilos terminen antes de cerrar la aplicación try { //
+		 * Espera a que los hilos de copia de seguridad y supervisión de stock finalicen
+		 * backupThread.join(); superThread.join(); } catch (InterruptedException e) {
+		 * e.printStackTrace(); }
+		 */
 	}
 }
