@@ -13,7 +13,7 @@ import model.Chat;
 
 /**
  * Clase ClientHandler que representa el hilo de un cliente conectado al chat.
- * En este hilo se gestionará la recepción y envío de mensajes, así como la
+ * En este hilo gestionara la recepcion y envio de mensajes, asi como la
  * gestion de la base de datos.
  * 
  * @author Daniel Fernandez Sanchez.

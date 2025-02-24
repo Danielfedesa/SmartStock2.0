@@ -71,7 +71,7 @@ public class Chat {
 	 * Constructor para crear un mensaje sin ID (autogenerado en la base de datos).
 	 * 
 	 * @param contenido Contenido del mensaje.
-	 * @param usuario   Usuario que envió el mensaje.
+	 * @param usuario   Usuario que envio el mensaje.
 	 * @param fecha     Fecha y hora del mensaje.
 	 */
 	public Chat(String contenido, String usuario, LocalDateTime fecha) {
