@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import controller.HistorialInventarioController;
 import controller.UsuarioSesion;
 import model.HistorialInventario;
 
@@ -32,7 +33,7 @@ import model.HistorialInventario;
 public class ScreenGHistorialInventario extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private HistorialInventario historial; // Controlador que maneja la lógica relacionada con productos.
+	private final HistorialInventarioController historialController; // Controlador que maneja la lógica relacionada con productos.
 	private JTable tablaProductos; // Tabla para mostrar la lista de productos.
 
 	/**
@@ -40,8 +41,8 @@ public class ScreenGHistorialInventario extends JFrame {
 	 * 
 	 * @param historial Objeto que representa el historial de inventario.
 	 */
-	public ScreenGHistorialInventario(HistorialInventario historial) {
-		this.historial = historial;
+	public ScreenGHistorialInventario() {
+        this.historialController = new HistorialInventarioController();
 
 		// Configuración básica de la ventana.
 		setTitle("SmartStock - Historial de movimientos de stock");
@@ -155,28 +156,22 @@ public class ScreenGHistorialInventario extends JFrame {
 	 * @param Modelo de la tabla donde se insertaran los datos.
 	 */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
-	    try {
-	        List<HistorialInventario> movimientos = historial.listarMovimientos(); // Lista de movimientos de inventario desde la base de datos
-	        modeloTabla.setRowCount(0); // Limpia todas las filas antes de agregar nuevas
+        try {
+            List<HistorialInventario> movimientos = historialController.listarMovimientos();
+            modeloTabla.setRowCount(0);
 
-	        for (HistorialInventario historial : movimientos) {
-	            // Extrae solo el ID del producto y del usuario
-	            int idProducto = historial.getProducto().getIdProducto();
-	            int idUsuario = historial.getUsuario().getIdUsuario();
-
-	            // Agrega los datos del historial junto con los IDs del producto y usuario
-	            modeloTabla.addRow(new Object[] {
-	                historial.getIdHistorial(),
-	                idProducto,  // Solo el ID del producto
-	                idUsuario,   // Solo el ID del usuario
-	                historial.getCantidad(),
-	                historial.getTipoMovimiento(),
-	                historial.getFecha()
-	            });
-	        }
-	    } catch (Exception e) {
-	        JOptionPane.showMessageDialog(this, "Error al cargar los movimientos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	    }
-	}
-
-} // Class
+            for (HistorialInventario historial : movimientos) {
+                modeloTabla.addRow(new Object[]{
+                    historial.getIdHistorial(),
+                    historial.getProducto().getIdProducto(),
+                    historial.getUsuario().getIdUsuario(),
+                    historial.getCantidad(),
+                    historial.getTipoMovimiento(),
+                    historial.getFecha()
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los movimientos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}

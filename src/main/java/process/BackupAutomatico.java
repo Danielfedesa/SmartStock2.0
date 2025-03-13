@@ -1,6 +1,7 @@
 package process;
 
 import model.CopiaSeguridad;
+import service.CopiaSeguridadService;
 
 /**
  * Clase que implementa un proceso para realizar copias de seguridad automaticas
@@ -12,10 +13,16 @@ import model.CopiaSeguridad;
  * 
  * @see CopiaSeguridad
  * @author Daniel Fernandez Sanchez.
- * @version 2.0 02/2025
+ * @version 3.0 03/2025
  */
 public class BackupAutomatico implements Runnable {
 
+	 private final CopiaSeguridadService copiaSeguridadService;
+	 
+		public BackupAutomatico() {
+			this.copiaSeguridadService = new CopiaSeguridadService();
+		}
+		
 	/**
 	 * Metodo que ejecuta el proceso de copias de seguridad automaticas en un hilo.
 	 * Este metodo realiza una copia de seguridad de la base de datos cada cierto
@@ -27,21 +34,17 @@ public class BackupAutomatico implements Runnable {
 	 */
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+        while (true) {
+            try {
+                // Ejecutar la copia de seguridad
+                copiaSeguridadService.realizarBackup();
 
-		while (true) {
-			try {
-				CopiaSeguridad copia = new CopiaSeguridad();
+                // Intervalo de espera entre copias de seguridad
+                Thread.sleep(60000); // 86400000 = 24 horas / 43200000 = 12 horas / 21600000 = 6 horas
 
-				copia.realizarBackup();
-
-				Thread.sleep(60000); // 86400000 Espera 24 horas / 43200000 Espera 12 horas / 21600000 espera 6 horas
-
-			} catch (Exception e) {
-				System.out.println("Error al crear la copia de seguridad");
-			}
-		}
-
-	} // Fin proceso
-
-} // Class
+            } catch (Exception e) {
+                System.err.println("Error al crear la copia de seguridad automática: " + e.getMessage());
+            }
+        }
+    }
+}

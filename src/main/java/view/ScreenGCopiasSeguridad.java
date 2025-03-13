@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import controller.CopiaSeguridadController;
 import model.CopiaSeguridad;
 
 /**
@@ -30,16 +31,17 @@ import model.CopiaSeguridad;
 public class ScreenGCopiasSeguridad extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private CopiaSeguridad copia;
+    private CopiaSeguridadController copiaSeguridadController;
 	private JTable tablaCopiasSeguridad;
+	
 
 	/**
      * Constructor de la vista de gestion de copias de seguridad.
      * 
      * @param Objeto de tipo CopiaSeguridad que maneja la informacion.
      */
-	public ScreenGCopiasSeguridad(CopiaSeguridad copia) {
-		this.copia = copia;
+	public ScreenGCopiasSeguridad() {
+        this.copiaSeguridadController = new CopiaSeguridadController();
 
 		// Configuración básica de la ventana.
 		setTitle("SmartStock - Gestión de Backups");
@@ -137,16 +139,19 @@ public class ScreenGCopiasSeguridad extends JFrame {
      * @param Modelo de la tabla al cual se agregaran las filas.
      */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
-		try {
-			List<CopiaSeguridad> copias = copia.listarCopias();
-			for (CopiaSeguridad copia : copias) {
-				modeloTabla.addRow(new Object[] { String.valueOf(copia.getIdBackup()), copia.getFechaBackup(),
-						copia.getRutaArchivo() });
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Error al cargar el listado de backups: " + e.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
+        try {
+            List<CopiaSeguridad> copias = copiaSeguridadController.listarCopias();
+            modeloTabla.setRowCount(0);
+            
+            for (CopiaSeguridad copia : copias) {
+                modeloTabla.addRow(new Object[]{
+                	copia.getIdBackup(),
+                	copia.getFechaBackup(),
+                	copia.getRutaArchivo()
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los backups: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

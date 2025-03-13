@@ -7,7 +7,6 @@ import java.io.File;
 import javax.swing.*;
 import controller.Login;
 import controller.UsuarioSesion;
-import model.*;
 
 /**
  * Ventana principal del dashboard para el administrador.
@@ -219,66 +218,66 @@ public class ScreenDashboardAdmin extends JFrame {
 	}
 
 	/**
-	 * Abre la ventana de gestion de usuarios.
+	 * Abre la ventana de gestión de usuarios.
 	 */
 	private void abrirGestionUsuarios() {
-		new ScreenGUsuarios(new Usuario()).setVisible(true);
-		this.dispose();
+	    new ScreenGUsuarios().setVisible(true);
+	    this.dispose();
 	}
 
 	/**
-	 * Abre la ventana de gestion de categorias.
+	 * Abre la ventana de gestión de categorías.
 	 */
 	private void abrirGestionCategorias() {
-		new ScreenGCategorias(new Categoria()).setVisible(true);
-		this.dispose();
+	    new ScreenGCategorias().setVisible(true);
+	    this.dispose();
 	}
 
 	/**
-	 * Abre la ventana de gestion de productos.
+	 * Abre la ventana de gestión de productos.
 	 */
 	private void abrirGestionProductos() {
-		new ScreenGProductos(new Producto()).setVisible(true);
-		this.dispose();
+	    new ScreenGProductos().setVisible(true);
+	    this.dispose();
 	}
 
 	/**
 	 * Abre la ventana de inventario.
 	 */
 	private void abrirInventario() {
-		new ScreenGInventario(new Producto()).setVisible(true);
-		this.dispose();
+	    new ScreenGInventario().setVisible(true);
+	    this.dispose();
 	}
 
 	/**
 	 * Abre la ventana de copias de seguridad.
 	 */
 	private void abrirCopiasSeguridad() {
-		new ScreenGCopiasSeguridad(new CopiaSeguridad()).setVisible(true);
-		this.dispose();
+	    new ScreenGCopiasSeguridad().setVisible(true);
+	    this.dispose();
 	}
 
 	/**
 	 * Abre la ventana de movimientos de inventario.
 	 */
 	private void abrirMovInventario() {
-		new ScreenGHistorialInventario(new HistorialInventario()).setVisible(true);
-		this.dispose();
+	    new ScreenGHistorialInventario().setVisible(true);
+	    this.dispose();
 	}
 
 	/**
 	 * Abre la ventana de alertas de stock.
 	 */
 	private void abrirAlertasStock() {
-		new ScreenAlertasStock(new Producto()).setVisible(true);
-		this.dispose();
+	    new ScreenAlertasStock().setVisible(true);
+	    this.dispose();
 	}
-	
+
 	/**
 	 * Abre la ventana de chat.
 	 */
 	private void abrirChat() {
-		new ScreenChat().setVisible(true);
+	    new ScreenChat().setVisible(true);
 	}
 
 } // Class

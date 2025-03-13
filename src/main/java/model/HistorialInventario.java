@@ -1,9 +1,7 @@
 package model;
 
 import java.sql.Timestamp;
-import java.util.List;
 
-import DAO.DaoHistorialInventario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -217,7 +215,7 @@ public class HistorialInventario {
 	 * Enum que representa el tipo de movimiento de stock.
 	 */
 	public enum TipoMovimiento {
-		entrada, salida
+		ENTRADA, SALIDA
 	}
 
 	/**
@@ -230,27 +228,6 @@ public class HistorialInventario {
 	public String toString() {
 		return "HistorialInventario [idHistorial=" + idHistorial + ", producto=" + producto + ", usuario=" + usuario
 				+ ", cantidad=" + cantidad + ", tipoMovimiento=" + tipoMovimiento + ", fecha=" + fecha + "]";
-	}
-
-	/**
-	 * Registra un nuevo movimiento de stock en la base de datos utilizando
-	 * Hibernate.
-	 * 
-	 */
-	public void crearMovimiento() {
-		DaoHistorialInventario daoHistorialInventario = new DaoHistorialInventario();
-		daoHistorialInventario.insertar(this);
-	}
-
-	/**
-	 * Lista todos los movimientos de inventario almacenados en la base de datos
-	 * utilizando Hibernate.
-	 * 
-	 * @return Lista de movimientos registrados.
-	 */
-	public List<HistorialInventario> listarMovimientos() {
-		DaoHistorialInventario daoHistorialInventario = new DaoHistorialInventario();
-		return daoHistorialInventario.listar();
 	}
 
 } // Class

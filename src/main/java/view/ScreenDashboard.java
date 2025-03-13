@@ -7,7 +7,6 @@ import java.io.File;
 import javax.swing.*;
 import controller.Login;
 import controller.UsuarioSesion;
-import model.*;
 
 /**
  * Ventana principal del dashboard de SmartStock.
@@ -202,26 +201,27 @@ public class ScreenDashboard extends JFrame {
 	}
 
 	/**
-     * Abre la pantalla de gestion de inventario.
-     */
+	 * Abre la ventana de gestion de inventario.
+	 */
 	private void abrirInventario() {
-		new ScreenGInventario(new Producto()).setVisible(true);
-		this.dispose();
+	    new ScreenGInventario().setVisible(true);
+	    this.dispose();
 	}
 
 	/**
      * Abre la pantalla del historial de movimientos de inventario.
      */
 	private void abrirMovInventario() {
-		new ScreenGHistorialInventario(new HistorialInventario()).setVisible(true);
-		this.dispose();
+	    new ScreenGHistorialInventario().setVisible(true);
+	    this.dispose();
 	}
 	
 	/**
 	 * Abre la ventana de chat
 	 */
 	private void abrirChat() {
-		new ScreenChat().setVisible(true);
+	    new ScreenChat().setVisible(true);
 	}
+
 
 } // Class

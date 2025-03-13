@@ -1,11 +1,7 @@
 package model;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
-import DAO.DaoCopiaSeguridad;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -133,67 +129,5 @@ public class CopiaSeguridad {
 				+ "]";
 	}
 
-	/**
-	 * Genera un archivo de copia de seguridad de la base de datos utilizando la
-	 * herramienta 'mysqldump'.
-	 * <p>
-	 * La copia se guarda en una ubicación especifica con un nombre basado en la
-	 * fecha y hora actual. Si la copia se genera correctamente, se registra en la
-	 * base de datos utilizando Hibernate.
-	 * </p>
-	 * 
-	 */
-	public void realizarBackup() {
-		// Formatear la fecha y hora actual para incluirla en el nombre del archivo
-		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy_HH.mm");
-		String fechaHora = formatter.format(new Date());
-
-		// Ruta y nombre del archivo de respaldo
-		String rutaBackup = "C:\\Users\\Daniel\\Desktop\\SmartStock 2.0\\SmartStock2.0_Backups\\SmartStock_" + fechaHora
-				+ ".sql";
-
-		// Comando para realizar la copia de seguridad
-		String comando = "C:\\xampp\\mysql\\bin\\mysqldump.exe";
-		String usuario = "Daniel";
-		String contrasena = "Daniel1234";
-		String baseDeDatos = "smartstockdb";
-
-		// Ejecutar el comando
-		ProcessBuilder processBuilder = new ProcessBuilder(comando, "-u", usuario, "-p" + contrasena, baseDeDatos,
-				"--result-file=" + rutaBackup);
-
-		processBuilder.redirectErrorStream(true); // Unir la salida de error con la salida estándar
-
-		try {
-			Process proceso = processBuilder.start();
-			int resultado = proceso.waitFor(); // Esperar a que termine el proceso
-
-			if (resultado == 0) {
-				System.out.println("Copia de seguridad creada correctamente en la ruta: " + rutaBackup);
-				// Registrar la copia de seguridad en la base de datos utilizando Hibernate
-				this.rutaArchivo = rutaBackup; // Establecemos la ruta en el objeto CopiaSeguridad
-				this.fechaBackup = new Timestamp(System.currentTimeMillis()); // Actualizamos la fecha
-
-				DaoCopiaSeguridad daoCopiaSeguridad = new DaoCopiaSeguridad();
-				daoCopiaSeguridad.insertar(this); // Guardamos en la base de datos
-			} else {
-				System.err.println("Error al ejecutar el comando mysqldump. Código de salida: " + resultado);
-			}
-		} catch (Exception e) {
-			System.err.println("Error al realizar la copia de seguridad: " + e.getMessage());
-		}
-	}
-
-	/**
-	 * Metodo para listar mediante un objeto dao todos los registros de copias de
-	 * seguridad almacenados en la base de datos utilizando Hibernate.
-	 * 
-	 * @return Lista de objetos CopiaSeguridad que representa todos los registros
-	 *         almacenados en la base de datos.
-	 */
-	public List<CopiaSeguridad> listarCopias() {
-		DaoCopiaSeguridad daoCopia = new DaoCopiaSeguridad();
-		return daoCopia.listar();
-	}
 
 } // Class

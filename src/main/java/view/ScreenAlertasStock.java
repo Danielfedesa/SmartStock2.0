@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import controller.ProductoController;
 import model.Producto;
 
 /**
@@ -41,16 +42,16 @@ import model.Producto;
 public class ScreenAlertasStock extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private Producto producto; // Controlador que maneja la lógica relacionada con productos.
+	private final ProductoController productoController; // Controlador que maneja la lógica relacionada con productos.
 	private JTable tablaProductos; // Tabla para mostrar la lista de productos.
 
 	/**
      * Constructor de la ventana de alertas de stock.
      * 
-     * @param producto Instancia de Producto para obtener la lista de productos con stock bajo.
+     * @param productoController Instancia de Producto para obtener la lista de productos con stock bajo.
      */
-	public ScreenAlertasStock(Producto producto) {
-		this.producto = producto;
+	public ScreenAlertasStock() {
+        this.productoController = new ProductoController();
 
 		// Configuración básica de la ventana.
 		setTitle("SmartStock - Listado de productos con stock bajo");
@@ -159,18 +160,23 @@ public class ScreenAlertasStock extends JFrame {
      * @param modeloTabla Modelo de la tabla donde se insertarán los datos.
      */
 	private void cargarAlertasStock(DefaultTableModel modeloTabla) {
-		try {
-			List<Producto> productos = producto.listarProductosStockBajo();
-			modeloTabla.setRowCount(0); // Limpia todas las filas antes de agregar nuevas
-			for (Producto producto : productos) {
-				modeloTabla.addRow(new Object[] { producto.getIdProducto(), producto.getNombreProducto(),
-						producto.getDescripcion(), producto.getPrecio(), producto.getStock(), producto.getStockMinimo(),
-						producto.getCategoria(), });
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + e.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
+        try {
+            List<Producto> productos = productoController.listarStockBajo();
+            modeloTabla.setRowCount(0); // Limpia todas las filas antes de agregar nuevas
 
+            for (Producto producto : productos) {
+                modeloTabla.addRow(new Object[] {
+                        producto.getIdProducto(),
+                        producto.getNombreProducto(),
+                        producto.getDescripcion(),
+                        producto.getPrecio(),
+                        producto.getStock(),
+                        producto.getStockMinimo(),
+                        producto.getCategoria().getIdCategoria(),
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

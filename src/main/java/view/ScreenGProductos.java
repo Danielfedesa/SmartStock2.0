@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import controller.ProductoController;
 import model.Producto;
 /**
  * Pantalla de gestion de productos en el sistema SmartStock.
@@ -30,7 +31,7 @@ import model.Producto;
 public class ScreenGProductos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private Producto producto; // Controlador que maneja la lógica relacionada con productos.
+	 private final ProductoController productoController;; // Controlador que maneja la lógica relacionada con productos.
 	private JTable tablaProductos; // Tabla para mostrar la lista de productos.
 	private ScreenFormularios screenFormularios; // Declarar ScreenFormularios
 
@@ -39,8 +40,8 @@ public class ScreenGProductos extends JFrame {
 	 * 
 	 * @param producto Objeto que representa el producto para realizar operaciones.
 	 */
-	public ScreenGProductos(Producto producto) {
-		this.producto = producto;
+	public ScreenGProductos() {
+        this.productoController = new ProductoController();
 
 		// Inicializar ScreenFormularios
 		this.screenFormularios = new ScreenFormularios();
@@ -196,7 +197,7 @@ public class ScreenGProductos extends JFrame {
 																								// producto.
 
 						// Recuperar el producto antes de llamar al formulario.
-						Producto productoEditar = producto.recuperarPro(idProducto);
+						Producto productoEditar = productoController.obtenerProductoPorId(idProducto);
 
 						// Crear instancia de ScreenFormularios.
 						ScreenFormularios screenFormularios = new ScreenFormularios();
@@ -257,7 +258,7 @@ public class ScreenGProductos extends JFrame {
 
 							if (confirmacion == JOptionPane.YES_OPTION) {
 								// Eliminar el producto del backend
-								producto.eliminarProducto(idProducto);
+								productoController.eliminarProducto(idProducto);
 								JOptionPane.showMessageDialog(null, "Producto eliminado correctamente.");
 
 								// Recargar la tabla con datos actualizados
@@ -324,18 +325,23 @@ public class ScreenGProductos extends JFrame {
 	 * @param Modelo de la tabla donde se insertaran los datos.
 	 */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
-		try {
-			List<Producto> productos = producto.listarProductos();
-			modeloTabla.setRowCount(0); // Limpia todas las filas antes de agregar nuevas
-			for (Producto producto : productos) {
-				modeloTabla.addRow(new Object[] { producto.getIdProducto(), producto.getNombreProducto(),
-						producto.getDescripcion(), producto.getPrecio(), producto.getStock(), producto.getStockMinimo(),
-						producto.getCategoria().getIdCategoria(), "Editar", "Eliminar" });
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + e.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
+        try {
+            List<Producto> productos = productoController.listarProductos();
+            modeloTabla.setRowCount(0);
 
+            for (Producto producto : productos) {
+                modeloTabla.addRow(new Object[]{
+                    producto.getIdProducto(),
+                    producto.getNombreProducto(),
+                    producto.getDescripcion(),
+                    producto.getPrecio(),
+                    producto.getStock(),
+                    producto.getStockMinimo(),
+                    producto.getCategoria().getIdCategoria()
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

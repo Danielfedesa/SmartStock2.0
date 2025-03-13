@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import controller.ProductoController;
 import controller.UsuarioSesion;
 import model.Producto;
 
@@ -28,12 +29,12 @@ import model.Producto;
  * y realizar movimientos de stock.
  * 
  * @author Daniel Fernandez Sanchez
- * @version 1.0 02/2025
+ * @version 2.0 03/2025
  */
 public class ScreenGInventario extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private Producto producto; // Controlador que maneja la lógica relacionada con productos.
+	private final ProductoController productoController; // Controlador que maneja la lógica relacionada con productos.
 	private JTable tablaProductos; // Tabla para mostrar la lista de productos.
 
 	/**
@@ -41,10 +42,10 @@ public class ScreenGInventario extends JFrame {
 	 * 
 	 * @param producto Objeto que representa el producto para gestionar el inventario.
 	 */
-	public ScreenGInventario(Producto producto) {
-		this.producto = producto;
-
-		// Configuración básica de la ventana.
+	public ScreenGInventario() {
+        this.productoController = new ProductoController();
+		
+        // Configuración básica de la ventana.
 		setTitle("SmartStock - Gestión de inventario");
 		setSize(1350, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -202,7 +203,7 @@ public class ScreenGInventario extends JFrame {
 																								// producto.
 
 						// Recuperar el producto antes de llamar al formulario.
-						Producto productoEditar = producto.recuperarPro(idProducto);
+						Producto productoEditar = productoController.obtenerProductoPorId(idProducto);
 
 						// Crear instancia de ScreenFormularios.
 						ScreenFormularios screenFormularios = new ScreenFormularios();
@@ -243,29 +244,24 @@ public class ScreenGInventario extends JFrame {
 	 * @param modeloTabla Modelo de la tabla donde se insertaran los datos.
 	 */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
-	    try {
-	        List<Producto> productos = producto.listarProductos(); // Lista de productos desde la base de datos
-	        modeloTabla.setRowCount(0); // Limpia todas las filas antes de agregar nuevas
+        try {
+            List<Producto> productos = productoController.listarProductos();
+            modeloTabla.setRowCount(0); // Limpiar filas antes de agregar nuevas
 
-	        for (Producto producto : productos) {
-	            // Extrae solo el ID de la categoría
-	            int idCategoria = producto.getCategoria().getIdCategoria();
-
-	            // Agrega los datos del producto junto con el ID de la categoría
-	            modeloTabla.addRow(new Object[] {
-	                producto.getIdProducto(),
-	                producto.getNombreProducto(),
-	                producto.getDescripcion(),
-	                producto.getPrecio(),
-	                producto.getStock(),
-	                producto.getStockMinimo(),
-	                idCategoria, // Solo el ID de la categoría
-	                "Movimiento" // Texto para el botón Movimiento
-	            });
-	        }
-	    } catch (Exception e) {
-	        JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	    }
-	}
-
+            for (Producto producto : productos) {
+                modeloTabla.addRow(new Object[] {
+                        producto.getIdProducto(),
+                        producto.getNombreProducto(),
+                        producto.getDescripcion(),
+                        producto.getPrecio(),
+                        producto.getStock(),
+                        producto.getStockMinimo(),
+                        producto.getCategoria().getIdCategoria(),
+                        "Movimiento"
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los productos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

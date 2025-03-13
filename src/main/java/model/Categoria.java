@@ -2,7 +2,6 @@ package model;
 
 import java.util.List;
 
-import DAO.DaoCategoria;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -146,55 +145,5 @@ public class Categoria {
 				+ descripcion + "]";
 	}
 
-	/**
-	 * Crea una nueva categoria en la base de datos utilizando Hibernate.
-	 * 
-	 */
-	public void crearCategoria() {
-		DaoCategoria daoCategoria = new DaoCategoria();
-		daoCategoria.insertar(this);
-	}
-
-	/**
-	 * Lista todas las categorias almacenadas en la base de datos utilizando
-	 * Hibernate.
-	 * 
-	 * @return Lista de categorias registradas.
-	 */
-	public List<Categoria> listarCategorias() {
-		DaoCategoria daoCategoria = new DaoCategoria();
-		return daoCategoria.listar();
-	}
-
-	/**
-	 * Recupera una categoria por su ID desde la base de datos utilizando Hibernate.
-	 * 
-	 * @param idCategoria Identificador unico de la categoria a recuperar.
-	 * @return Objeto Categoria recuperado, o null si no existe.
-	 */
-	public Categoria recuperarCat(int idCategoria) {
-		DaoCategoria daoCategoria = new DaoCategoria();
-		return daoCategoria.leerCategoria(idCategoria);
-	}
-
-	/**
-	 * Actualiza los datos de la categoria en la base de datos utilizando Hibernate.
-	 * 
-	 * @return true si la actualizacion fue correcta, false en caso contrario.
-	 */
-	public boolean actualizarCategoria() {
-		DaoCategoria daoCategoria = new DaoCategoria();
-		return daoCategoria.actualizar(this);
-	}
-
-	/**
-	 * Elimina una categoria de la base de datos utilizando Hibernate.
-	 * 
-	 * @param idCategoria ID de la categoria a eliminar.
-	 */
-	public void eliminarCategoria(int idCategoria) {
-		DaoCategoria daoCategoria = new DaoCategoria();
-		daoCategoria.eliminar(idCategoria);
-	}
 
 } // Class

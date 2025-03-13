@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import controller.UsuarioController;
 import model.Usuario;
 
 /**
@@ -31,17 +32,17 @@ import model.Usuario;
 public class ScreenGUsuarios extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private Usuario usuario; // Controlador que maneja la lógica relacionada con usuarios.
+	private final UsuarioController usuarioController; // Controlador que maneja la lógica relacionada con usuarios.
 	private JTable tablaUsuarios; // Tabla para mostrar la lista de usuarios.
 	private ScreenFormularios screenFormularios; // Declarar ScreenFormularios
 
 	/**
 	 * Constructor que inicializa la pantalla de gestion de usuarios.
 	 * 
-	 * @param usuario Objeto que representa un usuario para realizar operaciones.
+	 * @param usuarioController Objeto que representa un usuario para realizar operaciones.
 	 */
-	public ScreenGUsuarios(Usuario usuario) {
-		this.usuario = usuario;
+	public ScreenGUsuarios() {
+		this.usuarioController = new UsuarioController();
 
 		// Inicializar ScreenFormularios
 		this.screenFormularios = new ScreenFormularios();
@@ -167,7 +168,7 @@ public class ScreenGUsuarios extends JFrame {
 																								// usuario.
 
 						// Recuperar el producto antes de llamar al formulario.
-						Usuario usuarioEditar = usuario.recuperarUsu(idUsuario);
+						Usuario usuarioEditar = usuarioController.obtenerUsuarioPorId(idUsuario);
 
 						// Crear instancia de ScreenFormularios.
 						ScreenFormularios screenFormularios = new ScreenFormularios();
@@ -228,7 +229,7 @@ public class ScreenGUsuarios extends JFrame {
 
 							if (confirmacion == JOptionPane.YES_OPTION) {
 								// Eliminar el producto del backend
-								usuario.eliminarUsuario(idUsuario);
+								usuarioController.eliminarUsuario(idUsuario);
 								JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente.");
 
 								// Recargar la tabla con datos actualizados
@@ -296,18 +297,23 @@ public class ScreenGUsuarios extends JFrame {
 	 */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
 		try {
-			List<Usuario> usuarios = usuario.listarUsuarios(); // Obtener la lista de usuarios.
-			modeloTabla.setRowCount(0); // Limpia todas las filas antes de agregar nuevas
+			List<Usuario> usuarios = usuarioController.listarUsuarios();
+			modeloTabla.setRowCount(0);
 			for (Usuario usuario : usuarios) {
-				modeloTabla.addRow(new Object[] { String.valueOf(usuario.getIdUsuario()), // Convertir el ID a String.
-						usuario.getNombreUsuario(), usuario.getApellido1(), usuario.getApellido2(),
-						String.valueOf(usuario.getTelefono()), // Convertir el teléfono a String.
-						usuario.getEmail(), usuario.getRol(), "Editar", "Eliminar" });
+				modeloTabla.addRow(new Object[] { 
+					usuario.getIdUsuario(), 
+					usuario.getNombreUsuario(),
+					usuario.getApellido1(), 
+					usuario.getApellido2(),
+					usuario.getTelefono(), 
+					usuario.getEmail(), 
+					usuario.getRol(),
+					"Editar", 
+					"Eliminar"
+				});
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Error al cargar los usuarios: " + e.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Error al cargar los usuarios: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
 }

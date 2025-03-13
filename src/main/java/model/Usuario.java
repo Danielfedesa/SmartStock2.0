@@ -1,10 +1,8 @@
 package model;
 
-import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import DAO.DaoUsuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -303,56 +301,6 @@ public class Usuario {
      */
 	public static boolean verificarContrasena(String contrasena, String contrasenaHash) {
 	    return BCrypt.checkpw(contrasena, contrasenaHash); // Compara las contraseñas
-	}
-
-	/**
-     * Registra un nuevo usuario en la base de datos utilizando Hibernate.
-     */
-	public void crearUsuario() {
-		DaoUsuario daoUsuario = new DaoUsuario();
-		daoUsuario.insertar(this);
-	}
-
-	/**
-     * Obtiene todos los usuarios almacenados en la base de datos utilizando
-     * Hibernate.
-     * 
-     * @return Lista de usuarios registrados.
-     */
-	public List<Usuario> listarUsuarios() {
-		DaoUsuario daoUsuario = new DaoUsuario();
-		return daoUsuario.listar();
-	}
-
-	/**
-     * Recupera un usuario por su ID desde la base de datos utilizando Hibernate.
-     * 
-     * @param idUsuario Identificador único del usuario a recuperar.
-     * @return Objeto Usuario recuperado, o null si no existe.
-     */
-	public Usuario recuperarUsu(int idUsuario) {
-		DaoUsuario daoUsuario = new DaoUsuario();
-		return daoUsuario.leerUsuario(idUsuario);
-	}
-
-	 /**
-     * Actualiza los datos de un usuario en la base de datos utilizando Hibernate.
-     * 
-     * @return true si la actualizacion fue exitosa, false en caso contrario.
-     */
-	public boolean actualizarUsuario() {
-		DaoUsuario daoUsuario = new DaoUsuario();
-		return daoUsuario.actualizar(this);
-	}
-
-	/**
-     * Elimina un usuario de la base de datos utilizando Hibernate.
-     * 
-     * @param idUsuario ID del usuario a eliminar.
-     */
-	public void eliminarUsuario(int idUsuario) {
-		DaoUsuario daoUsuario = new DaoUsuario();
-		daoUsuario.eliminar(idUsuario);
 	}
 
 }

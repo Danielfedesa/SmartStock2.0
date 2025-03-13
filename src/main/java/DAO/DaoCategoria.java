@@ -101,17 +101,19 @@ public class DaoCategoria {
 	 *
 	 * @param idCategoria ID de la categoria a eliminar.
 	 */
-	public void eliminar(int idCategoria) {
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			Transaction transaction = session.beginTransaction();
-
-			Categoria c = session.get(Categoria.class, idCategoria);
-			session.remove(c);
-
-			transaction.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	public boolean eliminar(int idCategoria) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            Categoria c = session.get(Categoria.class, idCategoria);
+            if (c != null) {
+                session.remove(c);
+                transaction.commit();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 } // Class

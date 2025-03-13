@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import controller.CategoriaController;
 import model.Categoria;
 
 /**
@@ -31,7 +32,7 @@ import model.Categoria;
 public class ScreenGCategorias extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private Categoria categoria; // Controlador que maneja la lógica relacionada con usuarios.
+    private CategoriaController categoriaController; // Controlador que maneja la lógica relacionada con categorias.
 	private JTable tablaCategorias; // Tabla para mostrar la lista de usuarios.
 	private ScreenFormularios screenFormularios; // Declarar ScreenFormularios
 
@@ -41,8 +42,10 @@ public class ScreenGCategorias extends JFrame {
 	 * @param categoria Objeto que representa la categoria para realizar
 	 *                  operaciones.
 	 */
-	public ScreenGCategorias(Categoria categoria) {
-		this.categoria = categoria;
+	public ScreenGCategorias() {
+		
+		// Inicializar el controlador de categoria
+		this.categoriaController = new CategoriaController();
 
 		// Inicializar ScreenFormularios
 		this.screenFormularios = new ScreenFormularios();
@@ -98,6 +101,7 @@ public class ScreenGCategorias extends JFrame {
 			new ScreenDashboardAdmin().setVisible(true); // Abre la pantalla del dashboard
 			this.dispose(); // Cierra la pantalla actual
 		});
+		
 		gbcSuperior.gridx = 0;
 		gbcSuperior.gridy = 1; // Debajo del título
 		gbcSuperior.gridwidth = 2; // Ocupa solo una columna
@@ -164,7 +168,7 @@ public class ScreenGCategorias extends JFrame {
 								int idCategoria = Integer.parseInt(table.getValueAt(row, 0).toString()); // Recuperar el ID del usuario.
 
 								// Recuperar el producto antes de llamar al formulario.
-								Categoria categoriaEditar = categoria.recuperarCat(idCategoria);
+								Categoria categoriaEditar = categoriaController.obtenerCategoriaPorId(idCategoria);
 
 								// Crear instancia de ScreenFormularios.
 								ScreenFormularios screenFormularios = new ScreenFormularios();
@@ -228,7 +232,7 @@ public class ScreenGCategorias extends JFrame {
 
 									if (confirmacion == JOptionPane.YES_OPTION) {
 										// Eliminar el producto del backend
-										categoria.eliminarCategoria(idCategoria);
+										categoriaController.eliminarCategoria(idCategoria);
 										JOptionPane.showMessageDialog(null, "Categoría eliminada correctamente.");
 
 										// Recargar la tabla con datos actualizados
@@ -298,17 +302,23 @@ public class ScreenGCategorias extends JFrame {
      */
 	private void cargarDatosTabla(DefaultTableModel modeloTabla) {
 		try {
-			List<Categoria> categorias = categoria.listarCategorias(); // Obtener la lista de categorias.
-			modeloTabla.setRowCount(0); // Limpia todas las filas antes de agregar nuevas
-			for (Categoria categoria : categorias) {
-				modeloTabla.addRow(new Object[] { String.valueOf(categoria.getIdCategoria()), // Convertir el ID a
-																								// String.
-						categoria.getNombreCategoria(), categoria.getDescripcion(), "Editar", "Eliminar" });
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "Error al cargar las categorias: " + e.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
+	        CategoriaController categoriaController = new CategoriaController();
+	        List<Categoria> categorias = categoriaController.listarCategorias();
+
+	        modeloTabla.setRowCount(0);
+	        for (Categoria categoria : categorias) {
+	            modeloTabla.addRow(new Object[]{
+	                categoria.getIdCategoria(),
+	                categoria.getNombreCategoria(),
+	                categoria.getDescripcion(),
+	                "Editar",
+	                "Eliminar"
+	            });
+	        }
+	    } catch (Exception e) {
+	        JOptionPane.showMessageDialog(this, "Error al cargar las categorías: " + e.getMessage(), "Error",
+	                JOptionPane.ERROR_MESSAGE);
+	    }
 	}
 
 } // Class
