@@ -14,7 +14,7 @@ import model.Categoria;
  * Permite insertar, listar, leer por ID, actualizar y eliminar.
  * 
  * @author Daniel Fernandez Sanchez
- * @version 2.0 02/2025
+ * @version 3.0 03/2025
  */
 public class CategoriaRepository {
 

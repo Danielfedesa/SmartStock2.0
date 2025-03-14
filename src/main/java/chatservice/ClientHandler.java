@@ -10,6 +10,14 @@ import java.util.List;
 
 /**
  * Manejador de clientes para el chat.
+ *
+ * Esta clase gestiona la conexion de los clientes, la recepcion y envio de mensajes
+ * y la gestion de la base de datos a traves del {@link ChatController}.
+ * 
+ * Cada cliente conectado tiene su propia instancia de esta clase ejecutandose en un hilo separado.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 2.0 03/2025
  */
 public class ClientHandler implements Runnable {
 
@@ -23,8 +31,11 @@ public class ClientHandler implements Runnable {
 
     /**
      * Constructor de ClientHandler.
+     * Inicializa la conexion del cliente, lee su nombre de usuario, lo agrega a la lista de clientes
+     * y envia los mensajes previos almacenados en la base de datos.
      *
-     * @param socket El socket asociado a la conexión del cliente.
+     * @param socket         El socket asociado a la conexion del cliente.
+     * @param chatController Controlador que gestiona los mensajes del chat.
      */
     public ClientHandler(Socket socket, ChatController chatController) {
         this.chatController = chatController;
@@ -44,6 +55,13 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Metodo que se ejecuta en un hilo separado cuando un cliente se conecta.
+     * 
+     * Escucha continuamente mensajes entrantes del cliente y los retransmite a los demas clientes conectados.
+     * Si el cliente se desconecta, se elimina de la lista de clientes activos.
+     * 
+     */
     @Override
     public void run() {
         String mensajeCifrado;
@@ -64,6 +82,9 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Recupera los mensajes previos almacenados en la base de datos y los envia al cliente actual.
+     */
     private void sendPreviousMessages() {
         List<Chat> mensajes = chatController.obtenerMensajes();
         for (Chat mensaje : mensajes) {
@@ -78,6 +99,11 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Envia un mensaje a todos los clientes conectados, excepto al cliente que lo envio originalmente.
+     *
+     * @param mensajeParaEnviar Mensaje que sera enviado a los clientes conectados.
+     */
     public void broadcastMessage(String mensajeParaEnviar) {
         for (ClientHandler clientHandler : clientHandlers) {
             try {
@@ -92,11 +118,20 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Elimina al cliente actual de la lista de clientes conectados
+     * y notifica a los demas clientes que ha salido del chat.
+     */
     public void removeClientHandler() {
         clientHandlers.remove(this);
         broadcastMessage("SERVIDOR: " + nombreUsuarioCliente + " ha salido del chat");
     }
 
+    /**
+     * Guarda un mensaje en la base de datos si no esta vacio ni es un mensaje del sistema.
+     *
+     * @param mensaje Mensaje a guardar en la base de datos.
+     */
     private void saveMessage(String mensaje) {
         if (mensaje == null || mensaje.trim().isEmpty() || mensaje.startsWith("SERVIDOR:")) {
             return;
@@ -104,6 +139,10 @@ public class ClientHandler implements Runnable {
         chatController.enviarMensaje(mensaje, nombreUsuarioCliente);
     }
 
+    /**
+     * Cierra todos los recursos asociados al cliente, incluyendo flujos de entrada y salida,
+     * asi como el socket de conexion.
+     */
     public void closeAll() {
         if (clientHandlers.contains(this)) {
             removeClientHandler();

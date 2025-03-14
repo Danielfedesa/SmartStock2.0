@@ -6,7 +6,13 @@ import service.ChatService;
 import java.util.List;
 
 /**
- * Controlador que maneja la lógica de los mensajes de chat.
+ * Controlador para gestionar los mensajes del chat dentro del sistema.
+ * 
+ * Esta clase actua como intermediario entre la vista y la capa de servicio, 
+ * delegando las operaciones CRUD a {@link ChatService}.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 1.0 03/2025
  */
 public class ChatController {
 
@@ -17,10 +23,10 @@ public class ChatController {
     }
 
     /**
-     * Envía un mensaje cifrado a la base de datos.
+     * Envia un mensaje cifrado a la base de datos.
      *
      * @param contenido Mensaje en texto plano.
-     * @param usuario   Usuario que envía el mensaje.
+     * @param usuario   Usuario que envia el mensaje.
      */
     public void enviarMensaje(String contenido, String usuario) {
         chatService.agregarMensaje(contenido, usuario);

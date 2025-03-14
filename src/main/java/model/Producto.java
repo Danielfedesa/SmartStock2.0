@@ -16,11 +16,9 @@ import repository.ProductoRepository;
 /**
  * Representa un producto dentro del sistema.
  * 
- * <p>
- * Esta clase está mapeada a la tabla 'Productos' en la base de datos mediante
- * Hibernate. Contiene información sobre los productos, su stock y la categoría
+ * Esta clase esta mapeada a la tabla 'Productos' en la base de datos mediante
+ * Hibernate. Contiene informacion sobre los productos, su stock y la categoiía
  * a la que pertenecen.
- * </p>
  * 
  * <ul>
  * <li>{@literal @Entity} indica que la clase es una entidad de la base de
@@ -30,12 +28,12 @@ import repository.ProductoRepository;
  * <li>{@literal @Id} especifica la clave primaria.</li>
  * <li>{@literal @GeneratedValue(strategy = GenerationType.IDENTITY)} define el
  * campo como autoincremental.</li>
- * <li>{@literal @ManyToOne} establece una relación con la entidad Categoria.</li>
+ * <li>{@literal @ManyToOne} establece una relacion con la entidad Categoria.</li>
  * <li>{@literal @Column} personaliza los atributos en la base de datos.</li>
  * </ul>
  * 
  * @author Daniel Fernandez Sanchez
- * @version 2.0 02/2025
+ * @version 3.0 03/2025
  */
 @Entity
 @Table(name = "Productos")

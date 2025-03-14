@@ -12,11 +12,9 @@ import jakarta.persistence.Table;
 /**
  * Representa una copia de seguridad del sistema.
  * 
- * <p>
  * Esta clase está mapeada a la tabla 'CopiasSeguridad' en la base de datos
  * mediante Hibernate. Se encarga de almacenar información sobre las copias de
  * seguridad, incluyendo la fecha de creación y la ruta del archivo.
- * </p>
  * 
  * <ul>
  * <li>{@literal @Entity} indica que la clase es una entidad de la base de datos.</li>
@@ -27,7 +25,7 @@ import jakarta.persistence.Table;
  * </ul>
  * 
  * @author Daniel Fernandez Sanchez
- * @version 2.0 02/2025
+ * @version 3.0 03/2025
  */
 @Entity
 @Table(name = "CopiasSeguridad")

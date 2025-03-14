@@ -14,7 +14,7 @@ import model.HistorialInventario;
  * Permite insertar y listar movimientos de inventario.
  * 
  * @author Daniel Fernandez Sanchez
- * @version 2.0 02/2025
+ * @version 3.0 03/2025
  */
 public class HistorialInventarioRepository {
 

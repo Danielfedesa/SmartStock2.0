@@ -12,11 +12,22 @@ import jakarta.persistence.Table;
 import model.Usuario;
 
 /**
- * Clase Usuario que representa la informacion, constructores y metodos
- * referentes a los usuarios del sistema.
+ * Representa un usuario en el sistema.
+ * <p>
+ * Esta entidad esta mapeada a la tabla 'Usuarios' en la base de datos
+ * utilizando Hibernate y JPA.
+ * </p>
  * 
- * @author Daniel Fernandez Sanchez.
- * @version 2.0 02/2025
+ * <ul>
+ *   <li>{@literal @Entity} indica que la clase es una entidad de base de datos.</li>
+ *   <li>{@literal @Table(name = "Usuarios")} especifica el nombre de la tabla.</li>
+ *   <li>{@literal @Id} marca el campo ID como clave primaria.</li>
+ *   <li>{@literal @GeneratedValue(strategy = GenerationType.IDENTITY)} permite autoincremento del ID.</li>
+ *   <li>{@literal @Column} define propiedades de cada campo.</li>
+ * </ul>
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 3.0 03/2025
  */
 @Entity
 @Table(name = "Usuarios")
@@ -285,7 +296,7 @@ public class Usuario {
 	/**
      * Encripta una contrasena usando BCrypt.
      * 
-     * @param contrasena Contraseña en texto plano.
+     * @param contrasena Contrasena en texto plano.
      * @return Contrasena encriptada.
      */
 	public static String encriptarContrasena(String contrasena) {
@@ -293,7 +304,7 @@ public class Usuario {
 	}
 
 	/**
-     * Verifica si una contraseña coincide con su version encriptada.
+     * Verifica si una contrasena coincide con su version encriptada.
      * 
      * @param contrasena      Contrasena en texto plano.
      * @param contrasenaHash  Contrasena encriptada almacenada.

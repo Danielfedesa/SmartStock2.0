@@ -12,10 +12,9 @@ import jakarta.persistence.Table;
 /**
  * Representa un mensaje de chat en el sistema.
  * 
- * <p>
  * Esta clase está mapeada a la tabla 'Mensajes' en la base de datos mediante Hibernate.
  * Utiliza las siguientes anotaciones:
- * </p>
+ * 
  * <ul>
  *   <li>{@literal @Entity} indica que la clase es una entidad de la base de datos.</li>
  *   <li>{@literal @Table(name = "Mensajes")} define el nombre de la tabla en la base de datos.</li>
@@ -25,8 +24,8 @@ import jakarta.persistence.Table;
  * </ul>
  * 
  * @author Daniel Fernandez Sanchez
- * @version 2.0 02/2025
- */
+ * @version 3.0 03/2025
+ *  */
 @Entity
 @Table(name = "Mensajes")
 public class Chat {

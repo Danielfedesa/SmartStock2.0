@@ -14,7 +14,7 @@ import model.CopiaSeguridad;
  * Permite insertar y listar registros de copias de seguridad utilizando Hibernate.
  * 
  * @author Daniel Fernandez Sanchez
- * @version 2.0 02/2025
+ * @version 3.0 03/2025
  */
 public class CopiaSeguridadRepository {
 

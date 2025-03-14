@@ -9,10 +9,22 @@ import java.util.List;
 import model.CopiaSeguridad;
 import repository.CopiaSeguridadRepository;
 
+/**
+ * Servicio para gestionar las operaciones de la entidad CopiasSeguridad.
+ * 
+ * Esta clase actua como intermediario entre el controlador y el repositorio,
+ * aplicando reglas de negocio antes de interactuar con la base de datos.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 1.0 03/2025
+ */
 public class CopiaSeguridadService {
 	
 	private CopiaSeguridadRepository copiaSeguridadRepository;
 	
+	/**
+	 * Constructor que inicializa el repositorio de copias de seguridad.
+	 */
 	public CopiaSeguridadService() {
 		this.copiaSeguridadRepository = new CopiaSeguridadRepository();
 	}

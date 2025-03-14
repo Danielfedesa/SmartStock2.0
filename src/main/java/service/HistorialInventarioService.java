@@ -5,10 +5,22 @@ import java.util.List;
 import model.HistorialInventario;
 import repository.HistorialInventarioRepository;
 
+/**
+ * Servicio para gestionar las operaciones de la entidad HistorialInventario.
+ * 
+ * Esta clase actua como intermediario entre el controlador y el repositorio,
+ * aplicando reglas de negocio antes de interactuar con la base de datos.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 1.0 03/2025
+ */
 public class HistorialInventarioService {
 	
     private final HistorialInventarioRepository historialInventarioRepository;
 
+	/**
+	 * Constructor que inicializa el repositorio de historial de inventario.
+	 */
     public HistorialInventarioService() {
         this.historialInventarioRepository = new HistorialInventarioRepository();
     }

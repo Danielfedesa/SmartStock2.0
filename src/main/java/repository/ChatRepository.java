@@ -13,7 +13,7 @@ import java.util.List;
  * almacenados en la base de datos.
  * 
  * @author Daniel Fernandez Sanchez.
- * @version 1.0 02/2025
+ * @version 3.0 03/2025
  */
 public class ChatRepository {
 

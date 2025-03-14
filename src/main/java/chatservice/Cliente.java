@@ -12,7 +12,7 @@ import java.util.Scanner;
  * Clase Cliente que se conecta al servidor para enviar y recibir mensajes
  * 
  * @author Daniel Fernandez Sanchez.
- * @version 1.0, 09/06/2021
+ * @version 1.0, 02/2025
  */
 public class Cliente {
 

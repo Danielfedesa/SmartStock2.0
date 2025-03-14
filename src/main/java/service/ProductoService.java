@@ -5,10 +5,22 @@ import java.util.List;
 import model.Producto;
 import repository.ProductoRepository;
 
+/**
+ * Servicio para gestionar las operaciones de la entidad Producto.
+ * 
+ * Esta clase actua como intermediario entre el controlador y el repositorio,
+ * aplicando reglas de negocio antes de interactuar con la base de datos.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 1.0 03/2025
+ */
 public class ProductoService {
 	
     private final ProductoRepository productoRepository;
 
+	/**
+	 * Constructor que inicializa el repositorio de productos.
+	 */
     public ProductoService() {
         this.productoRepository = new ProductoRepository();
     }

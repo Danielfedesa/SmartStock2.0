@@ -9,7 +9,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Servicio que gestiona la lógica de negocio de los mensajes de chat.
+ * Servicio para gestionar las operaciones de la entidad Chat.
+ * 
+ * Esta clase actua como intermediario entre el controlador y el repositorio,
+ * aplicando reglas de negocio antes de interactuar con la base de datos.
+ * 
+ * @author Daniel Fernandez Sanchez
+ * @version 1.0 03/2025
  */
 public class ChatService {
 
