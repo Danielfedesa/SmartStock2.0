@@ -109,8 +109,9 @@ public class UsuarioRepository {
 	 * Elimina un usuario de la base de datos segun su ID utilizando Hibernate.
 	 *
 	 * @param idUsuario ID del usuario a eliminar.
+	 * @return 
 	 */
-	public void eliminar(int idUsuario) {
+	public boolean eliminar(int idUsuario) {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
 			// Iniciar una transaccion
@@ -118,15 +119,16 @@ public class UsuarioRepository {
 
 			// Eliminar el usuario
 			Usuario u = session.get(Usuario.class, idUsuario);
-			session.remove(u);
-
-			// Commit de la transaccion
-			transaction.commit();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+			if (u != null) {
+                session.remove(u);
+                transaction.commit();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 	/**
 	 * Busca un usuario en la base de datos por su correo electronico utilizando

@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.Usuario;
 import repository.UsuarioRepository;
+import service.UsuarioService;
 
 /**
  * Controlador para gestionar las operaciones relacionadas con los usuarios.
@@ -15,22 +16,17 @@ import repository.UsuarioRepository;
  * @version 1.0 03/2025
  */
 public class UsuarioController {
-	private final UsuarioRepository usuarioRepository;
+	
+	private UsuarioService usuarioService = new UsuarioService();
 
-	/**
-     * Constructor que inicializa el repositorio de usuarios.
-     */
-	public UsuarioController() {
-		this.usuarioRepository = new UsuarioRepository();
-	}
 
 	 /**
      * Obtiene una lista con todos los usuarios almacenados en la base de datos.
      *
-     * @return Lista de objetos {@link Usuario} disponibles en el sistema.
+     * @return Lista de usuarios disponibles en el sistema.
      */
 	public List<Usuario> listarUsuarios() {
-		return usuarioRepository.listar();
+		return usuarioService.obtenerTodosUsuarios();
 	}
 
 	/**
@@ -40,7 +36,7 @@ public class UsuarioController {
      * @return Objeto {@link Usuario} si se encuentra en la base de datos, null en caso contrario.
      */
 	public Usuario obtenerUsuarioPorId(int idUsuario) {
-		return usuarioRepository.leerUsuario(idUsuario);
+		return usuarioService.obtenerUsuarioPorId(idUsuario);
 	}
 	
 	/**
@@ -49,8 +45,8 @@ public class UsuarioController {
      * @param usuario Objeto {@link Usuario} con la informacion del usuario a registrar.
      */
 	public void crearUsuario(Usuario usuario) {
-		usuarioRepository.insertar(usuario);
-	}
+        usuarioService.crearUsuario(usuario);
+    }
 
 	/**
      * Actualiza la informacion de un usuario existente.
@@ -59,15 +55,16 @@ public class UsuarioController {
      * @return true si la actualizacion fue exitosa, false en caso contrario.
      */
 	public boolean actualizarUsuario(Usuario usuario) {
-		return usuarioRepository.actualizar(usuario);
-	}
+        return usuarioService.actualizarUsuario(usuario);
+    }
 
 	/**
      * Elimina un usuario de la base de datos segun su ID.
      *
      * @param idUsuario ID del usuario a eliminar.
+     *  @return true si la eliminacion fue exitosa, false en caso de error.
      */
-	public void eliminarUsuario(int idUsuario) {
-		usuarioRepository.eliminar(idUsuario);
-	}
+	public boolean eliminarUsuario(int idUsuario) {
+        return usuarioService.eliminarUsuario(idUsuario);
+    }
 }

@@ -224,7 +224,7 @@ public class ScreenGUsuarios extends JFrame {
 						if (row >= 0 && row < table.getRowCount()) {
 							int idUsuario = Integer.parseInt(table.getValueAt(row, 0).toString()); // ID del producto
 							int confirmacion = JOptionPane.showConfirmDialog(null,
-									"¿Estás seguro de que deseas eliminar este producto?", "Confirmar eliminación",
+									"¿Estás seguro de que deseas eliminar este usuario?", "Confirmar eliminación",
 									JOptionPane.YES_NO_OPTION);
 
 							if (confirmacion == JOptionPane.YES_OPTION) {

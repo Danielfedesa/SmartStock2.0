@@ -259,8 +259,12 @@ public class Usuario {
 	 * @param Contrasena del usuario.
 	 */
 	public void setContrasena(String contrasena) {
-		// Encripta la contraseña
-		this.contrasena = encriptarContrasena(contrasena);
+	    // Solo cifrar si la contraseña no está ya cifrada
+	    if (!contrasena.startsWith("$2a$")) { // Prefijo estándar de BCrypt
+	        this.contrasena = encriptarContrasena(contrasena);
+	    } else {
+	        this.contrasena = contrasena; // Si ya está cifrada, guardarla sin cambios
+	    }
 	}
 
 	/**
