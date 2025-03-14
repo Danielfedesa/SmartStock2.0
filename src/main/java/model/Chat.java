@@ -1,7 +1,9 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import DAO.DaoChat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -149,5 +151,24 @@ public class Chat {
 	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
+	
+	/**
+     * Registra un nuevo mensaje en la base de datos utilizando Hibernate.
+     */
+	public void insertarMensaje() {
+		DaoChat daoChat = new DaoChat();
+		daoChat.insertar(this);
+    }
+	
+	/**
+     * Obtiene todos los mensajes de chat almacenados en la base de datos utilizando
+     * Hibernate.
+     * 
+     * @return Lista de mensajes registrados.
+     */
+	public List<Chat> listarMensajes() {
+		DaoChat daoChat = new DaoChat();
+        return daoChat.listar();
+    }
 
 }

@@ -9,7 +9,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.ChatController;
 import model.Chat;
 
 /**
@@ -18,7 +17,7 @@ import model.Chat;
  * gestion de la base de datos.
  * 
  * @author Daniel Fernandez Sanchez.
- * @version 2.0 03/2025
+ * @version 1.0 02/2025
  */
 public class ClientHandler implements Runnable {
 	
@@ -29,7 +28,6 @@ public class ClientHandler implements Runnable {
     private BufferedReader entrada;
     private BufferedWriter salida;
     private String nombreUsuarioCliente;
-    private final ChatController chatController;
 
     /**
      * Manejador de clientes para una conexion de socket. 
@@ -39,14 +37,10 @@ public class ClientHandler implements Runnable {
      * @param socket El socket asociado a la conexion del cliente.
      */
     public ClientHandler(Socket socket) {
-    	
-    	this.chatController = new ChatController();
-    	
         try {
             this.socket = socket;
             this.entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.salida = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            
             this.nombreUsuarioCliente = entrada.readLine();
             clientHandlers.add(this);
             
@@ -55,7 +49,6 @@ public class ClientHandler implements Runnable {
 
             // Enviar mensajes previos a este cliente
             sendPreviousMessages();
-            
         } catch (IOException e) {
             closeAll(socket, entrada, salida);
         }
@@ -79,7 +72,6 @@ public class ClientHandler implements Runnable {
 
                 saveMessage(mensajeCifrado); // Guardamos el mensaje cifrado
                 broadcastMessage(mensajeCifrado); // Enviamos el mensaje a otros clientes
-                
             } catch (IOException e) {
                 closeAll(socket, entrada, salida);
                 break;
@@ -92,8 +84,8 @@ public class ClientHandler implements Runnable {
      * Recupera los mensajes, los descifra y los formatea antes de enviarlos a la salida del cliente.
      */
     private void sendPreviousMessages() {
-        List<Chat> mensajes = chatController.listarMensajes(); // Obtener mensajes desde el controlador.
-        
+        Chat recMensajes = new Chat();
+        List<Chat> mensajes = recMensajes.listarMensajes();
         for (Chat mensaje : mensajes) {
             try {
                 // Decodificamos y desciframos el mensaje antes de enviarlo
@@ -153,8 +145,12 @@ public class ClientHandler implements Runnable {
 
         if (!mensaje.startsWith("SERVIDOR:")) { // No guardar mensajes del sistema
             try {
+                // Ciframos el mensaje
                 String mensajeCifrado = AESUtil.encrypt(mensaje);
-                chatController.agregarMensaje(nombreUsuarioCliente, mensajeCifrado); // Se delega al controlador.
+
+                // Guardamos el mensaje cifrado en la base de datos
+                Chat nuevoMensaje = new Chat(mensajeCifrado, nombreUsuarioCliente, java.time.LocalDateTime.now());
+                nuevoMensaje.insertarMensaje(); // Llamar al método insertarMensaje
             } catch (Exception e) {
                 System.err.println("Error al cifrar el mensaje: " + e.getMessage());
             }
