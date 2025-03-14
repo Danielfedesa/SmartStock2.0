@@ -37,7 +37,7 @@ public class Server {
 				// El método accept() bloquea la ejecución hasta que se conecta un cliente
 				Socket socket = serverSocket.accept();
 				System.out.println("Nuevo cliente conectado " + socket.getInetAddress());
-				ClientHandler clientHandler = new ClientHandler(socket);
+				ClientHandler clientHandler = new ClientHandler(socket, null);
 
 				// Inicia un hilo para manejar la conexión con el cliente
 				Thread thread = new Thread(clientHandler);

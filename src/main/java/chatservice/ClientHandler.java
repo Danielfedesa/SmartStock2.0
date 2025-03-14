@@ -1,187 +1,119 @@
 package chatservice;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import controller.ChatController;
+import model.Chat;
+
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Chat;
-
 /**
- * Clase ClientHandler que representa el hilo de un cliente conectado al chat.
- * En este hilo gestionara la recepcion y envio de mensajes, asi como la
- * gestion de la base de datos.
- * 
- * @author Daniel Fernandez Sanchez.
- * @version 1.0 02/2025
+ * Manejador de clientes para el chat.
  */
 public class ClientHandler implements Runnable {
-	
-    // Lista de clientes conectados al chat
+
     public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
 
     private Socket socket;
     private BufferedReader entrada;
     private BufferedWriter salida;
     private String nombreUsuarioCliente;
+    private ChatController chatController;
 
     /**
-     * Manejador de clientes para una conexion de socket. 
-     * Este constructor inicializa la conexión con el cliente, lee su nombre de usuario, 
-     * lo agrega a la lista de clientes y envia mensajes de bienvenida.
+     * Constructor de ClientHandler.
      *
-     * @param socket El socket asociado a la conexion del cliente.
+     * @param socket El socket asociado a la conexión del cliente.
      */
-    public ClientHandler(Socket socket) {
-        try {
+    public ClientHandler(Socket socket, ChatController chatController) {
+        this.chatController = chatController;
+		try {
             this.socket = socket;
             this.entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.salida = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.nombreUsuarioCliente = entrada.readLine();
+            this.chatController = new ChatController();
             clientHandlers.add(this);
-            
-            // Enviar mensaje de bienvenida
+
             broadcastMessage("SERVIDOR: " + nombreUsuarioCliente + " ha entrado al chat");
 
-            // Enviar mensajes previos a este cliente
             sendPreviousMessages();
         } catch (IOException e) {
-            closeAll(socket, entrada, salida);
+            closeAll();
         }
     }
 
-    /**
-     * Metodo que se ejecuta cuando el hilo del cliente inicia.
-     * Se encarga de recibir mensajes cifrados, almacenarlos y retransmitirlos a otros clientes.
-     * Si el cliente se desconecta, se elimina de la lista de manejadores.
-     */
     @Override
     public void run() {
         String mensajeCifrado;
         while (socket.isConnected()) {
             try {
                 mensajeCifrado = entrada.readLine();
-                if (mensajeCifrado == null) { // Si es null, el cliente se ha desconectado
+                if (mensajeCifrado == null) {
                     removeClientHandler();
                     break;
                 }
 
-                saveMessage(mensajeCifrado); // Guardamos el mensaje cifrado
-                broadcastMessage(mensajeCifrado); // Enviamos el mensaje a otros clientes
+                saveMessage(mensajeCifrado);
+                broadcastMessage(mensajeCifrado);
             } catch (IOException e) {
-                closeAll(socket, entrada, salida);
+                closeAll();
                 break;
             }
         }
     }
 
-    /**
-     * Envia al cliente los mensajes previos almacenados en la base de datos.
-     * Recupera los mensajes, los descifra y los formatea antes de enviarlos a la salida del cliente.
-     */
     private void sendPreviousMessages() {
-        Chat recMensajes = new Chat();
-        List<Chat> mensajes = recMensajes.listarMensajes();
+        List<Chat> mensajes = chatController.obtenerMensajes();
         for (Chat mensaje : mensajes) {
             try {
-                // Decodificamos y desciframos el mensaje antes de enviarlo
-                String mensajeDescifrado = AESUtil.decrypt(mensaje.getContenido());
-                String mensajeFormateado = mensaje.getUsuario() + ": " + mensajeDescifrado;
+                String mensajeFormateado = mensaje.getUsuario() + ": " + mensaje.getContenido();
                 salida.write(mensajeFormateado);
                 salida.newLine();
                 salida.flush();
             } catch (Exception e) {
-                closeAll(socket, entrada, salida);
+                closeAll();
             }
         }
     }
 
-    /**
-     * Envia un mensaje a todos los clientes conectados, excepto al que lo envio originalmente.
-     * El mensaje no se cifra nuevamente antes de enviarlo.
-     *
-     * @param mensajeParaEnviar Mensaje que sera enviado a los clientes conectados.
-     */
     public void broadcastMessage(String mensajeParaEnviar) {
         for (ClientHandler clientHandler : clientHandlers) {
             try {
-                // Enviamos el mensaje tal cual, no lo ciframos otra vez
                 if (!clientHandler.nombreUsuarioCliente.equals(nombreUsuarioCliente)) {
-                    clientHandler.salida.write(mensajeParaEnviar); // Enviar el mensaje
+                    clientHandler.salida.write(mensajeParaEnviar);
                     clientHandler.salida.newLine();
                     clientHandler.salida.flush();
                 }
             } catch (Exception e) {
-                closeAll(clientHandler.socket, clientHandler.entrada, clientHandler.salida);
+                closeAll();
             }
         }
     }
 
-    /**
-     * Elimina al cliente actual de la lista de clientes conectados 
-     * y notifica a los demas clientes que ha salido del chat.
-     */
     public void removeClientHandler() {
         clientHandlers.remove(this);
         broadcastMessage("SERVIDOR: " + nombreUsuarioCliente + " ha salido del chat");
     }
 
-    /**
-     * Guarda un mensaje en la base de datos despues de cifrarlo.
-     * No guarda mensajes vacios, nulos ni mensajes del sistema (que empiezan por "SERVIDOR:")
-     * para evitar guardar mensajes de entrada y salida del chat.
-     *
-     * @param mensaje Mensaje a guardar en la base de datos.
-     */
     private void saveMessage(String mensaje) {
-        if (mensaje == null || mensaje.trim().isEmpty()) {
-            System.out.println("No se guardó un mensaje vacío o nulo en la base de datos.");
+        if (mensaje == null || mensaje.trim().isEmpty() || mensaje.startsWith("SERVIDOR:")) {
             return;
         }
-
-        if (!mensaje.startsWith("SERVIDOR:")) { // No guardar mensajes del sistema
-            try {
-                // Ciframos el mensaje
-                String mensajeCifrado = AESUtil.encrypt(mensaje);
-
-                // Guardamos el mensaje cifrado en la base de datos
-                Chat nuevoMensaje = new Chat(mensajeCifrado, nombreUsuarioCliente, java.time.LocalDateTime.now());
-                nuevoMensaje.insertarMensaje(); // Llamar al método insertarMensaje
-            } catch (Exception e) {
-                System.err.println("Error al cifrar el mensaje: " + e.getMessage());
-            }
-        }
+        chatController.enviarMensaje(mensaje, nombreUsuarioCliente);
     }
 
-    /**
-     * Cierra todos los flujos de entrada, salida y el socket del cliente.
-     * Ademas, si el cliente aun esta en la lista de clientes conectados, lo elimina.
-     *
-     * @param socket  Socket asociado a la conexion del cliente.
-     * @param entrada BufferedReader utilizado para la entrada de datos.
-     * @param salida  BufferedWriter utilizado para la salida de datos.
-     */
-    public void closeAll(Socket socket, BufferedReader entrada, BufferedWriter salida) {
+    public void closeAll() {
         if (clientHandlers.contains(this)) {
             removeClientHandler();
         }
         try {
-            if (entrada != null) {
-                entrada.close();
-            }
-            if (salida != null) {
-                salida.close();
-            }
-            if (socket != null && !socket.isClosed()) {
-                socket.close();
-            }
+            if (entrada != null) entrada.close();
+            if (salida != null) salida.close();
+            if (socket != null && !socket.isClosed()) socket.close();
         } catch (IOException e) {
             System.err.println("Error al cerrar el socket del cliente: " + e.getMessage());
         }
     }
-    
-} // Class
+}

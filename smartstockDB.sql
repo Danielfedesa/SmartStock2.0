@@ -35,7 +35,7 @@ CREATE TABLE HistorialInventario (
     id_Producto INT NOT NULL,
     id_Usuario INT NOT NULL,
     cantidad INT NOT NULL,
-    tipo_Movimiento ENUM('entrada', 'salida') NOT NULL,
+    tipo_Movimiento ENUM('ENTRADA', 'SALIDA') NOT NULL,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_Producto) REFERENCES Productos(id_Producto),
     FOREIGN KEY (id_Usuario) REFERENCES Usuarios(id_Usuario)
@@ -98,17 +98,17 @@ VALUES
 
 INSERT INTO HistorialInventario (id_Producto, id_Usuario, cantidad, tipo_Movimiento)
 VALUES
-(1, 1, 20, 'entrada'),
-(2, 2, 5, 'salida'),
-(3, 3, 15, 'entrada'),
-(4, 2, 10, 'entrada'),
-(5, 2, 2, 'salida'),
-(6, 2, 12, 'entrada'),
-(7, 1, 8, 'entrada'),
-(8, 1, 3, 'salida'),
-(1, 1, 5, 'salida'),
-(2, 2, 10, 'entrada'),
-(6, 1, 7, 'salida')
+(1, 1, 20, 'ENTRADA'),
+(2, 2, 5, 'SALIDA'),
+(3, 3, 15, 'ENTRADA'),
+(4, 2, 10, 'ENTRADA'),
+(5, 2, 2, 'ENTRADA'),
+(6, 2, 12, 'ENTRADA'),
+(7, 1, 8, 'ENTRADA'),
+(8, 1, 3, 'SALIDA'),
+(1, 1, 5, 'SALIDA'),
+(2, 2, 10, 'ENTRADA'),
+(6, 1, 7, 'SALIDA')
 ;
 
 INSERT INTO CopiasSeguridad (ruta_Archivo)

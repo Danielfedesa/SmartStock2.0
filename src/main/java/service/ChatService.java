@@ -1,28 +1,54 @@
 package service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import DAO.DaoChat;
 import model.Chat;
+import chatservice.AESUtil;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Servicio que gestiona la lógica de negocio de los mensajes de chat.
+ */
 public class ChatService {
-	
-    private DaoChat daoChat;
+
+    private final DaoChat daoChat;
 
     public ChatService() {
         this.daoChat = new DaoChat();
     }
 
-    public void agregarMensaje(String usuario, String contenido) {
-        if (usuario == null || usuario.isBlank() || contenido == null || contenido.isBlank()) {
-            throw new IllegalArgumentException("Usuario y mensaje no pueden estar vacíos.");
+    /**
+     * Agrega un mensaje cifrado a la base de datos.
+     *
+     * @param contenido Mensaje en texto plano.
+     * @param usuario   Usuario que envía el mensaje.
+     */
+    public void agregarMensaje(String contenido, String usuario) {
+        try {
+            String mensajeCifrado = AESUtil.encrypt(contenido);
+            Chat mensaje = new Chat(mensajeCifrado, usuario, LocalDateTime.now());
+            daoChat.insertar(mensaje);
+        } catch (Exception e) {
+            System.err.println("Error al cifrar el mensaje: " + e.getMessage());
         }
-        Chat mensaje = new Chat(usuario, contenido, LocalDateTime.now());
-        daoChat.insertar(mensaje);
     }
 
-    public List<Chat> listarMensajes() {
-        return daoChat.listar();
+    /**
+     * Obtiene y descifra los mensajes almacenados en la base de datos.
+     *
+     * @return Lista de mensajes descifrados.
+     */
+    public List<Chat> obtenerMensajes() {
+        return daoChat.listar().stream().map(mensaje -> {
+            try {
+                String mensajeDescifrado = AESUtil.decrypt(mensaje.getContenido());
+                return new Chat(mensaje.getId(), mensajeDescifrado, mensaje.getUsuario(), mensaje.getFecha());
+            } catch (Exception e) {
+                System.err.println("Error al descifrar mensaje: " + e.getMessage());
+                return mensaje; // Si falla, devuelve el mensaje cifrado
+            }
+        }).collect(Collectors.toList());
     }
 }
