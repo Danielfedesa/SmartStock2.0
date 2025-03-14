@@ -2,38 +2,38 @@ package controller;
 
 import java.util.List;
 
-import DAO.DaoUsuario;
 import model.Usuario;
+import repository.UsuarioRepository;
 
 public class UsuarioController {
-	private final DaoUsuario daoUsuario;
+	private final UsuarioRepository usuarioRepository;
 
 	public UsuarioController() {
-		this.daoUsuario = new DaoUsuario();
+		this.usuarioRepository = new UsuarioRepository();
 	}
 
 	/** Obtener todos los usuarios */
 	public List<Usuario> listarUsuarios() {
-		return daoUsuario.listar();
+		return usuarioRepository.listar();
 	}
 
 	/** Obtener usuario por ID */
 	public Usuario obtenerUsuarioPorId(int idUsuario) {
-		return daoUsuario.leerUsuario(idUsuario);
+		return usuarioRepository.leerUsuario(idUsuario);
 	}
 
 	/** Crear un nuevo usuario */
 	public void crearUsuario(Usuario usuario) {
-		daoUsuario.insertar(usuario);
+		usuarioRepository.insertar(usuario);
 	}
 
 	/** Actualizar un usuario */
 	public boolean actualizarUsuario(Usuario usuario) {
-		return daoUsuario.actualizar(usuario);
+		return usuarioRepository.actualizar(usuario);
 	}
 
 	/** Eliminar un usuario */
 	public void eliminarUsuario(int idUsuario) {
-		daoUsuario.eliminar(idUsuario);
+		usuarioRepository.eliminar(idUsuario);
 	}
 }

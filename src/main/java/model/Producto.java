@@ -2,7 +2,6 @@ package model;
 
 import java.util.List;
 
-import DAO.DaoProducto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import repository.ProductoRepository;
 
 /**
  * Representa un producto dentro del sistema.
@@ -237,8 +237,8 @@ public class Producto {
 	 * Registra un nuevo producto en la base de datos utilizando Hibernate.
 	 */
 	public void crearProducto() {
-		DaoProducto daoProducto = new DaoProducto();
-		daoProducto.insertar(this);
+		ProductoRepository productoRepository = new ProductoRepository();
+		productoRepository.insertar(this);
 	}
 
 	/**
@@ -248,8 +248,8 @@ public class Producto {
 	 * @return Lista de productos registrados.
 	 */
 	public List<Producto> listarProductos() {
-		DaoProducto daoProducto = new DaoProducto();
-		return daoProducto.listar();
+		ProductoRepository productoRepository = new ProductoRepository();
+		return productoRepository.listar();
 	}
 
 	/**
@@ -258,8 +258,8 @@ public class Producto {
 	 * @return Lista de productos con stock bajo.
 	 */
 	public List<Producto> listarProductosStockBajo() {
-		DaoProducto daoProducto = new DaoProducto();
-		return daoProducto.listarMinimo();
+		ProductoRepository productoRepository = new ProductoRepository();
+		return productoRepository.listarMinimo();
 	}
 
 	/**
@@ -269,8 +269,8 @@ public class Producto {
 	 * @return Objeto Producto recuperado, o null si no existe.
 	 */
 	public Producto recuperarPro(int idProducto) {
-		DaoProducto daoProducto = new DaoProducto();
-		return daoProducto.leerProducto(idProducto);
+		ProductoRepository productoRepository = new ProductoRepository();
+		return productoRepository.leerProducto(idProducto);
 	}
 
 	/**
@@ -279,8 +279,8 @@ public class Producto {
 	 * @return true si la actualización fue exitosa, false en caso contrario.
 	 */
 	public boolean actualizarProducto() {
-		DaoProducto daoProducto = new DaoProducto();
-		return daoProducto.actualizar(this);
+		ProductoRepository productoRepository = new ProductoRepository();
+		return productoRepository.actualizar(this);
 	}
 
 	/**
@@ -289,8 +289,8 @@ public class Producto {
 	 * @param idProducto ID del producto a eliminar.
 	 */
 	public void eliminarProducto(int idProducto) {
-		DaoProducto daoProducto = new DaoProducto();
-		daoProducto.eliminar(idProducto);
+		ProductoRepository productoRepository = new ProductoRepository();
+		productoRepository.eliminar(idProducto);
 	}
 
 	/**
@@ -301,7 +301,7 @@ public class Producto {
 	 *         no hay alertas.
 	 */
 	public String verificarStockMinimo() {
-		DaoProducto daoProd = new DaoProducto();
+		ProductoRepository daoProd = new ProductoRepository();
 		List<Producto> productos = daoProd.listarMinimo(); // Obtiene la lista de productos con stock bajo
 		StringBuilder alertas = new StringBuilder();
 

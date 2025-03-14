@@ -1,7 +1,7 @@
 package service;
 
-import DAO.DaoChat;
 import model.Chat;
+import repository.ChatRepository;
 import chatservice.AESUtil;
 
 import java.time.LocalDateTime;
@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
  */
 public class ChatService {
 
-    private final DaoChat daoChat;
+    private final ChatRepository chatRepository;
 
     public ChatService() {
-        this.daoChat = new DaoChat();
+        this.chatRepository = new ChatRepository();
     }
 
     /**
@@ -29,7 +29,7 @@ public class ChatService {
         try {
             String mensajeCifrado = AESUtil.encrypt(contenido);
             Chat mensaje = new Chat(mensajeCifrado, usuario, LocalDateTime.now());
-            daoChat.insertar(mensaje);
+            chatRepository.insertar(mensaje);
         } catch (Exception e) {
             System.err.println("Error al cifrar el mensaje: " + e.getMessage());
         }
@@ -41,7 +41,7 @@ public class ChatService {
      * @return Lista de mensajes descifrados.
      */
     public List<Chat> obtenerMensajes() {
-        return daoChat.listar().stream().map(mensaje -> {
+        return chatRepository.listar().stream().map(mensaje -> {
             try {
                 String mensajeDescifrado = AESUtil.decrypt(mensaje.getContenido());
                 return new Chat(mensaje.getId(), mensajeDescifrado, mensaje.getUsuario(), mensaje.getFecha());

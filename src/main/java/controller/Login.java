@@ -2,8 +2,8 @@ package controller;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import DAO.DaoUsuario;
 import model.Usuario;
+import repository.UsuarioRepository;
 
 /**
  * Clase para realizar operaciones de inicio de sesion con la tabla 'usuarios'
@@ -17,7 +17,7 @@ public class Login {
 	/**
 	 * DAO de Usuario para interactuar con la base de datos.
 	 */
-	private DaoUsuario usuarioDao;
+	private UsuarioRepository usuarioDao;
 
 	/**
 	 * Constructor de la clase Login. Se requiere un DAO de Usuario para inicializar
@@ -26,7 +26,7 @@ public class Login {
 	 * @param usuarioDao Objeto de tipo DaoUsuario que permite interactuar con la
 	 *                   tabla de usuarios.
 	 */
-	public Login(DaoUsuario usuarioDao) {
+	public Login(UsuarioRepository usuarioDao) {
 		this.usuarioDao = usuarioDao;
 	}
 
@@ -35,7 +35,7 @@ public class Login {
 	 */
 	public Login() {
 		// Inicializa el DAO internamente
-		this.usuarioDao = new DaoUsuario();
+		this.usuarioDao = new UsuarioRepository();
 	}
 
 	/**

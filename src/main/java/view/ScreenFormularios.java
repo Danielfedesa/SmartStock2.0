@@ -47,8 +47,11 @@ import model.Usuario;
  */
 public class ScreenFormularios {
 	
+	@SuppressWarnings("unused")
 	private final ProductoController productoController;
+	@SuppressWarnings("unused")
 	private final UsuarioController usuarioController;
+	@SuppressWarnings("unused")
 	private final CategoriaController categoriaController;
 	
 	public ScreenFormularios() {

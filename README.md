@@ -29,7 +29,7 @@ Gestión del proyecto: Maven
  ┣ 📂 src/main/java  
  ┃ ┣ 📂 chatservice -> Implementación del chat con Java Sockets bajo patrón MVC  
  ┃ ┣ 📂 controller -> Controladores del sistema  
- ┃ ┣ 📂 DAO -> Clases de acceso a la base de datos metiante Hibernate  
+ ┃ ┣ 📂 repository -> Clases de acceso a la base de datos metiante Hibernate  
  ┃ ┣ 📂 model -> Entidades mapeadas con Hibernate  
  ┃ ┣ 📂 process -> Automatización de procesos como copias de seguridad y monitoreo de stock  
  ┃ ┣ 📂 service -> Lógica de negocio intermedia entre el controlador y la capa de datos  
@@ -45,7 +45,7 @@ Gestión del proyecto: Maven
 
 chatservice: Implementación del chat con Java Sockets.  
 controller: Gestiona la lógica de la aplicación y sirve de puente entre la vista y el modelo. También están los controladores de acceso y sesión.  
-dao: Capa de acceso a datos, encargada de la persistencia en la base de datos mediante Hibernate.  
+repository: Capa de acceso a datos, encargada de la persistencia en la base de datos mediante Hibernate.  
 model: Representa las entidades del sistema, mapeadas con JPA  
 process: Contiene los procesos automatizados como copias de seguridad automáticas y supervisión del stock mínimo.  
 service: Contiene la lógica de negocio, asegurando que los controladores no accedan directamente a la base de datos.  

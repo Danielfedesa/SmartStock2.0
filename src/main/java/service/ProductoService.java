@@ -2,15 +2,15 @@ package service;
 
 import java.util.List;
 
-import DAO.DaoProducto;
 import model.Producto;
+import repository.ProductoRepository;
 
 public class ProductoService {
 	
-    private final DaoProducto daoProducto;
+    private final ProductoRepository productoRepository;
 
     public ProductoService() {
-        this.daoProducto = new DaoProducto();
+        this.productoRepository = new ProductoRepository();
     }
 
     /**
@@ -22,7 +22,7 @@ public class ProductoService {
         if (producto.getNombreProducto().isEmpty() || producto.getPrecio() <= 0 || producto.getStock() < 0) {
             throw new IllegalArgumentException("Los datos del producto son inválidos.");
         }
-        daoProducto.insertar(producto);
+        productoRepository.insertar(producto);
     }
 
     /**
@@ -31,7 +31,7 @@ public class ProductoService {
      * @return Lista de productos.
      */
     public List<Producto> listarProductos() {
-        return daoProducto.listar();
+        return productoRepository.listar();
     }
 
     /**
@@ -40,7 +40,7 @@ public class ProductoService {
      * @return Lista de productos con stock inferior al mínimo.
      */
     public List<Producto> listarStockBajo() {
-        return daoProducto.listarMinimo();
+        return productoRepository.listarMinimo();
     }
 
     /**
@@ -50,7 +50,7 @@ public class ProductoService {
      * @return El producto encontrado o null si no existe.
      */
     public Producto obtenerProductoPorId(int idProducto) {
-        return daoProducto.leerProducto(idProducto);
+        return productoRepository.leerProducto(idProducto);
     }
 
     /**
@@ -59,7 +59,7 @@ public class ProductoService {
      * @param producto Producto con datos actualizados.
      */
     public boolean actualizarProducto(Producto producto) {
-        return daoProducto.actualizar(producto);
+        return productoRepository.actualizar(producto);
     }
 
     /**
@@ -68,7 +68,7 @@ public class ProductoService {
      * @param idProducto ID del producto a eliminar.
      */
     public void eliminarProducto(int idProducto) {
-        daoProducto.eliminar(idProducto);
+        productoRepository.eliminar(idProducto);
     }
     
     /**
@@ -79,11 +79,11 @@ public class ProductoService {
      * @return true si la actualización fue exitosa, false en caso contrario.
      */
     public boolean actualizarStock(int idProducto, int nuevoStock) {
-        Producto producto = daoProducto.leerProducto(idProducto);
+        Producto producto = productoRepository.leerProducto(idProducto);
         
         if (producto != null) {
             producto.setStock(nuevoStock);
-            return daoProducto.actualizar(producto);
+            return productoRepository.actualizar(producto);
         }
         
         return false;

@@ -1,8 +1,9 @@
 package process;
 
 import model.Usuario;
+import repository.UsuarioRepository;
+
 import org.mindrot.jbcrypt.BCrypt;
-import DAO.DaoUsuario;
 
 /**
  * Clase para la creación de usuarios en la base de datos.
@@ -38,7 +39,7 @@ public class CrearUsuariosBackend {
 				{ "Administrador", "Administrador", "", "admin@smartstock.com", "1234", "admin" } };
 
 		// Crear la instancia del DAO
-		DaoUsuario daoUsuario = new DaoUsuario();
+		UsuarioRepository usuarioRepository = new UsuarioRepository();
 
 		// Iterar sobre los datos de los usuarios y agregar cada uno a la base de datos
 		for (String[] usuarioData : usuariosData) {
@@ -59,7 +60,7 @@ public class CrearUsuariosBackend {
 
 			// Insertar el usuario en la base de datos
 			try {
-				daoUsuario.insertar(nuevoUsuario);
+				usuarioRepository.insertar(nuevoUsuario);
 				System.out.println("Usuario creado correctamente: " + email);
 			} catch (Exception e) {
 				System.err.println("Error al crear el usuario: " + email);

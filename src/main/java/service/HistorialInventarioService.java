@@ -2,15 +2,15 @@ package service;
 
 import java.util.List;
 
-import DAO.DaoHistorialInventario;
 import model.HistorialInventario;
+import repository.HistorialInventarioRepository;
 
 public class HistorialInventarioService {
 	
-    private final DaoHistorialInventario daoHistorialInventario;
+    private final HistorialInventarioRepository historialInventarioRepository;
 
     public HistorialInventarioService() {
-        this.daoHistorialInventario = new DaoHistorialInventario();
+        this.historialInventarioRepository = new HistorialInventarioRepository();
     }
 
     /**
@@ -22,7 +22,7 @@ public class HistorialInventarioService {
         if (movimiento.getCantidad() <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor a cero.");
         }
-        daoHistorialInventario.insertar(movimiento);
+        historialInventarioRepository.insertar(movimiento);
     }
 
     /**
@@ -31,6 +31,6 @@ public class HistorialInventarioService {
      * @return Lista de movimientos del historial de inventario.
      */
     public List<HistorialInventario> listarMovimientos() {
-        return daoHistorialInventario.listar();
+        return historialInventarioRepository.listar();
     }
 }

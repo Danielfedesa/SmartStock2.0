@@ -6,15 +6,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import DAO.DaoCopiaSeguridad;
 import model.CopiaSeguridad;
+import repository.CopiaSeguridadRepository;
 
 public class CopiaSeguridadService {
 	
-	private DaoCopiaSeguridad daoCopiaSeguridad;
+	private CopiaSeguridadRepository copiaSeguridadRepository;
 	
 	public CopiaSeguridadService() {
-		this.daoCopiaSeguridad = new DaoCopiaSeguridad();
+		this.copiaSeguridadRepository = new CopiaSeguridadRepository();
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class CopiaSeguridadService {
                 copia.setRutaArchivo(rutaBackup);
 
                 // Guardar en la base de datos
-                daoCopiaSeguridad.insertar(copia);
+                copiaSeguridadRepository.insertar(copia);
             } else {
                 throw new IOException("Error al ejecutar mysqldump. Código de salida: " + resultado);
             }
@@ -87,7 +87,7 @@ public class CopiaSeguridadService {
 	 *         almacenados en la base de datos.
 	 */
 	public List<CopiaSeguridad> listarCopias() {
-        return daoCopiaSeguridad.listar();
+        return copiaSeguridadRepository.listar();
     }
 	
 }
