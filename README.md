@@ -4,7 +4,7 @@ Descripción del proyecto:
 
 SmartStock 2.0 es una aplicación de escritorio desarrollada como proyecto intermodular de 2º curso de DAM.
 
-Está desarrollada en Java con Swing y su función principal es la gestión de inventarios en pequeñas y medianas empresas. Esta herramienta permite administrar productos, categorías, usuarios y movimientos de inventario de manera eficiente, además de integrar funcionalidades avanzadas como:
+Se ha desarrollado en Java con Swing, siguiendo el patrón de arquitectura MVC para mejorar la separación de responsabilidades y facilitar la escalabilidad del código. Su objetivo principal es la gestión de inventarios en pequeñas y medianas empresas, permitiendo administrar productos, categorías, usuarios y movimientos de stock de manera eficiente. Además, incorpora funcionalidades avanzadas como:
 
 ✅ Gestión de stock con alertas automáticas.  
 ✅ Persistencia de datos con Hibernate ORM y MySQL.  
@@ -27,26 +27,29 @@ Gestión del proyecto: Maven
 
 📂 SmartStock2.0  
  ┣ 📂 src/main/java  
- ┃ ┣ 📂 chatservice  
- ┃ ┣ 📂 controller  
- ┃ ┣ 📂 DAO  
- ┃ ┣ 📂 model  
- ┃ ┣ 📂 process  
- ┃ ┣ 📂 view  
- ┃ ┗ 📜 App.java  
+ ┃ ┣ 📂 chatservice -> Implementación del chat con Java Sockets bajo patrón MVC  
+ ┃ ┣ 📂 controller -> Controladores del sistema  
+ ┃ ┣ 📂 DAO -> Clases de acceso a la base de datos metiante Hibernate  
+ ┃ ┣ 📂 model -> Entidades mapeadas con Hibernate  
+ ┃ ┣ 📂 process -> Automatización de procesos como copias de seguridad y monitoreo de stock  
+ ┃ ┣ 📂 service -> Lógica de negocio intermedia entre el controlador y la capa de datos  
+ ┃ ┣ 📂 view -> Interfaz gráfica desarrollada con Java Swing  
+ ┃ ┗ 📜 App.java -> Punto de entrada del sistema  
  ┣ 📂 src/main/resources  
- ┃ ┣ 📂 images  
- ┃ ┗ 📜 hibernate.cfg.xml  
- ┗ 📜 pom.xml  
+ ┃ ┣ 📂 images -> Recursos gráficos de la interfaz  
+ ┃ ┗ 📜 hibernate.cfg.xml -> Configuración de conexión con la base de datos  
+ ┗ 📜 pom.xml -> Archivo de configuración de Maven  
 
 
 📌 Explicación de los paquetes principales:
 
-controller: Controladores de acceso y sesión.  
-dao: Clases de acceso a la base de datos utilizando Hibernate.  
-model: Entidades mapeadas con Hibernate.  
-view: Interfaz gráfica con Java Swing.  
 chatservice: Implementación del chat con Java Sockets.  
+controller: Gestiona la lógica de la aplicación y sirve de puente entre la vista y el modelo. También están los controladores de acceso y sesión.  
+dao: Capa de acceso a datos, encargada de la persistencia en la base de datos mediante Hibernate.  
+model: Representa las entidades del sistema, mapeadas con JPA  
+process: Contiene los procesos automatizados como copias de seguridad automáticas y supervisión del stock mínimo.  
+service: Contiene la lógica de negocio, asegurando que los controladores no accedan directamente a la base de datos.  
+view: Interfaz gráfica desarrollada con Java Swing, separada de la lógica de negocio.  
 
 
  📡 Funcionalidades principales
