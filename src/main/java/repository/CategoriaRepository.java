@@ -103,11 +103,17 @@ public class CategoriaRepository {
 	 */
 	public boolean eliminar(int idCategoria) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        	
             Transaction transaction = session.beginTransaction();
+            
             Categoria c = session.get(Categoria.class, idCategoria);
+            
             if (c != null) {
+            	
                 session.remove(c);
+                
                 transaction.commit();
+                
                 return true;
             }
         } catch (Exception e) {

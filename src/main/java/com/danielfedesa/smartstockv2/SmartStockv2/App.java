@@ -27,7 +27,7 @@ public class App {
 		// Ejecuta la creación de la UI en el hilo de eventos de Swing
 		SwingUtilities.invokeLater(() -> {
 			try {
-				// Crea el modelo Login (el DAO se inicializa dentro de Login)
+				// Crea el modelo Login
 				Login loginControlador = new Login();
 
 				// Crea y muestra la pantalla de inicio de sesión

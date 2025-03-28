@@ -18,7 +18,6 @@
   
   <!-- Configuración de Hibernate para autoactualización del esquema de base de datos -->
   <property name="hibernate.hbm2ddl.auto">update</property>
-  
   <!-- Deshabilitar JNDI -->
   <property name="hibernate.jndi.url"/>
   <property name="hibernate.session_factory_name">none</property>
